@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
-import ScrollDown from '../components/scrolldown.jsx'
 import ImgCarousel from '../components/imgcarousel.jsx'
 function Home() {
 
@@ -17,7 +16,7 @@ function Home() {
     useEffect(() => {
         const interval = setInterval(() => {
             setActive(false);
-            const timeout = setTimeout(() => {setDesc((desc + 1) % 3); setActive(true);}, 500);
+            const timeout = setTimeout(() => {setDesc((desc + 1) % 3); setActive(true);}, 1000);
 
         }, 2500);
 
@@ -39,11 +38,13 @@ function Home() {
 
     return (
       <div id="intro">
+        <p>
           Hi! My name is Lucas. I am a{!active && <span className="cursor"></span>}
           <span className={`intro-text ${active ? "active" : ""}`}>{words[desc]}</span>
           {active && <span className="cursor"></span>}
-          <div id="home-images">
-            <ImgCarousel/>
+        </p>
+        <div id="home-images">
+          <ImgCarousel/>
         </div>
       </div>
     );

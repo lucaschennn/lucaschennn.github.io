@@ -3,9 +3,12 @@ import React from 'react'
 function Pricing() {
     return (
         <>
-        <p>
+        <div id="pricing-background">
+
+        </div>
+        <div id="stationary">
             pricing
-        </p>
+        </div>
       </>
     );
 }

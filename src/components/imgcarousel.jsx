@@ -12,10 +12,11 @@ function ImgCarousel() {
         { id: 2, src: "../images/home/2.jpg",}
     ]
 
+    
     return (
         <>
-            {images.reverse().map((image) => (
-                <img key ={image.id} src={image.src} className={`home-img ${imgActive? "active" : ""}`} />
+            {images.map((image) => (
+                <img key ={image.id} src={image.src} className={`home-img`} />
             ))}
         </>
     );
