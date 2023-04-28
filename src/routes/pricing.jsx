@@ -10,7 +10,11 @@ function Pricing() {
         other: false,
     })
 
-    const handleClick = (type) => {
+    const handleClick = (e, type) => {
+        e.preventDefault();
+        if(e.target.className !== "pricing-header") {
+            return;
+        }
         if(type === 'grad') {
             if(active.grad) {
                 setActive((prev) => ({...prev, grad: false}));
@@ -43,25 +47,25 @@ function Pricing() {
         <div id="pricing-background">
         </div>
         <div id="stationary">
-            <div className="pricing-section" onClick={() => handleClick('grad')}>
+            <div className="pricing-section" onClick={(event) => handleClick(event, 'grad')}>
                 <h4 className="pricing-header">
                     Graduation
                 </h4>
                 <GradDescription active={active.grad}/>
             </div>
-            <div className="pricing-section" onClick={() => handleClick('events')}>
+            <div className="pricing-section" onClick={(event) => handleClick(event, 'events')}>
                 <h4 className="pricing-header">
                     Events
                 </h4>
                 <EventsDescription active={active.events}/>
             </div>
-            <div className="pricing-section" onClick={() => handleClick('headshots')}>
+            <div className="pricing-section" onClick={(event) => handleClick(event, 'headshots')}>
                 <h4 className="pricing-header">
                     Headshots
                 </h4>
                 <HeadshotsDescription active={active.headshots}/>
             </div>
-            <div className="pricing-section" onClick={() => handleClick('other')}>
+            <div className="pricing-section" onClick={(event) => handleClick(event, 'other')}>
                 <h4 className="pricing-header">
                     Other
                 </h4>
@@ -69,17 +73,20 @@ function Pricing() {
             </div>
             <div className="important-info">
             IMPORTANT POLICY INFORMATION!
-
+<h5 className="info-header">
 Payment and Fees:
+</h5>
 The full charge is specified as per the full pricing policy here unless otherwise discussed prior to the shoot.
-Payment is due during the time of booking
+Payment is due during the time of booking.
 Venmo, PayPal, and cash are accepted!
-
+<h5 className="info-header">
 Cancellation and Reschedule Policy:
-I understand that unforeseen circumstances may occur. As such, rescheduling may be done free of charge within 24 hours of the original event start time. Otherwise a $25 rescheduling fee will be included to your final charge.
-Cancellations made before 48 hours will receive a full refund. Cancellations made after will not receive a refund.
-
+</h5>
+I understand that unforeseen circumstances may occur. As such, rescheduling may be done free of charge within 24 hours of the original event start time. Otherwise a $25 rescheduling fee will be added to your final charge.
+Cancellations made before 48 hours of the shoot will receive a full refund. Cancellations made after this cutoff will not receive a refund.
+<h5 className="info-header">
 Turnaround and Delivery
+</h5>
 Edited photos will be delivered within 2 weeks of the session. Larger events may take longer. A more accurate timeframe will be provided after booking.
 Rush delivery is available for $20-$40 depending on delivery date and the number of images.
             </div>
@@ -92,7 +99,7 @@ function GradDescription(props) {
     return ( props.active &&
         <div className="pricing-info">
             <h5 className="pricing-subheader">
-                Individual: $30 -$60
+                Individual: $30-$60
             </h5>
             <ul className="pricing-list">
                 <li> 30 minutes ($30)</li>
@@ -101,7 +108,7 @@ function GradDescription(props) {
                 <li> 20+ edited photos (30min) / 40+ edited photos (1hr)</li>
             </ul>
             <h5 className="pricing-subheader">
-                Group: $40 per preson
+                Group: $40 per person
             </h5>
             <ul className="pricing-list">
                 <li> 2+ people</li>

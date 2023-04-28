@@ -36,6 +36,10 @@ function Home() {
     })
     */
 
+    const handleClick = (link) => {
+      window.open(link, '_blank')
+    }
+
     return (
       <div id="intro">
         <p>
@@ -43,6 +47,17 @@ function Home() {
           <span className={`intro-text ${active ? "active" : ""}`}>{words[desc]}</span>
           {active && <span className="cursor"></span>}
         </p>
+        <div id="social-btns">
+          <button className="social-btn">
+            <span style={{'font-size':'24px'}} className="fa" onClick={() => {handleClick("https://www.instagram.com/photosbylucasc/")}}>&#xf16d;</span>
+          </button>
+          <button className="social-btn">
+            <span style={{'font-size':'24px'}} className="fa" onClick={() => {handleClick("https://www.linkedin.com/in/lucas--chen/")}}>&#xf0e1;</span>
+          </button>
+          <button className="social-btn">
+            <span style={{'font-size':'24px'}} className="fa" onClick={() => {handleClick("https://github.com/lucaschennn")}}>&#xf092;</span>
+          </button>
+        </div>
         <div id="home-images">
           <ImgCarousel/>
         </div>
