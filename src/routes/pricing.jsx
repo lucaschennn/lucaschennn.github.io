@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
+import Footer from '../components/footer.jsx';
 
 function Pricing() {
 
@@ -82,7 +83,7 @@ Venmo, PayPal, and cash are accepted!
 <h5 className="info-header">
 Cancellation and Reschedule Policy:
 </h5>
-I understand that unforeseen circumstances may occur. As such, rescheduling may be done free of charge within 24 hours of the original event start time. Otherwise a $25 rescheduling fee will be added to your final charge.
+I understand that unforeseen circumstances may occur. As such, rescheduling may be done free of charge within 24 hours of the original start time. Otherwise a $25 rescheduling fee will be added to your final charge.
 Cancellations made before 48 hours of the shoot will receive a full refund. Cancellations made after this cutoff will not receive a refund.
 <h5 className="info-header">
 Turnaround and Delivery
@@ -90,6 +91,7 @@ Turnaround and Delivery
 Edited photos will be delivered within 2 weeks of the session. Larger events may take longer. A more accurate timeframe will be provided after booking.
 Rush delivery is available for $20-$40 depending on delivery date and the number of images.
             </div>
+            <Footer/>
         </div>
       </>
     );
@@ -163,6 +165,7 @@ function OtherDescription(props) {
     return ( props.active &&
         <div className="pricing-info pricing-list">
             I would love to accomodate your specific photographer needs! Please contact me directly about pricing for miscellaneous and other photo needs!
+            <br></br><br></br>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import ScrollDown from '../components/scrolldown.jsx'
 import PortfolioViewer from '../components/portfolioviewer.jsx'
+import Footer from '../components/footer.jsx';
 
 function Portfolio() {
 
@@ -11,6 +12,7 @@ function Portfolio() {
     const [picIdx, setPicIdx] = useState(-1);
     const [active, setActive] = useState(false);
     const [loaded, setLoaded] = useState(false);
+    const [navScroll, setNavScroll] = useState(0);
 
     const landscapes = [
         { id: 0, src: "../images/portfolio/landscapes/0.jpg",},
@@ -34,6 +36,7 @@ function Portfolio() {
         { id: 6, src: "../images/portfolio/daily/6.jpg",},
         { id: 7, src: "../images/portfolio/daily/7.jpg",},
         { id: 8, src: "../images/portfolio/daily/8.jpg",},
+        { id: 9, src: "../images/portfolio/daily/9.jpg",},
     ]
 
     const portraits = [
@@ -46,8 +49,12 @@ function Portfolio() {
         { id: 6, src: "../images/portfolio/portraits/6.jpg",},
         { id: 7, src: "../images/portfolio/portraits/7.jpg",},
         { id: 8, src: "../images/portfolio/portraits/8.jpg",},
+        { id: 9, src: "../images/portfolio/portraits/6.jpg",},
+        { id: 10, src: "../images/portfolio/portraits/7.jpg",},
+        { id: 11, src: "../images/portfolio/portraits/8.jpg",},
     ]
 
+    const [total, setTotal] = useState(daily.length);
     const contentRef = useRef(null);
 
     useEffect(() => {
@@ -62,13 +69,24 @@ function Portfolio() {
           };
     })
 
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+    
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     const handleNavClick = (tab) => {
         if (tab === 0) {
             setSeries("landscapes")
+            setTotal(landscapes.length)
         } else if(tab === 1) {
             setSeries("daily")
+            setTotal(daily.length)
         } else if (tab === 2) {
             setSeries("portraits")
+            setTotal(portraits.length)
         }
         setTab(tab);
     }
@@ -87,10 +105,14 @@ function Portfolio() {
         setLoaded(true);
     }
 
+    const handleScroll = (e) => {
+        setNavScroll(window.pageYOffset / 2);
+    }
+
     return (
         <>
             <div>
-                <ul id="portfolio-nav">
+                <ul id="portfolio-nav" style={{transform: `translateY(${navScroll}px)`}}>
                     <li className={tab == 0 ? "active": "none"} onClick={() => {handleNavClick(0)}}>Landscapes & Nature</li>
                     <li className={tab == 1 ? "active": "none"} onClick={() => {handleNavClick(1)}}>The Michigan Daily</li>
                     <li className={tab == 2 ? "active": "none"} onClick={() => {handleNavClick(2)}}>Portraits & People</li>
@@ -113,8 +135,9 @@ function Portfolio() {
                 </div>
             ))}
             </div>
+            <Footer/>
             <ScrollDown active={top}/>
-            {active && <PortfolioViewer series={series} img={picIdx} handleChange={handleModalChange}/>}
+            {active && <PortfolioViewer series={series} img={picIdx} total={total} handleChange={handleModalChange}/>}
         </>
     );
 }

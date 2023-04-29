@@ -43,13 +43,50 @@ img {
   color: #696969;
 }
 
+#nav-carousel-alt {
+  position: sticky !important;
+  margin: 0; 
+  top: 0;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  background-color: rgba(0, 0, 0, .1);
+  backdrop-filter: blur(4px);
+  align-items: center;
+
+}
+
+#nav-carousel-alt .active {
+  vertical-align: middle;
+  font-size: 40px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+#nav-carousel-alt li {
+  cursor: pointer;
+  font-size: 28px;
+  position: relative;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  color: #bfbfbf;
+
+}
+#nav-carousel-alt li:hover {
+  color: #adadad;
+}
+
+
 #portfolio-nav {
   padding-bottom: 5%;
   display: flex;
   justify-content: center;
   list-style: none;
   font-size: 32px;
-
+  transition: transform .15s ease-out;
 }
 
 @keyframes portfolio-fade {
@@ -171,20 +208,26 @@ img {
 }
 
 #social-btns {
-  text-align: center;
+  display: flex;
+  position: absolute;
+  bottom: 10%;
+  transform: translateX(-50%);
+  left: 50%;
 }
+
 
 .social-btn {
   cursor: pointer;
   background-color: rgba(255, 255, 255, .75);
-  transition: background-color .3s ease-in;
+  transition: background-color .3s ease-in-out;
   aspect-ratio: 1/1;
+  margin-left: 10%;
+  margin-right: 10%;
   border-radius: 50%;
   border: none;
-  margin: 1%;
 }
 .social-btn:hover {
-  background-color: rgba(255, 255, 255, 1)
+  background-color: rgba(255, 255, 255, 1);
 }
 
 .scroll-down {
@@ -214,6 +257,7 @@ img {
 }
 
 .grid-item {
+  max-height: 65%;
   padding: 20px;
 }
 
@@ -299,6 +343,7 @@ img {
   background-image: url('../images/collage.png');
   background-size: contain;
   background-repeat: repeat;
+  height: 200vh;
   margin-top: -20%;
   position: absolute;
   filter: blur(4px);
@@ -309,15 +354,15 @@ img {
 #stationary {
   z-index: 999;
   text-align: center;
-  font-size: 28px;
+  font-size: 24px;
   margin-top: -10%;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 20%;
+  margin-right: 20%;
   padding-top: 10%;
   padding-left: 10%;
   padding-right: 10%;
-  padding-bottom: 20%;
-  background-color:rgba(255, 255, 255, .75);
+  padding-bottom: 5%;
+  background-color:rgba(255, 255, 255, .85);
 }
 
 .pricing-section {
@@ -334,12 +379,12 @@ img {
 
 .pricing-subheader {
   text-align: left;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .pricing-list {
   list-style: disc;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .pricing-list li {
@@ -352,10 +397,24 @@ img {
 }
 
 .important-info {
-  font-size: 16px;
+  font-size: 14px;
+  color: #474747;
   text-align: center;
 }
 
 .info-header {
+  font-size: 14px;
+}
+
+.footer {
+  text-align: center;
+  padding-top: 20vh;
+}
+
+.footer-header {
+  font-size: 24px;
+}
+
+.footer-contact {
   font-size: 16px;
 }

@@ -4,6 +4,7 @@ import { useState, useEffect} from 'react'
 function PortfolioViewer(props) {
     const img = props.img; // 0-n
     const series = props.series; //daily, portraits, landscapes
+    const total = props.total;
 
     const [image, setImage] = useState(img);
 
@@ -13,17 +14,18 @@ function PortfolioViewer(props) {
 
     const handlePrev = () => {
         if(image === 0) {
+            setImage(total - 1);
             return;
         }
-        console.log("previous image")
         setImage((prev) => prev - 1)
     }
 
     const handleNext = () => {
-        if(image === 10) { // FIGURE OUT MAX W PROPS
+        console.log(image, total);
+        if(image === total - 1) { // FIGURE OUT MAX W PROPS
+            setImage(0);
             return;
         }
-        console.log("next image")
         setImage((prev) => prev + 1)
     }
 
