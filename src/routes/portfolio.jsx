@@ -121,17 +121,17 @@ function Portfolio() {
             <div className="grid-container">
             {tab === 0 && landscapes.map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
-                    <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`../images/portfolio/landscapes/` + image.id + `.jpg`} onLoad={handleLoad}/>
+                    <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/landscapes/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
             {tab === 1 && daily.map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
-                    <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`../images/portfolio/daily/` + image.id + `.jpg`} onLoad={handleLoad}/>
+                    <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/daily/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
             {tab === 2 && portraits.map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
-                    <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`../images/portfolio/portraits/` + image.id + `.jpg`} onLoad={handleLoad}/>
+                    <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/portraits/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
             </div>

@@ -7,9 +7,9 @@ function ImgCarousel() {
     const [imgActive, setImgActive] = useState(true);
 
     const images = [
-        { id: 0, src: "../images/home/0.jpg",},
-        { id: 1, src: "../images/home/1.jpg",},
-        { id: 2, src: "../images/home/2.jpg",}
+        { id: 0, src: "images/home/0.jpg",},
+        { id: 1, src: "images/home/1.jpg",},
+        { id: 2, src: "images/home/2.jpg",}
     ]
 
     
