@@ -423,16 +423,21 @@ img {
   text-align: center;
 }
 
-#contact-page form {
-  margin-top: 35px;
-}
-
 #contact-page label {
   display: block;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
 #contact-page input {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border-width: 1px;
+  width: 224px;
+  margin-bottom: 20px;
+}
+
+#contact-page textarea {
   padding: 12px 20px;
   border-radius: 10px;
   border-width: 1px;
@@ -463,4 +468,41 @@ img {
 
 #msg-select li.active {
   text-decoration: underline;
+}
+
+#contact-msg {
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+#inp-subject {
+  width: 448px !important;
+}
+
+#inp-msg {
+  width: 448px;
+  border-width: 1px;
+  font-family: 'Arial', sans-serif;
+  resize: none;
+}
+
+textarea, input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#msg-submit-btn {
+  cursor: pointer;
+  background-color: rgba(169, 169, 169, .8);
+  border-radius: 10px;
+  border-width: 0;
+  margin: 5%;
+  padding: 10px 0;
+  width: 448px;
+  transition: all .3s ease-in-out;
+}
+
+#msg-submit-btn:hover{
+  background-color: rgba(169, 169, 169, 1);
 }

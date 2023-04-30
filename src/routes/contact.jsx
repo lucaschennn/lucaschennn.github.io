@@ -30,10 +30,8 @@ function Contact() {
         <form> 
           <label>Name</label>
           <input type="text" id="name" value={name} placeholder="Name" onChange={(event) => {handleChange(event, 'name')}}></input> 
-        </form>
-        <form> 
           <label>Email</label>
-          <input type="text" id="name" value={email} placeholder="Email" onChange={(event) => {handleChange(event, 'email')}}></input> 
+          <input type="text" id="email" value={email} placeholder="Email" onChange={(event) => {handleChange(event, 'email')}}></input> 
         </form>
         <ul id="msg-select">
           <li className={contact === 0 ? "active" : ""} onClick={() => {handleContactChange(0)}}>Message</li>
