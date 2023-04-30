@@ -340,7 +340,7 @@ img {
 #pricing-background {
   width: 100%;
   height: 300%;
-  background-image: url('images/collage.png');
+  background-image: url('/images/collage.png');
   background-size: contain;
   background-repeat: repeat;
   height: 200vh;
