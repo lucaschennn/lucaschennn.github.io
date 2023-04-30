@@ -4,7 +4,6 @@ import Home from './routes/home.jsx';
 import Header from './components/header.jsx'
 import Pricing from './routes/pricing.jsx';
 import Portfolio from './routes/portfolio.jsx'
-import Book from './routes/book.jsx'
 import Contact from './routes/contact.jsx';
 import ErrorPage from './routes/errorpage.jsx'
 import './App.css'
@@ -30,7 +29,7 @@ function App() {
     } else if (selected === 2) {
       setPage(<Pricing/>)
     } else if (selected === 3) {
-      setPage(<Book/>)
+      setPage(<Contact/>)
     } else {
       console.log("What the fuck")
     }
@@ -49,7 +48,6 @@ function App() {
     }
     */
   }
-  console.log("render!")
   return (
     <BrowserRouter>
       {/*<Header/>*/}
@@ -58,14 +56,14 @@ function App() {
           <li className="active" onClick={() => {handleNavClick(0)}}>Home</li>
           <li className="nav-alt" onClick={() => {handleNavClick(1)}}>My Work</li>
           <li className="nav-alt" onClick={() => {handleNavClick(2)}}>Pricing</li>
-          <li className="nav-alt" onClick={() => {handleNavClick(3)}}>Book Now</li>
+          <li className="nav-alt" onClick={() => {handleNavClick(3)}}>Contact</li>
         </ul>
         :
         <ul id="nav-carousel">
           <li className={active == 0 ? "active": ""} onClick={() => {handleNavClick(0)}}>Home</li>
           <li className={active == 1 ? "active": ""} onClick={() => {handleNavClick(1)}}>My Work</li>
           <li className={active == 2 ? "active": ""} onClick={() => {handleNavClick(2)}}>Pricing</li>
-          <li className={active == 3 ? "active": ""} onClick={() => {handleNavClick(3)}}>Book Now</li>
+          <li className={active == 3 ? "active": ""} onClick={() => {handleNavClick(3)}}>Contact</li>
         </ul>
       }
       <div id="show-page">

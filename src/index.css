@@ -418,3 +418,49 @@ img {
 .footer-contact {
   font-size: 16px;
 }
+
+#contact-page {
+  text-align: center;
+}
+
+#contact-page form {
+  margin-top: 35px;
+}
+
+#contact-page label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#contact-page input {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border-width: 1px;
+}
+
+#msg-select {
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+#msg-select li {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333333;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  width: auto;
+  transition: color .3s ease;
+  animation: portfolio-fade 1s;
+}
+
+#msg-select li:hover {
+  color: #696969;
+}
+
+#msg-select li.active {
+  text-decoration: underline;
+}
