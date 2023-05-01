@@ -25,6 +25,11 @@ function Contact() {
       }
     }
 
+    const setNull = () => {
+      setName('');
+      setEmail('');
+    }
+
     return (
       <div id="contact-page">
         <form> 
@@ -38,7 +43,7 @@ function Contact() {
           <li className={contact === 1 ? "active" : ""} onClick={() => {handleContactChange(1)}}>Book Now</li>
         </ul>
         {contact === 0 ?
-        <Message name={name} email={email}/>
+        <Message name={name} email={email} setNull={setNull}/>
         :
         <Book/>
         }

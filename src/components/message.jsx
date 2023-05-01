@@ -37,6 +37,9 @@ function Message(props) {
             'AnOCiHXgg3aoSa61O'
         );
         alert("Message received. Thank you for reaching out!");
+        setMsg('');
+        setSub('');
+        props.setNull();
         const submitTimeout = setTimeout(() => setDisabled(false), 60000);
     }
 
