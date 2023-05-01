@@ -7,6 +7,7 @@ img {
   pointer-events: none;
 }
 
+
 #nav-carousel {
   position: sticky !important;
   margin: 0; 
@@ -37,8 +38,8 @@ img {
   margin-top: 25px;
   transition: all 0.3s ease;
   color: #888888;
-
 }
+
 #nav-carousel li:hover {
   color: #696969;
 }
@@ -78,6 +79,32 @@ img {
 #nav-carousel-alt li:hover {
   color: #adadad;
 }
+
+
+
+@media only screen and (max-width: 767px) {
+  #nav-carousel li {
+    font-size: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #nav-carousel-alt li {
+    font-size: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #nav-carousel li.active {
+    font-size: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  #nav-carousel-alt li.active {
+    font-size: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
 
 
 #portfolio-nav {
@@ -261,7 +288,11 @@ img {
   padding: 20px;
 }
 
-
+@media only screen and (max-width: 767px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
 .portfolio-img {
   width: 100%;
