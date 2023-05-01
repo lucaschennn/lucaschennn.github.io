@@ -38,7 +38,7 @@ function Contact() {
           <li className={contact === 1 ? "active" : ""} onClick={() => {handleContactChange(1)}}>Book Now</li>
         </ul>
         {contact === 0 ?
-        <Message/>
+        <Message name={name} email={email}/>
         :
         <Book/>
         }
