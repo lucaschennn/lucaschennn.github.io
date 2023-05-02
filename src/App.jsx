@@ -1,15 +1,26 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import './App.css'
 
 function App() {
   //const [page, setPage] = useState(<Home/>);
   const [offset, setOffset] = useState('50%');
-  const [subpage, setSubpage] = useState('0'); // 0 is NA
   const [active, setActive] = useState(0);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    if(location.pathname === '/') {
+      setActive(0);
+    } else if(location.pathname === '/portfolio') {
+      setActive(1);
+    } else if(location.pathname === '/pricing') {
+      setActive(2);
+    } else {
+      setActive(3);
+    }
+  }, [])
   
   const handleNavClick = (selected) => {
     const pageOffset = selected - active;
@@ -52,7 +63,7 @@ function App() {
   return (
     <>
       {/*<Header/>*/}
-        {active === 0?
+        {location.pathname === '/' ?
         <ul id="nav-carousel-alt">
           <li className="active" onClick={() => {handleNavClick(0)}}>Home</li>
           <li className="nav-alt" onClick={() => {handleNavClick(1)}}>My Work</li>

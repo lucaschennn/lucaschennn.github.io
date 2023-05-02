@@ -9,6 +9,7 @@ img {
 
 
 #nav-carousel {
+ z-index: 999;
   position: sticky !important;
   margin: 0; 
   top: 0;
@@ -45,6 +46,7 @@ img {
 }
 
 #nav-carousel-alt {
+  z-index: 999;
   position: sticky !important;
   margin: 0; 
   top: 0;
@@ -113,8 +115,14 @@ img {
   justify-content: center;
   list-style: none;
   font-size: 32px;
-  transition: transform .15s ease-out;
 }
+
+@media only screen and (max-width: 767px) {
+  #portfolio-nav {
+    font-size: 24px;
+  }
+}
+
 
 @keyframes portfolio-fade {
   0% {opacity: 0;}
