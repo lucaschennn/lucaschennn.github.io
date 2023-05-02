@@ -1,18 +1,15 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './routes/home.jsx';
-import Header from './components/header.jsx'
-import Pricing from './routes/pricing.jsx';
-import Portfolio from './routes/portfolio.jsx'
-import Contact from './routes/contact.jsx';
-import ErrorPage from './routes/errorpage.jsx'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+
 import './App.css'
 
 function App() {
-  const [page, setPage] = useState(<Home/>);
+  //const [page, setPage] = useState(<Home/>);
   const [offset, setOffset] = useState('50%');
   const [subpage, setSubpage] = useState('0'); // 0 is NA
   const [active, setActive] = useState(0);
+
+  const navigate = useNavigate();
   
   const handleNavClick = (selected) => {
     const pageOffset = selected - active;
@@ -23,13 +20,17 @@ function App() {
     setActive(selected) //update active state
     setOffset(offset + (pageOffset * 200)); // shift left by offset.
     if(selected === 0) {
-      setPage(<Home/>)
+      //setPage(<Home/>)
+      navigate('/')
     } else if (selected === 1) {
-      setPage(<Portfolio/>)
+      //setPage(<Portfolio/>)
+      navigate('/portfolio')
     } else if (selected === 2) {
-      setPage(<Pricing/>)
+     //setPage(<Pricing/>)
+      navigate('/pricing')
     } else if (selected === 3) {
-      setPage(<Contact/>)
+      //setPage(<Contact/>)
+      navigate('/contact')
     } else {
       console.log("What the fuck")
     }
@@ -49,7 +50,7 @@ function App() {
     */
   }
   return (
-    <BrowserRouter>
+    <>
       {/*<Header/>*/}
         {active === 0?
         <ul id="nav-carousel-alt">
@@ -66,8 +67,10 @@ function App() {
           <li className={active == 3 ? "active": ""} onClick={() => {handleNavClick(3)}}>Contact</li>
         </ul>
       }
+
       <div id="show-page">
-        {page}
+
+        {/*page*/}
       </div>
 
       {/*
@@ -77,7 +80,7 @@ function App() {
         <Route path="pricing" element={<Pricing/>}/>
       </Routes>
   */}
-    </BrowserRouter>
+    </>
   )
 }
 

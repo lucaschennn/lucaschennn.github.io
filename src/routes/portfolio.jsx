@@ -8,53 +8,54 @@ function Portfolio() {
 
     const [tab, setTab] = useState(1);
     const [top, setTop] = useState(false);
-    const [series, setSeries] = useState('daily');
     const [picIdx, setPicIdx] = useState(-1);
     const [active, setActive] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [navScroll, setNavScroll] = useState(0);
+    const [caption, setCaption] = useState('');
 
-    const landscapes = [
-        { id: 0, src: "../images/portfolio/landscapes/0.jpg",},
-        { id: 1, src: "../images/portfolio/landscapes/1.jpg",},
-        { id: 2, src: "../images/portfolio/landscapes/2.jpg",},
-        { id: 3, src: "../images/portfolio/landscapes/3.jpg",},
-        { id: 4, src: "../images/portfolio/landscapes/4.jpg",},
-        { id: 5, src: "../images/portfolio/landscapes/5.jpg",},
-        { id: 6, src: "../images/portfolio/landscapes/6.jpg",},
-        { id: 7, src: "../images/portfolio/landscapes/7.jpg",},
-        { id: 8, src: "../images/portfolio/landscapes/8.jpg",},
+    const photos = [
+        [
+            { id: 0, caption: "../images/portfolio/landscapes/0.jpg",},
+            { id: 1, caption: "../images/portfolio/landscapes/1.jpg",},
+            { id: 2, caption: "../images/portfolio/landscapes/2.jpg",},
+            { id: 3, caption: "../images/portfolio/landscapes/3.jpg",},
+            { id: 4, caption: "../images/portfolio/landscapes/4.jpg",},
+            { id: 5, caption: "../images/portfolio/landscapes/5.jpg",},
+            { id: 6, caption: "../images/portfolio/landscapes/6.jpg",},
+            { id: 7, caption: "../images/portfolio/landscapes/7.jpg",},
+            { id: 8, caption: "../images/portfolio/landscapes/8.jpg",},
+        ]
+        ,
+        [
+            { id: 0, caption: "Michigan vs Central Michigan Baseball, 3/28/2023",},
+            { id: 1, caption: "Michigan vs Ohio State Lacrosse, 4/21/2023",},
+            { id: 2, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace, 3/8/2023",},
+            { id: 3, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace, 3/8/2023",},
+            { id: 4, caption: "Michigan vs Ohio State Lacrosse, 4/21/2023",},
+            { id: 5, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace, 3/8/2023",},
+            { id: 6, caption: "Nebraska ACLU organized protest against the historic overturning of Roe v. Wade, 6/24/2022",},
+            { id: 7, caption: "Nebraska ACLU organized protest against the historic overturning of Roe v. Wade, 6/24/2022",},
+            { id: 8, caption: "Michigan vs Central Michigan Baseball, 3/28/2023",},
+            { id: 9, caption: "It's TAPpening show hosted by the RhythM Tap Ensemble, 1/21/2023",},
+        ]
+        ,
+        [
+            { id: 0, caption: "../images/portfolio/portraits/0.jpg",},
+            { id: 1, caption: "../images/portfolio/portraits/1.jpg",},
+            { id: 2, caption: "../images/portfolio/portraits/2.jpg",},
+            { id: 3, caption: "../images/portfolio/portraits/3.jpg",},
+            { id: 4, caption: "../images/portfolio/portraits/4.jpg",},
+            { id: 5, caption: "../images/portfolio/portraits/5.jpg",},
+            { id: 6, caption: "../images/portfolio/portraits/6.jpg",},
+            { id: 7, caption: "../images/portfolio/portraits/7.jpg",},
+            { id: 8, caption: "../images/portfolio/portraits/8.jpg",},
+            { id: 9, caption: "../images/portfolio/portraits/6.jpg",},
+            { id: 10, caption: "../images/portfolio/portraits/7.jpg",},
+            { id: 11, caption: "../images/portfolio/portraits/8.jpg",},
+        ]
     ]
-
-    const daily = [
-        { id: 0, src: "../images/portfolio/daily/0.jpg",},
-        { id: 1, src: "../images/portfolio/daily/1.jpg",},
-        { id: 2, src: "../images/portfolio/daily/2.jpg",},
-        { id: 3, src: "../images/portfolio/daily/3.jpg",},
-        { id: 4, src: "../images/portfolio/daily/4.jpg",},
-        { id: 5, src: "../images/portfolio/daily/5.jpg",},
-        { id: 6, src: "../images/portfolio/daily/6.jpg",},
-        { id: 7, src: "../images/portfolio/daily/7.jpg",},
-        { id: 8, src: "../images/portfolio/daily/8.jpg",},
-        { id: 9, src: "../images/portfolio/daily/9.jpg",},
-    ]
-
-    const portraits = [
-        { id: 0, src: "../images/portfolio/portraits/0.jpg",},
-        { id: 1, src: "../images/portfolio/portraits/1.jpg",},
-        { id: 2, src: "../images/portfolio/portraits/2.jpg",},
-        { id: 3, src: "../images/portfolio/portraits/3.jpg",},
-        { id: 4, src: "../images/portfolio/portraits/4.jpg",},
-        { id: 5, src: "../images/portfolio/portraits/5.jpg",},
-        { id: 6, src: "../images/portfolio/portraits/6.jpg",},
-        { id: 7, src: "../images/portfolio/portraits/7.jpg",},
-        { id: 8, src: "../images/portfolio/portraits/8.jpg",},
-        { id: 9, src: "../images/portfolio/portraits/6.jpg",},
-        { id: 10, src: "../images/portfolio/portraits/7.jpg",},
-        { id: 11, src: "../images/portfolio/portraits/8.jpg",},
-    ]
-
-    const [total, setTotal] = useState(daily.length);
+    const [total, setTotal] = useState(photos[1].length);
     const contentRef = useRef(null);
 
     useEffect(() => {
@@ -78,22 +79,12 @@ function Portfolio() {
     }, []);
 
     const handleNavClick = (tab) => {
-        if (tab === 0) {
-            setSeries("landscapes")
-            setTotal(landscapes.length)
-        } else if(tab === 1) {
-            setSeries("daily")
-            setTotal(daily.length)
-        } else if (tab === 2) {
-            setSeries("portraits")
-            setTotal(portraits.length)
-        }
         setTab(tab);
     }
 
     const handleImgClick = (idx) => {
-        console.log(":3")
         setPicIdx(idx);
+        setCaption(photos[tab][idx].caption)
         setActive(true);
     }
 
@@ -119,17 +110,17 @@ function Portfolio() {
                 </ul>
             </div>
             <div className="grid-container">
-            {tab === 0 && landscapes.map((image) => (
+            {tab === 0 && photos[0].map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/landscapes/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
-            {tab === 1 && daily.map((image) => (
+            {tab === 1 && photos[1].map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/daily/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
-            {tab === 2 && portraits.map((image) => (
+            {tab === 2 && photos[2].map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/portraits/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
@@ -137,7 +128,7 @@ function Portfolio() {
             </div>
             <Footer/>
             <ScrollDown active={top}/>
-            {active && <PortfolioViewer series={series} img={picIdx} total={total} handleChange={handleModalChange}/>}
+            {active && <PortfolioViewer series={tab} img={picIdx} total={total} handleChange={handleModalChange} caption={caption} photos={photos}/>}
         </>
     );
 }

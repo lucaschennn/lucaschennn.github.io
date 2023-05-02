@@ -325,7 +325,7 @@ img {
 }
 
 .port-img-container {
-  display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
 }
@@ -367,6 +367,25 @@ img {
 #viewer-arrows {
   position: absolute;
 }
+
+.viewer-caption {
+  position: absolute;
+  color: black;
+  font-family: arial;
+  font-weight: 100;
+  bottom: 100px;
+  padding: 0px 10px;
+  opacity: 0;
+  transition: all .25s linear;
+  bottom: 20px;
+  left: 0;
+}
+
+.viewer-caption.active {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, .8);
+}
+
 
 #pricing-background {
   width: 100%;

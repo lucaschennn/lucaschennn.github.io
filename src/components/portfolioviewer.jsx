@@ -4,9 +4,18 @@ import { useState, useEffect} from 'react'
 function PortfolioViewer(props) {
     const img = props.img; // 0-n
     const series = props.series; //daily, portraits, landscapes
+    const photos = props.photos;
+    const starting_cap = props.caption;
+    const path = {
+        0: 'landscapes',
+        1: 'daily',
+        2: 'portraits',
+    }
     const total = props.total;
 
     const [image, setImage] = useState(img);
+    const [caption, setCaption] = useState(starting_cap)
+    const [hovering, setHovering] = useState(false);
 
     const handleClose = (e) => {
         props.handleChange();
@@ -15,17 +24,21 @@ function PortfolioViewer(props) {
     const handlePrev = () => {
         if(image === 0) {
             setImage(total - 1);
+            setCaption(photos[series][total-1].caption);
             return;
         }
+        setCaption(photos[series][image - 1].caption);
         setImage((prev) => prev - 1)
     }
 
     const handleNext = () => {
         console.log(image, total);
-        if(image === total - 1) { // FIGURE OUT MAX W PROPS
+        if(image === total - 1) {
+            setCaption(photos[series][0].caption);
             setImage(0);
             return;
         }
+        setCaption(photos[series][image + 1].caption);
         setImage((prev) => prev + 1)
     }
 
@@ -36,11 +49,14 @@ function PortfolioViewer(props) {
             <button className="viewer-right" onClick={handleNext}>&#8250;</button>
         </div>
         <button className="viewer-close-btn" onClick={handleClose}>&#10006;</button>
-        <div className="port-img-container">
-            <img id="viewing-img" src={`../images/portfolio/` + series + '/' + image + `.jpg`}/>
-
+        <div onMouseEnter={() => {setHovering(true)}} onMouseLeave={() => {setHovering(false)}} className="port-img-container">
+            <img id="viewing-img" src={`../images/portfolio/` + path[series] + '/' + image + `.jpg`}/>
+            <div className={`viewer-caption${hovering? " active" : ""} `}>
+                <p>
+                    {caption}    
+                </p>
+            </div>
         </div>
-
     </div>
     );
 }
