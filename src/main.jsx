@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, useNavigate } from 'react-router-dom';
 
 import App from './App'
 import Home from './routes/home.jsx';
@@ -12,8 +12,10 @@ import ErrorPage from './routes/errorpage.jsx'
 import './index.css'
 
 
+
+//REVERT BACK TO BROWSERROUTER SOMETIME
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <HashRouter>
     <App/>
     <Routes>
           <Route path="/" element={<Home/>}/>
@@ -21,6 +23,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="pricing" element={<Pricing/>}/>
           <Route path="contact" element={<Contact/>}/>
       </Routes>
-  </BrowserRouter>
+  </HashRouter>
 
 )
