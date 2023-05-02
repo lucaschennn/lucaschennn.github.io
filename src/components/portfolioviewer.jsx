@@ -48,9 +48,10 @@ function PortfolioViewer(props) {
             <button className="viewer-left" onClick={handlePrev}>&#8249;</button>
             <button className="viewer-right" onClick={handleNext}>&#8250;</button>
         </div>
-        <button className="viewer-close-btn" onClick={handleClose}>&#10006;</button>
+        
         <div onMouseEnter={() => {setHovering(true)}} onMouseLeave={() => {setHovering(false)}} className="port-img-container">
             <img id="viewing-img" src={`../images/portfolio/` + path[series] + '/' + image + `.jpg`}/>
+            {hovering && <button className="viewer-close-btn" onClick={handleClose}>&#10006;</button>}
             <div className={`viewer-caption${hovering? " active" : ""} `}>
                 <p>
                     {caption}    

@@ -339,9 +339,10 @@ img {
 }
 
 .viewer-close-btn {
+  z-index: 2;
   position: absolute;
-  top: 0;
-  left: 50%;
+  top:25px;
+  left: 50px;
   transform: translateX(-50%);
   border: none;
   font-size: 32px;
