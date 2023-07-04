@@ -25,8 +25,6 @@ img {
 
 #nav-carousel .active {
   vertical-align: middle;
-  font-size: 40px;
-  font-weight: bold;
   color: #555555;
 }
 
@@ -62,8 +60,6 @@ img {
 
 #nav-carousel-alt .active {
   vertical-align: middle;
-  font-size: 40px;
-  font-weight: bold;
   color: #ffffff;
 }
 

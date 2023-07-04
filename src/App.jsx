@@ -78,7 +78,6 @@ function App() {
           <li className={active == 3 ? "active": ""} onClick={() => {handleNavClick(3)}}>Contact</li>
         </ul>
       }
-
       <div id="show-page">
 
         {/*page*/}

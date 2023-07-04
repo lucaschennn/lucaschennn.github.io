@@ -44,7 +44,7 @@ function Portfolio() {
             { id: 0, caption: "Unknown at the University of Michigan League. 85mm lens borrowed from Caleb Mastell. 4/7/2023",},
             { id: 1, caption: "Lee Bowes & the Jupiter Rings performing at Checkerfest. 7/11/2021",},
             { id: 2, caption: "Headshot at the Ross School of Business. 4/8/2023",},
-            { id: 3, caption: "Checkerfest promotion. 7/8/2021",},
+            { id: 3, caption: "A grandmother and granddaughter strolling near Kirkland, Washington. 4/29/2023",},
             { id: 4, caption: "Portrait taken near Pioneer's Park in Lincoln Nebraska. 6/1/2022",},
             { id: 5, caption: "Portrait taken in downtown Lincoln Nebraska. 6/3/2022",},
             { id: 6, caption: "Headshot at the University of Michigan Law quad. 4/8/2023",},
@@ -53,6 +53,7 @@ function Portfolio() {
             { id: 9, caption: "USC Marshall School of Business Graduation. 5/13/2022",},
             { id: 10, caption: "Portrait taken near Pioneer's Park in Lincoln Nebraska. 6/1/2022",},
             { id: 11, caption: "USC Marshall School of Business Graduation. 5/13/2022",},
+            { id: 12, caption: "Checkerfest promotion. 7/8/2021",},
         ]
     ]
     const [total, setTotal] = useState(photos[1].length);
