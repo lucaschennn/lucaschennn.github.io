@@ -16,7 +16,7 @@ function Portfolio() {
 
     const photos = [
         [
-            { id: 0, caption: "Milky Way captured at Vedauwoo near Laramie, Wyoming. 8/16/2022",},
+            { id: 0, caption: "Milky Way captured near Wenatchee, Washington State. 5/28/2023",},
             { id: 1, caption: "Male Ruby-throated Hummingbird near Seattle, Washington. 6/15/2021",},
             { id: 2, caption: "Haymarket Pedestrian Bridge near Pinnacle Bank Arena in Lincoln, Nebraska. 3/2/2022",},
             { id: 3, caption: "Starscape captured at Vedauwoo near Laramie, Wyoming. 8/16/2022",},
@@ -38,6 +38,8 @@ function Portfolio() {
             { id: 7, caption: "Nebraska ACLU organized protest against the historic overturning of Roe v. Wade. 6/24/2022",},
             { id: 8, caption: "Michigan vs Central Michigan Baseball. 3/28/2023",},
             { id: 9, caption: "It's TAPpening show hosted by the RhythM Tap Ensemble. 1/21/2023",},
+            { id: 10, caption: "Jim Duree wearing his Trump Anti-War Candidate sign. 6/25/2023"},
+            { id: 11, caption: "Donald Trump speaks at the Lincoln Day Dinner in Novi, Michigan. 6/25/2023"}
         ]
         ,
         [
