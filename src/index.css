@@ -268,12 +268,12 @@ img {
   background-color: black;
   opacity: 50%;
   transform: translateX(-50%);
-  width: 100px;
-  height: 100px;
+  width: 5vw;
+  height: 5vw;
   border-radius: 50%;
   transition: all 0.5s ease;
   text-align: center;
-  font-size: 72px;
+  font-size: 3vw;
   color:#aaaaaa
 }
 
