@@ -18,7 +18,13 @@ function PortfolioViewer(props) {
     const [hovering, setHovering] = useState(false);
 
     const handleClose = (e) => {
-        props.handleChange();
+        if(!hovering && !["viewer-left", "viewer-right"].includes(e.target.className)) {
+            props.handleChange();
+        } else if (e.currentTarget.className === "viewer-close-btn") {
+            props.handleChange();
+        }
+
+
     }
 
     const handlePrev = () => {
@@ -43,7 +49,7 @@ function PortfolioViewer(props) {
     }
 
     return (
-    <div id="portfolio-viewer-modal" className="portfolio-viewer">
+    <div id="portfolio-viewer-modal" className="portfolio-viewer" onClick={handleClose}>
         <div id="viewer-arrows">
             <button className="viewer-left" onClick={handlePrev}>&#8249;</button>
             <button className="viewer-right" onClick={handleNext}>&#8250;</button>
