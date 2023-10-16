@@ -33,9 +33,9 @@ function Portfolio() {
             { id: 2, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace. 3/8/2023",},
             { id: 3, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace. 3/8/2023",},
             { id: 4, caption: "Michigan vs Ohio State Lacrosse. 4/21/2023",},
-            { id: 5, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace. 3/8/2023",},
+            { id: 5, caption: "J.J. McCarthy celebrates a win against Nebraska with fans. 9/30/2023",},
             { id: 6, caption: "Nebraska ACLU organized protest against the historic overturning of Roe v. Wade. 6/24/2022",},
-            { id: 7, caption: "Nebraska ACLU organized protest against the historic overturning of Roe v. Wade. 6/24/2022",},
+            { id: 7, caption: "Kalel Mullings beats the pack to score against Nebraska. 9/30/2023",},
             { id: 8, caption: "Michigan vs Central Michigan Baseball. 3/28/2023",},
             { id: 9, caption: "It's TAPpening show hosted by the RhythM Tap Ensemble. 1/21/2023",},
             { id: 10, caption: "Jim Duree wearing his Trump Anti-War Candidate sign. 6/25/2023"},
@@ -67,6 +67,8 @@ function Portfolio() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+
 
     const handleNavClick = (tab) => {
         setTab(tab);
@@ -106,6 +108,8 @@ function Portfolio() {
                 </ul>
             </div>
             <div className="grid-container">
+
+
             {tab === 0 && photos[0].map((image) => (
                 <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/landscapes/` + image.id + `.jpg`} onLoad={handleLoad}/>

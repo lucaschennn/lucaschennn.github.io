@@ -204,7 +204,6 @@ img {
   object-position: center 30%;
   filter: brightness(69%);
   opacity: 0;
-  animation-delay: 7zs;
   animation: cycle-images 21s infinite;
 }
 
@@ -215,26 +214,26 @@ img {
   8% {
     opacity: 1;
   }
-  50% {
+  39% {
     opacity: 1;
   }
-  75% {
-    opacity: 0;
-  }
-  100% {
+  42% {
     opacity: 0;
   }
 }
 
 #home-images img:nth-child(1) {
+  z-index: -1;
   animation-delay: 0s;
 }
 
 #home-images img:nth-child(2) {
+  z-index: -2;
   animation-delay: 7s;
 }
 
 #home-images img:nth-child(3) {
+  z-index: -3;
   animation-delay: 14s;
 }
 
@@ -302,11 +301,12 @@ img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  animation: portfolio-fade .5s ease-in;
+  opacity: 0;
 }
 
 .portfolio-img.loaded {
   opacity: 1;
+  animation: portfolio-fade .5s ease-in;
 }
 
 .portfolio-viewer {
