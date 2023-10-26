@@ -24,13 +24,13 @@ function Portfolio() {
             { id: 5, caption: "Tree Sparrow at Kensington Metropark, Michigan. 1/8/2023",},
             { id: 6, caption: "House Finch in downtown Los Angeles. 5/14/2022",},
             { id: 7, caption: "Evening landscape of the sandhills near Valentine, Nebraska. 5/24/2021",},
-            { id: 8, caption: "Cardinal on University of Nebraska-Lincoln East Campus. 10/15/2022",},
+            { id: 8, caption: "A hungry squirrel searches for food amongst the fall leaves. 10/22/2023",},
         ]
         ,
         [
             { id: 0, caption: "Michigan vs Central Michigan Baseball. 3/28/2023",},
             { id: 1, caption: "Michigan vs Ohio State Lacrosse. 4/21/2023",},
-            { id: 2, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace. 3/8/2023",},
+            { id: 2, caption: "Santa Ono and others pose for the groundbreaking of a new Unviersity of Michigan dorm. 10/13/2023",},
             { id: 3, caption: "An evening with Governor Gretchen Whitmer and CNN Anchor Chris Wallace. 3/8/2023",},
             { id: 4, caption: "Michigan vs Ohio State Lacrosse. 4/21/2023",},
             { id: 5, caption: "J.J. McCarthy celebrates a win against Nebraska with fans. 9/30/2023",},
@@ -39,20 +39,23 @@ function Portfolio() {
             { id: 8, caption: "Michigan vs Central Michigan Baseball. 3/28/2023",},
             { id: 9, caption: "It's TAPpening show hosted by the RhythM Tap Ensemble. 1/21/2023",},
             { id: 10, caption: "Jim Duree wearing his Trump Anti-War Candidate sign. 6/25/2023"},
-            { id: 11, caption: "Donald Trump speaks at the Lincoln Day Dinner in Novi, Michigan. 6/25/2023"}
+            { id: 11, caption: "Donald Trump speaks at the Lincoln Day Dinner in Novi, Michigan. 6/25/2023"},
+            { id: 12, caption: "Ann Arbor resident Jeremy Fiori performs through the reverberant acoustics of Graffiti Alley. 7/9/2023"},
+            { id: 13, caption: "Engaged concertgoers groove together at the annual Ann Arbor Summer Fest Saturday evening. 6/10/2023"},
+            { id: 14, caption: "Fourth of July celebration at The Big House. 7/4/2023"}
         ]
         ,
         [
             { id: 0, caption: "Unknown at the University of Michigan League. 85mm lens borrowed from Caleb Mastell. 4/7/2023",},
-            { id: 1, caption: "Lee Bowes & the Jupiter Rings performing at Checkerfest. 7/11/2021",},
+            { id: 1, caption: "Lee Bowes & the Jupiter Rings performing at Checkerfest. 4/08/2023",},
+            { id: 2, caption: "Professional portrait taken at the Ross School of Business. 7/11/2021",},
             { id: 3, caption: "A grandmother and granddaughter strolling near Kirkland, Washington. 4/29/2023",},
             { id: 4, caption: "Portrait taken near Pioneer's Park in Lincoln Nebraska. 6/1/2022",},
             { id: 5, caption: "Portrait taken in downtown Lincoln Nebraska. 6/3/2022",},
-            { id: 7, caption: "Paddle exchange at the Kappa Phi Lambda sorority -- Phi chapter banquet. 4/15/2023",},
-            { id: 8, caption: "Mother & daughter near Waikiki Beach, Honolulu. 2/26/2023",},
-            { id: 9, caption: "USC Marshall School of Business Graduation. 5/13/2022",},
-            { id: 11, caption: "USC Marshall School of Business Graduation. 5/13/2022",},
-            { id: 12, caption: "Checkerfest promotion. 7/8/2021",},
+            { id: 6, caption: "Paddle exchange at the Kappa Phi Lambda sorority -- Phi chapter banquet. 4/15/2023",},
+            { id: 7, caption: "Mother & daughter near Waikiki Beach, Honolulu. 2/26/2023",},
+            { id: 8, caption: "USC Marshall School of Business Graduation. 5/13/2022",},
+            { id: 9, caption: "Checkerfest promotion. 7/8/2021",},
         ]
     ]
     const [total, setTotal] = useState(photos[1].length);
@@ -75,9 +78,9 @@ function Portfolio() {
         setTotal(photos[tab].length);
     }
 
-    const handleImgClick = (idx) => {
-        setPicIdx(idx);
-        setCaption(photos[tab][idx].caption)
+    const handleImgClick = (img) => {
+        setPicIdx(img.id);
+        setCaption(img.caption)
         setActive(true);
     }
 
@@ -111,17 +114,17 @@ function Portfolio() {
 
 
             {tab === 0 && photos[0].map((image) => (
-                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/landscapes/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
             {tab === 1 && photos[1].map((image) => (
-                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/daily/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
             {tab === 2 && photos[2].map((image) => (
-                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image.id)}}>
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
                     <img className={`portfolio-img ${loaded ? 'loaded' : ''}`} src={`images/portfolio/portraits/` + image.id + `.jpg`} onLoad={handleLoad}/>
                 </div>
             ))}
