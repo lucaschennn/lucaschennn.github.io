@@ -14,6 +14,14 @@
     <button id="btn-2">The Michigan Daily</button>  
     <button id="btn-3">Portraits and People</button>
 
+    {% if paths %}
+    <div>
+        {% for path in paths %}
+        <img src="{{'../' + path}}"/>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <div id="div-1">
         <header>Landscapes and Nature</header>
         <div id="imgs-1"></div>

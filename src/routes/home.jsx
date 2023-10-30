@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import ImgCarousel from '../components/imgcarousel.jsx'
 function Home() {
 
-    const words = [' student', ' photograher', 'n engineer'];
+    const words = [' student', ' photographer', 'n engineer'];
     const [top, setTop] = useState(true);
     const [active, setActive] = useState(true);
     const [desc, setDesc] = useState(0);
