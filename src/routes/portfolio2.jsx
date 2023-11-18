@@ -33,6 +33,10 @@ function Portfolio() {
     const [navScroll, setNavScroll] = useState(0);
     const [caption, setCaption] = useState('');
 
+    const [total, setTotal] = useState(photos[1].length);
+
+    const [preloaded, setPreloaded] = useState([]);
+
     const photos = [
         [
             { id: 0, caption: "Milky Way captured near Wenatchee, Washington State. 5/28/2023", loaded: false},
@@ -78,8 +82,6 @@ function Portfolio() {
         ]
     ]
 
-    const [preloaded, setPreloaded] = useState([]);
-
     useEffect(() => {
         window.addEventListener('scroll', handleScroll, { passive: true });
     
@@ -89,28 +91,19 @@ function Portfolio() {
     }, []);
 
     useEffect(() => {
-
         const preloadImages = () => {
             const promises = photos[tab].map((obj) => {
                 return new Promise((resolve, reject) => {
-                    const img = new Image();
+                    const img = new image();
                     img.onload = () => resolve(img);
                     img.onerror = (error) => reject(error);
-                    // img.src = obj.id;
-                    if(tab === 0) {
-                        img.src = `images/portfolio/landscapes/${obj.id}.jpg`
-                    } else if (tab === 1) {
-                        img.src = `images/portfolio/daily/${obj.id}.jpg`
-                    } else if (tab === 2) {
-                        img.src = `images/portfolio/portraits/${obj.id}.jpg`
-                    }
+                    img.src = obj.id;
                 })
             })
 
             Promise.all(promises)
             .then((loaded) => {
-                console.log(loaded);
-                setPreloaded((prev) => loaded);
+                setPreloaded(loaded);
             })
             .catch((error) => {
                 console.error("error", error);
@@ -118,16 +111,15 @@ function Portfolio() {
         }
 
         preloadImages();
-        console.log(preloaded, typeof(preloaded));
-        console.log(tab);
+
     }, [tab])
+
     const handleNavClick = (tab) => {
         setTab(tab);
-        setPreloaded([])
+        setTotal(photos[tab].length);
     }
 
-    const handleImgClick = (idx) => {
-        const img = photos[tab][idx];
+    const handleImgClick = (img) => {
         setPicIdx(img.id);
         setCaption(img.caption)
         setActive(true);
@@ -167,13 +159,6 @@ function Portfolio() {
         setNavScroll(window.pageYOffset / 2);
     }
 
-    // let  balls = preloaded.map((image, idx) => {
-    //     { console.log("hi") }
-    //     <div key={idx} className="grid-item"  onClick={() => {handleImgClick(image)}}>
-    //         <img className={`portfolio-img loaded`} src={image.src}/>
-    //     </div>
-    // })
-
     return (
         <>
             <div>
@@ -185,22 +170,16 @@ function Portfolio() {
             </div>
             <div className="grid-container">
 
-            {preloaded.length === 0 &&
-                <div className="loading-icon">
-                    <i>loading...</i>
+            {photos[tab].map((image) => {
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
+                    <img className={`portfolio-img loaded`} src={`images/portfolio/daily}/` + image.id + `.jpg`}/>
                 </div>
-            }
-
-            {preloaded.length > 0 && preloaded.map((image, idx) => (
-                <div key={idx} className="grid-item"  onClick={() => {handleImgClick(idx)}}>
-                    <img className={`portfolio-img loaded`} src={image.src}/>
-                </div>
-            ))}
+            })}
 
             </div>
             <Footer/>
             <ScrollDown active={top}/>
-            {active && <PortfolioViewer series={tab} img={picIdx} total={photos[tab].length} handleChange={handleModalChange} caption={caption} photos={photos}/>}
+            {active && <PortfolioViewer series={tab} img={picIdx} total={total} handleChange={handleModalChange} caption={caption} photos={photos}/>}
         </>
     );
 }

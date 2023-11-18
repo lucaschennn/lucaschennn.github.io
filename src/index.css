@@ -141,6 +141,8 @@ img {
 
 #portfolio-nav li.active {
   text-decoration: underline;
+  pointer-events: none;
+  cursor: default;
 }
 
 #show-page {
@@ -283,7 +285,7 @@ img {
 .grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 1%;
+  min-height: 500px;
 }
 
 .grid-item {
@@ -302,6 +304,21 @@ img {
   height: 100%;
   object-fit: contain;
   opacity: 0;
+}
+
+@keyframes loading {
+	0% {
+    opacity: 0;
+	}
+
+	100% {
+    opacity: 1;
+	}
+}
+.loading-icon {
+  position: fixed;
+  left: 50%;
+  animation: loading 1s ease-in-out 1s 1;
 }
 
 .portfolio-img.loaded {

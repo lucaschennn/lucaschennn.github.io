@@ -1,22 +1,3 @@
-/*
-Only load tab that is selected.
-
-    const [tab, setTab] = useState(1);
-    const [top, setTop] = useState(false);
-    const [picIdx, setPicIdx] = useState(-1);
-    const [active, setActive] = useState(false);
-    
-    const [navScroll, setNavScroll] = useState(0);
-    const [caption, setCaption] = useState('');
-
-
-    1. const [preloaded, setPreloaded] = useState()
-    2. in a useEffect, create an array of promises that resolve with each image url loads. after promise.all(promises) is true, setPreloaded(loadedimages)
-        a. could modify the dependency array to run when tab changes. choose which images to load based on tab.
-
-    3. in the return, run a map on preloaded.
-*/
-
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import ScrollDown from '../components/scrolldown.jsx'
@@ -78,7 +59,13 @@ function Portfolio() {
         ]
     ]
 
-    const [preloaded, setPreloaded] = useState([]);
+    const [loaded, setLoaded] = useState(photos);
+    const [allLoaded, setAllLoaded] = useState(false);
+
+    const [total, setTotal] = useState(photos[1].length);
+    const contentRef = useRef(null);
+
+
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -88,46 +75,14 @@ function Portfolio() {
         };
     }, []);
 
-    useEffect(() => {
 
-        const preloadImages = () => {
-            const promises = photos[tab].map((obj) => {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.onload = () => resolve(img);
-                    img.onerror = (error) => reject(error);
-                    // img.src = obj.id;
-                    if(tab === 0) {
-                        img.src = `images/portfolio/landscapes/${obj.id}.jpg`
-                    } else if (tab === 1) {
-                        img.src = `images/portfolio/daily/${obj.id}.jpg`
-                    } else if (tab === 2) {
-                        img.src = `images/portfolio/portraits/${obj.id}.jpg`
-                    }
-                })
-            })
 
-            Promise.all(promises)
-            .then((loaded) => {
-                console.log(loaded);
-                setPreloaded((prev) => loaded);
-            })
-            .catch((error) => {
-                console.error("error", error);
-            })
-        }
-
-        preloadImages();
-        console.log(preloaded, typeof(preloaded));
-        console.log(tab);
-    }, [tab])
     const handleNavClick = (tab) => {
         setTab(tab);
-        setPreloaded([])
+        setTotal(photos[tab].length);
     }
 
-    const handleImgClick = (idx) => {
-        const img = photos[tab][idx];
+    const handleImgClick = (img) => {
         setPicIdx(img.id);
         setCaption(img.caption)
         setActive(true);
@@ -167,13 +122,6 @@ function Portfolio() {
         setNavScroll(window.pageYOffset / 2);
     }
 
-    // let  balls = preloaded.map((image, idx) => {
-    //     { console.log("hi") }
-    //     <div key={idx} className="grid-item"  onClick={() => {handleImgClick(image)}}>
-    //         <img className={`portfolio-img loaded`} src={image.src}/>
-    //     </div>
-    // })
-
     return (
         <>
             <div>
@@ -185,22 +133,26 @@ function Portfolio() {
             </div>
             <div className="grid-container">
 
-            {preloaded.length === 0 &&
-                <div className="loading-icon">
-                    <i>loading...</i>
-                </div>
-            }
 
-            {preloaded.length > 0 && preloaded.map((image, idx) => (
-                <div key={idx} className="grid-item"  onClick={() => {handleImgClick(idx)}}>
-                    <img className={`portfolio-img loaded`} src={image.src}/>
+            {tab === 0 && photos[0].map((image) => (
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
+                    <img className={`portfolio-img ${allLoaded ? 'loaded' : ''}`} src={`images/portfolio/landscapes/` + image.id + `.jpg`} onLoad={() => handleLoad(image.id)}/>
                 </div>
             ))}
-
+            {tab === 1 && photos[1].map((image) => (
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
+                    <img className={`portfolio-img ${allLoaded ? 'loaded' : ''}`} src={`images/portfolio/daily/` + image.id + `.jpg`} onLoad={() => handleLoad(image.id)}/>
+                </div>
+            ))}
+            {tab === 2 && photos[2].map((image) => (
+                <div key={image.id} className="grid-item"  onClick={() => {handleImgClick(image)}}>
+                    <img className={`portfolio-img ${allLoaded ? 'loaded' : ''}`} src={`images/portfolio/portraits/` + image.id + `.jpg`} onLoad={() => handleLoad(image.id)}/>
+                </div>
+            ))}
             </div>
             <Footer/>
             <ScrollDown active={top}/>
-            {active && <PortfolioViewer series={tab} img={picIdx} total={photos[tab].length} handleChange={handleModalChange} caption={caption} photos={photos}/>}
+            {active && <PortfolioViewer series={tab} img={picIdx} total={total} handleChange={handleModalChange} caption={caption} photos={photos}/>}
         </>
     );
 }
