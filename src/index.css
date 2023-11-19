@@ -318,12 +318,16 @@ img {
 .loading-icon {
   position: fixed;
   left: 50%;
-  animation: loading 1s ease-in-out 1s 1;
+  transition: opacity .3s ease-in-out;
+  opacity: 0;
+}
+.loading-icon.active {
+  opacity: 1;
 }
 
 .portfolio-img.loaded {
   opacity: 1;
-  animation: portfolio-fade .5s ease-in;
+  animation: portfolio-fade .2s ease-in;
 }
 
 .portfolio-viewer {

@@ -189,11 +189,9 @@ function Portfolio() {
             </div>
             <div className="grid-container">
 
-            {preloaded.length === 0 &&
-                <div className="loading-icon">
-                    <i>loading...</i>
-                </div>
-            }
+            <div className={preloaded.length === 0 ? "loading-icon active": "loading-icon"}>
+                <i>loading...</i>
+            </div>
 
             {preloaded.length > 0 && preloaded.map((image, idx) => (
                 <div key={idx} className="grid-item"  onClick={() => {handleImgClick(idx)}}>
