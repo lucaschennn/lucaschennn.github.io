@@ -393,14 +393,13 @@ img {
 .viewer-caption {
   position: absolute;
   color: black;
-  font-family: arial;
   font-weight: 100;
   bottom: 100px;
   padding: 0px 10px;
   opacity: 0;
   transition: all .25s linear;
-  bottom: 20px;
   left: 0;
+  bottom: 0;
 }
 
 .viewer-caption.active {
@@ -540,11 +539,6 @@ img {
 
 #msg-select li.active {
   text-decoration: underline;
-}
-
-#contact-msg {
-  margin-left: 30%;
-  margin-right: 30%;
 }
 
 #inp-subject {
