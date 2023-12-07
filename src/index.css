@@ -576,3 +576,10 @@ textarea, input {
 #msg-submit-btn:hover{
   background-color: rgba(169, 169, 169, 1);
 }
+
+.dropdown-chevron {
+  position: absolute;
+  display: inline;
+  margin-top: 8px;
+  padding-left: 10px;
+}

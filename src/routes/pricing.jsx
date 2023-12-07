@@ -13,7 +13,8 @@ function Pricing() {
 
     const handleClick = (e, type) => {
         e.preventDefault();
-        if(e.target.className !== "pricing-header") {
+
+        if(e.currentTarget.className !== "pricing-section") {
             return;
         }
         if(type === 'grad') {
@@ -50,25 +51,67 @@ function Pricing() {
         <div id="stationary">
             <div className="pricing-section" onClick={(event) => handleClick(event, 'grad')}>
                 <h4 className="pricing-header">
+
                     Graduation
+
+                    {
+                        !active.grad ?
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        :
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                        </svg>
+                    }
                 </h4>
                 <GradDescription active={active.grad}/>
             </div>
             <div className="pricing-section" onClick={(event) => handleClick(event, 'events')}>
                 <h4 className="pricing-header">
                     Events
+                    {
+                        !active.events ?
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron"  width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        :
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                        </svg>
+                    }
                 </h4>
                 <EventsDescription active={active.events}/>
             </div>
             <div className="pricing-section" onClick={(event) => handleClick(event, 'headshots')}>
                 <h4 className="pricing-header">
                     Headshots
+                    {
+                        !active.headshots ?
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron"  width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        :
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                        </svg>
+                    }
                 </h4>
                 <HeadshotsDescription active={active.headshots}/>
             </div>
             <div className="pricing-section" onClick={(event) => handleClick(event, 'other')}>
                 <h4 className="pricing-header">
                     Other
+                    {
+                        !active.other ?
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron"  width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        :
+                        <svg xmlns="http://www.w3.org/2000/svg" className="dropdown-chevron" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                        </svg>
+                    }
                 </h4>
                 <OtherDescription active={active.other}/>
             </div>
