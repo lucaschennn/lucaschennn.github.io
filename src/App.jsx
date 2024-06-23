@@ -63,21 +63,12 @@ function App() {
   return (
     <>
       {/*<Header/>*/}
-        {location.pathname === '/' ?
-        <ul id="nav-carousel-alt">
-          <li className="active" onClick={() => {handleNavClick(0)}}>Home</li>
-          <li className="nav-alt" onClick={() => {handleNavClick(1)}}>My Work</li>
-          <li className="nav-alt" onClick={() => {handleNavClick(2)}}>Pricing</li>
-          <li className="nav-alt" onClick={() => {handleNavClick(3)}}>Contact</li>
-        </ul>
-        :
-        <ul id="nav-carousel">
+        <ul className={`nav-carousel ${location.pathname === '/' ? 'alt' :  ''}`}>
           <li className={active == 0 ? "active": ""} onClick={() => {handleNavClick(0)}}>Home</li>
           <li className={active == 1 ? "active": ""} onClick={() => {handleNavClick(1)}}>My Work</li>
           <li className={active == 2 ? "active": ""} onClick={() => {handleNavClick(2)}}>Pricing</li>
           <li className={active == 3 ? "active": ""} onClick={() => {handleNavClick(3)}}>Contact</li>
         </ul>
-      }
       <div id="show-page">
 
         {/*page*/}
