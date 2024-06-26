@@ -39,15 +39,11 @@ function Portfolio() {
 
     const photos = [
         [
-            { id: 0, caption: "Milky Way captured near Wenatchee, Washington State. 5/28/2023", loaded: false},
-            { id: 1, caption: "Male Ruby-throated Hummingbird near Seattle, Washington. 6/15/2021", loaded: false},
-            { id: 2, caption: "Haymarket Pedestrian Bridge near Pinnacle Bank Arena in Lincoln, Nebraska. 3/2/2022", loaded: false},
-            { id: 3, caption: "Starscape captured at Vedauwoo near Laramie, Wyoming. 8/16/2022", loaded: false},
-            { id: 4, caption: "Two tree swallows near Pioneer's Park in Lincoln, Nebraska. 5/6/2022", loaded: false},
-            { id: 5, caption: "Tree Sparrow at Kensington Metropark, Michigan. 1/8/2023", loaded: false},
-            { id: 6, caption: "House Finch in downtown Los Angeles. 5/14/2022", loaded: false},
-            { id: 7, caption: "Evening landscape of the sandhills near Valentine, Nebraska. 5/24/2021", loaded: false},
-            { id: 8, caption: "A hungry squirrel searches for food amongst the fall leaves. 10/22/2023", loaded: false},
+            { id: 0, caption: "Milky Way captured near Wenatchee, Washington State. 5/28/2023", loaded: false, src: "DSC08158-Pano-2_znuvbc"},
+            { id: 1, caption: "Male Ruby-throated Hummingbird near Seattle, Washington. 6/15/2021", loaded: false, src: "1_turnee"},
+            { id: 2, caption: "Haymarket Pedestrian Bridge near Pinnacle Bank Arena in Lincoln, Nebraska. 3/2/2022", loaded: false, src: "2_hxevjr"},
+            { id: 3, caption: "House Finch in downtown Los Angeles. 5/14/2022", loaded: false, src: "6_y8fi6x"},
+            { id: 4, caption: "Evening landscape of the sandhills near Valentine, Nebraska. 5/24/2021", loaded: false, src: "7_h0hkfn"},
         ]
         ,
         [
@@ -69,16 +65,15 @@ function Portfolio() {
         ]
         ,
         [
-            { id: 0, caption: "Unknown at the University of Michigan League. 85mm lens borrowed from Caleb Mastell. 4/7/2023", loaded: false},
-            { id: 1, caption: "Lee Bowes & the Jupiter Rings performing at Checkerfest. 7/11/2021", loaded: false},
-            { id: 2, caption: "Professional portrait taken at the Ross School of Business. 4/08/2023", loaded: false},
-            { id: 3, caption: "A grandmother and granddaughter strolling near Kirkland, Washington. 4/29/2023", loaded: false},
-            { id: 4, caption: "Portrait taken near Pioneer's Park in Lincoln Nebraska. 6/1/2022", loaded: false},
-            { id: 5, caption: "Portrait taken in downtown Lincoln Nebraska. 6/3/2022", loaded: false},
-            { id: 6, caption: "Paddle exchange at the Kappa Phi Lambda sorority -- Phi chapter banquet. 4/15/2023", loaded: false},
-            { id: 7, caption: "Mother & daughter near Waikiki Beach, Honolulu. 2/26/2023", loaded: false},
-            { id: 8, caption: "USC Marshall School of Business Graduation. 5/13/2022", loaded: false},
-            { id: 9, caption: "Checkerfest promotion. 7/8/2021", loaded: false},
+            { id: 0, caption: "Unknown at the University of Michigan League. 4/7/2023", loaded: false, src: "0_dpfu5n"},
+            { id: 1, caption: "Lee Bowes & the Jupiter Rings performing at Checkerfest. 7/11/2021", loaded: false, src: "1_lxueco"},
+            { id: 2, caption: "Professional headshot taken at the Ross School of Business. 4/08/2023", loaded: false, src: "2_nsbjye"},
+            { id: 3, caption: "A grandmother and granddaughter strolling near Kirkland, Washington. 4/29/2023", loaded: false, src: "3_ptz9g0"},
+            { id: 4, caption: "Portrait taken in downtown Lincoln Nebraska. 6/3/2022", loaded: false, src: "5_be3aus"},
+            { id: 5, caption: "Paddle exchange at the Kappa Phi Lambda sorority -- Phi chapter banquet. 4/15/2023", loaded: false, src: "6_ssuefa"},
+            { id: 6, caption: "Mother & daughter near Waikiki Beach, Honolulu. 2/26/2023", loaded: false, src: "7_a6lzsf"},
+            { id: 7, caption: "Checkerfest promotion. 7/8/2021", loaded: false, src: "9_iy1q5f"},
+            { id: 8, caption: "U of M football players pose for a picture at Winterfest, 2/17/2024", loaded: false, src: "DSC06577-2_a84ora"}
         ]
     ]
 
