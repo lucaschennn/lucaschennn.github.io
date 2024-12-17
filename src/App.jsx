@@ -36,14 +36,9 @@ function App() {
     } else if (selected === 1) {
       //setPage(<Portfolio/>)
       navigate('/portfolio')
-    } else if (selected === 2) {
-     //setPage(<Pricing/>)
-      navigate('/pricing')
     } else if (selected === 3) {
       //setPage(<Contact/>)
       navigate('/contact')
-    } else {
-      console.log("What the fuck")
     }
 /*
     switch(selected) {
@@ -66,7 +61,6 @@ function App() {
         <ul className={`nav-carousel ${location.pathname === '/' ? 'alt' :  ''}`}>
           <li className={active == 0 ? "active": ""} onClick={() => {handleNavClick(0)}}>Home</li>
           <li className={active == 1 ? "active": ""} onClick={() => {handleNavClick(1)}}>My Work</li>
-          <li className={active == 2 ? "active": ""} onClick={() => {handleNavClick(2)}}>Pricing</li>
           <li className={active == 3 ? "active": ""} onClick={() => {handleNavClick(3)}}>Contact</li>
         </ul>
       <div id="show-page">

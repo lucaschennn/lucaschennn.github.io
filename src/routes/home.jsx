@@ -7,11 +7,7 @@ function Home() {
     const [top, setTop] = useState(true);
     const [active, setActive] = useState(true);
     const [desc, setDesc] = useState(0);
-
-
     const contentRef = useRef();
-
-
 
     useEffect(() => {
         const interval = setInterval(() => {

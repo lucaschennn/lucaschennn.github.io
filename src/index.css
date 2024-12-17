@@ -163,8 +163,7 @@ img {
 }
 
 #home-images img {
-  z-index: -2;
-  transition: all 1s ease;
+  z-index: -1;
   position: absolute;
   top: 0;
   left: 0;
@@ -173,8 +172,16 @@ img {
   object-fit: cover;
   object-position: center 30%;
   filter: brightness(69%);
+}
+
+.home-img.active {
+  transition: all 1s ease;
+  opacity: 1;
+}
+
+.home-img.inactive {
+  transition: all 1s ease .5s;
   opacity: 0;
-  animation: cycle-images 21s infinite;
 }
 
 @keyframes cycle-images {
@@ -190,21 +197,6 @@ img {
   42% {
     opacity: 0;
   }
-}
-
-#home-images img:nth-child(1) {
-  z-index: -1;
-  animation-delay: 0s;
-}
-
-#home-images img:nth-child(2) {
-  z-index: -2;
-  animation-delay: 7s;
-}
-
-#home-images img:nth-child(3) {
-  z-index: -3;
-  animation-delay: 14s;
 }
 
 #social-btns {
@@ -383,7 +375,7 @@ img {
 #pricing-background {
   width: 100%;
   height: 300%;
-  background-image: url('/images/collage.png');
+  /* background-image: url('/images/collage.png'); */
   background-size: contain;
   background-repeat: repeat;
   height: 200vh;

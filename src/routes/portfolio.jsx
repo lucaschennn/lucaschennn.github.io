@@ -74,8 +74,10 @@ function Portfolio() {
             // { id: 12, caption: "Engaged concertgoers groove together at the annual Ann Arbor Summer Fest Saturday evening. 6/10/2023",},
             { id: 12, caption: "Sierra Brooks celebrates after a successful routine on the bars. 3/23/2024", src: "1lwc.gmwB1G.03.23.2024.639_osh2pr"},
             { id: 13, caption: "Fourth of July celebration at The Big House. 7/4/2023", src: "13_ptal5d"},
-            { id: 14, caption: "Olivier Nkamhoua delivers a dunk against Youngstown State. 11/10/2023", src: "14_thcug9"},
+            { id: 14, caption: "Will Tschetter delivers a one-handed dunk during Dusty May's regular season debut as the Michigan men's basketball head coach. 11/4/2024", src: "vert_test_zm7sxy"},
             { id: 15, caption: "CNN anchor Jake Tapper visits the University of Michigan to join Director of the Wallace House Lynette Clemetson in a conversation about democracy. 11/03/2023", src: "15_w75ur5"},
+            { id: 16, caption: "Syla Swords puts up a tough shot against Colleen McQuillen at Crisler Arena. 11/8/2024", src: "lwc.BKW.vsLehigh.11.08.24.284-2_sexg6h"},
+            { id: 17, caption: "Bryce Underwood poses with fans just days after announcing his commitment to the University of Michigan. 11/23/2024", src: "sm_bryce4_gunaq9"},
         ]
         ,
         [

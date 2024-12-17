@@ -10,11 +10,23 @@ function ImgCarousel() {
 
     // const [img, setImg] = useState(0);
     const [imgActive, setImgActive] = useState(true);
+    const [feature, setFeature] = useState(0);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const timeout = setTimeout(() => {setFeature((feature + 1) % 4);}, 500);
+
+        }, 2500);
+
+
+
+        return () => {clearInterval(interval);}
+    })
 
     const images = [
-        { id: 0, src: "3_st0yci",},
-        { id: 1, src: "4_tyvgfz",},
-        { id: 2, src: "5_xibno0",}
+        { id: 0, src: "6_tq9p2x",},
+        { id: 1, src: "13_ptal5d",},
+        { id: 2, src: "DSC04093_y2qvrf",},
+        { id: 3, src: "_27A8236_lnpssb",}
     ]
 
 
@@ -30,7 +42,7 @@ function ImgCarousel() {
     return (
         <>
             {images.map((image) => (
-                <AdvancedImage key={image.id} className={`home-img`} cldImg={cld.image(image.src).format('auto').quality('auto')}/>
+                <AdvancedImage key={image.id} className={`home-img ${image.id === feature? "active" : "inactive"}`} cldImg={cld.image(image.src).format('auto').quality('auto')}/>
             ))}
         </>
     );
