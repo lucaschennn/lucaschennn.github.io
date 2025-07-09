@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { FaLinkedin, FaInstagram } from "react-icons/fa";
 
 import '../App.css'
 import '../styles/header.css'
@@ -18,21 +19,18 @@ Featured -- Trump, MSU Football, Northwestern Football,
 
 function Header() {
 
+    
     const [showGalleryDropdown, setShowGalleryDropdown] = useState(false);
 
     return (
     <div id="header">
         <ul className="list left">
-            <li>Portfolio</li>
-            <li>Featured</li>
-            <li>Projects</li>
-            <li>
-                <span
-                    onMouseEnter={() => setShowGalleryDropdown(true)}
-                    onMouseLeave={() => setShowGalleryDropdown(false)}
-                >
+            <li className="nav-item">Portfolio</li>
+            <li className="nav-item">Published</li>
+            <li className="nav-item" onMouseLeave={() => setShowGalleryDropdown(false)}>
+                <span onMouseEnter={() => setShowGalleryDropdown(true)}>
                 Galleries</span>
-                <ul className={`list list-dropdown ${showGalleryDropdown ? "" : "hidden"}`}>
+                <ul className={`list-dropdown list ${showGalleryDropdown ? "" : "hidden"}`}>
                     <li>Chinese Frontier Astrophotography</li>
                     <li>UMich School of Music, Theatre, and Dance</li>
                     <li>Summer in Ann Arbor</li>
@@ -40,13 +38,13 @@ function Header() {
             </li>
         </ul>
         <ul className="list right">
-            <li>About</li>
-            <li>IG</li>
-            <li>LinkedIn</li>
+            <li className="nav-item">About</li>
+            <li className="nav-item"><a href="https://linkedin.com/in/chen-lucas" target="_blank"><FaLinkedin size={24} /></a></li>
+            <li className="nav-item"><a href="https://instagram.com/lucaschenphoto" target="_blank"><FaInstagram size={24} /></a></li>
         </ul>
-        <h5 className="title">
+        {/* <h5 className="title">
             LUCAS CHEN PHOTO
-        </h5>
+        </h5> */}
     </div>
     );
 }

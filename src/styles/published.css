@@ -1,0 +1,27 @@
+#published {
+    margin-top: 400px;
+    margin-bottom: 400px;
+    width: 100%;
+}
+
+.rotary {
+    margin: 50px;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.panel {
+}
+
+.featured {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 50vh
+}
+
+.projects iframe {
+    margin: 30px;
+    width: 900px;
+    height: 480px;
+}

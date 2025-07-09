@@ -1,0 +1,38 @@
+{
+    "featured": [
+        {
+            "url": "ts10-24_plajp8",
+            "caption": "https://issuu.com/michigandaily/docs/2024-10-30"
+        },
+        {
+            "url": "ts9-18_tcahhm",
+            "caption": "https://issuu.com/michigandaily/docs/2024-09-18"
+        },
+        {
+            "url": "ts2-19_v23obf",
+            "caption": "https://issuu.com/michigandaily/docs/2025-02-19"
+        },
+        {
+            "url": "tsrivalry_ticr4o",
+            "caption": "https://issuu.com/michigandaily/docs/2024_rivalry_edition"
+        },
+        {
+            "url": "ts1-31_pfdid7",
+            "caption": "https://issuu.com/michigandaily/docs/2024-01-31"
+        }
+    ],
+    "projects": [
+        {
+            "url": "https://specials.michigandaily.com/2024/photographers-favorites/",
+            "caption": ""
+        },
+        {
+            "url": "https://www.michigandaily.com/multimedia/year-in-photos-2024/",
+            "caption": ""
+        },
+        {
+            "url": "https://www.michigandaily.com/multimedia/photo-essay-summer-in-ann-arbor/",
+            "caption": ""
+        }
+    ]
+}
