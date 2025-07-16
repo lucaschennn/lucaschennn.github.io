@@ -9,11 +9,12 @@ a {
     justify-content: space-between;
     width: 100%;
     z-index: 999;
-    background-color: white;
+    background-color: #D6D9E0;;
 }
 
 ul.list {
     display: flex;
+    align-items: center;
     list-style-type: none;
     padding: 0;
 }
@@ -23,8 +24,48 @@ ul.left {
 }
 
 .nav-item {
+    position: relative;
+    display: flex;
     margin-left: 10px;
     margin-right: 10px;
+    cursor: pointer;
+}
+
+/*
+#playBtn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .2);
+    transition: left 0.4s ease;
+}
+
+#playBtn:hover::before {
+    left: 0;
+}
+*/
+
+
+.home-item img {
+    width: 2rem;
+}
+
+.nav-item::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: rgba(0,0,0,.5);
+    transition: width 0.2s ease-out;
+}
+
+.nav-item.active::before {
+    width: 50%;
+    transition: width 0.2s ease-out;
 }
 
 .list-dropdown {
@@ -37,10 +78,13 @@ ul.left {
 .list-dropdown li {
     opacity: 1;
     background-color: white;
+    width: 100%;
+    white-space: nowrap;
     margin-left: -50vw;
     padding-left: 50vw; /* kind of gimmicky to add white edge to bg of dropdown list */
 }
-.list-dropdown.hidden li {
+
+.list-dropdown.hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;

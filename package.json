@@ -11,8 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cloudinary/react": "^1.13.0",
-    "@cloudinary/url-gen": "^1.19.0",
+    "@cloudinary/react": "^1.14.3",
+    "@cloudinary/url-gen": "^1.21.0",
     "@emailjs/browser": "^3.11.0",
     "masonic": "^4.1.0",
     "react": "^18.2.0",

@@ -1,5 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
+import {AdvancedImage, placeholder} from '@cloudinary/react';
+import { quality } from "@cloudinary/url-gen/actions/delivery";
+import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
 import '../App.css'
 import '../styles/published.css'
@@ -25,25 +28,29 @@ summer in ann arbor
 
 */
 
-function Published() {
+function Published({pageref, cloud}) {
 
     return (
-    <div id="published">
+    <div id="published" ref={pageref}>
+        <div className="section-header">
+            <h3>Published</h3>
+        </div>
+        <h4>Tear Sheets</h4>
         <div className="rotary">
             {
                 publishedData["featured"].map((item, idx) => (
-                    <div className="panel featured">
-                        <img onLoad={() => {console.log("yippee")}} src={`https://res.cloudinary.com/dch9wtpmk/image/upload/${item.url}.jpg`}></img>
+                    <div className="panel featured" key={idx}>
+                        <AdvancedImage cldImg={cloud.image(item.url).delivery(quality(auto()))}/>
                     </div>
                 ))
             }
         </div>
-        <p>The following are large-scale projects I led.</p>
+        <h4>Projects</h4>
         <div className="rotary">
             {
                 publishedData["projects"].map((item, idx) => (
-                    <div className="panel projects">
-                        <iframe src={item.url} title="description"></iframe>
+                    <div className="panel projects" key={idx}>
+                        <AdvancedImage cldImg={cloud.image(item.url).delivery(quality(auto()))} plugins={[placeholder({mode: 'predominant-color'})]}/>
                     </div>
                 ))
             }

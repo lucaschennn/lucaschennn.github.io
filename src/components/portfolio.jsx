@@ -1,27 +1,33 @@
 import React from 'react'
 import { useState } from 'react'
 import { Masonry } from "masonic"
+import {AdvancedImage, placeholder} from '@cloudinary/react';
+import { quality } from "@cloudinary/url-gen/actions/delivery";
+import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
 import '../App.css'
 import '../styles/portfolio.css'
 
 import portfolioData from '../assets/portfolio.json'
 
-const PortfolioImage = ({index, data: { url, caption }, width}) => (
+
+
+function Portfolio({pageref, cloud}) {
+
+    const PortfolioImage = ({index, data: { url, caption }, width}) => (
     <div className="image-wrapper">
-        <img onLoad={() => {console.log("yippee")}} src={`https://res.cloudinary.com/dch9wtpmk/image/upload/${url}.jpg`}></img>
+        <img src={cloud.image(url).delivery(quality(auto())).toURL()}/>
     </div>
 )
 
-function Portfolio() {
-
     return (
-    <div id="portfolio">
+    <div id="portfolio" ref={pageref}>
         <Masonry
         items={portfolioData}
         render={PortfolioImage}
         columnGutter={16}
         columnCount={3}
+        overscanBy={100}
         />
     </div>
     );
