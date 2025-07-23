@@ -1,10 +1,17 @@
 #published {
-    background-color: #A6C8E1;;
-    margin: 15px;
+    background-color: #FCF9FA;
+    padding: 120px 15px 15px 15px;
+}
+
+.image-wrapper {
+    width: 100%;
+}
+
+img {
+    width: 100%;
 }
 
 h3, h4 {
-    color: #181818;
     font-size: 2rem;
     font-weight: normal;
 }

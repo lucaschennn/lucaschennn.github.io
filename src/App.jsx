@@ -5,12 +5,14 @@ import Portfolio from './components/portfolio.jsx'
 import Published from './components/published.jsx'
 import Gallery from './components/gallery.jsx'
 import Footer from './components/footer.jsx'
+import About from './components/about.jsx'
 
 import './App.css'
 
 function App() {
 
   const pageRefs = [useRef(null), useRef(null), useRef(null)];
+  const [aboutActive, setAboutActive] = useState(false);
 
   const cld = new Cloudinary ({
     cloud: {
@@ -20,7 +22,8 @@ function App() {
 
   return (
     <div className="page-container">
-      <Header pagerefs={pageRefs}/>
+      <Header pagerefs={pageRefs} setAboutActive={setAboutActive}/>
+      <About active={aboutActive} setAboutActive={setAboutActive} cloud={cld}/>
       <Portfolio pageref={pageRefs[0]} cloud={cld}/>
       <Published pageref={pageRefs[1]} cloud={cld}/>
       <Gallery pageref={pageRefs[2]} cloud={cld}/>

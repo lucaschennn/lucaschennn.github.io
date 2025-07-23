@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {AdvancedImage, placeholder} from '@cloudinary/react';
 import { quality } from "@cloudinary/url-gen/actions/delivery";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
@@ -30,11 +31,48 @@ summer in ann arbor
 
 function Published({pageref, cloud}) {
 
+
+    const [imagesLoaded, setImagesLoaded] = useState(publishedData["featured"].map(() => false))
+
+    const handleImageLoad = (idx) => {
+        setImagesLoaded((prev) => {
+            const updated = [...prev];
+            updated[idx] = true;
+            return updated;
+        })
+    }
+
+    return (
+    <div id="published">
+        <div className="page-marker" id="published-marker" ref={pageref}></div>
+        <h4>Tear Sheets</h4>
+        <ResponsiveMasonry
+                columnsCountBreakPoints={{350: 2}}
+                gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
+        >
+            <Masonry>
+            {
+                publishedData["featured"].map((item, idx) => (
+                    <div key={idx} className="tear-sheets-wrapper">
+                        <img
+                            className={`${imagesLoaded[idx] ? "active" : "hidden"}`}
+                            onLoad={() => handleImageLoad(idx)}
+                            src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                        />
+                    </div>
+                ))
+            }
+            </Masonry>
+        </ResponsiveMasonry>
+
+    </div>
+    );
+}
+
+/*
+
     return (
     <div id="published" ref={pageref}>
-        <div className="section-header">
-            <h3>Published</h3>
-        </div>
         <h4>Tear Sheets</h4>
         <div className="rotary">
             {
@@ -57,6 +95,7 @@ function Published({pageref, cloud}) {
         </div>
     </div>
     );
-}
+
+*/
 
 export default Published;

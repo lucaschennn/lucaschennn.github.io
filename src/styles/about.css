@@ -1,0 +1,124 @@
+.bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.5);
+    pointer-events: auto;
+}
+
+#about.active div.bg {
+    z-index: 999;
+}
+#about.hidden div.bg {
+    z-index: -1;
+}
+
+#about.hidden div.content {
+    right: -100%;
+    transition: all 0.4s ease;
+}
+
+.header {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+}
+
+.content {
+    box-sizing:border-box;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background: white;
+    top: 0;
+    right: 0;
+    width: 600px;
+    height: 100%;
+    z-index: 9999;
+    padding: 0 32px;
+    transition: right 0.4s ease;
+}
+
+.intro {
+    display: flex;
+    margin-top: 16px;
+}
+
+.intro-portrait {
+    flex-grow: 1;
+    max-width: 50%;
+    margin: 16px 0;
+}
+
+.intro-text {
+    flex-grow: 1;
+    max-width: 50%;
+    margin-right: 16px;
+}
+
+.heading {
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+
+.bio span,a {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.body {
+}
+
+.body span {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.lil-thing {
+    height: 50px;
+    width: 100%;
+}
+
+.icon-container {
+    border-radius: 50%;
+    padding: 8px;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(0,0,0,.2);
+    margin-right: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.icon-container:hover {
+    background-color: rgba(0,0,0,.4);
+    transition: background-color 0.3s ease;
+}
+
+.socials {
+    display: flex;
+    margin-top: 24px;
+}
+
+
+
+
+
+.alert {
+    display: inline-flex;
+    gap: 10px;
+    position: fixed;
+    left: 50%;
+    padding: 16px;
+    transform: translate(-50%, 0);
+    background-color: #c4c4ff;
+    opacity: .9;
+    border-radius: 99999px;
+    transition: opacity 1s ease;
+}
+
+.alert.hidden {
+    pointer-events: none;
+    opacity: 0;
+}

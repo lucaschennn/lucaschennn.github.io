@@ -4,12 +4,13 @@ a {
 }
 
 #header {
-    position: fixed;
     display: flex;
     justify-content: space-between;
     width: 100%;
     z-index: 999;
-    background-color: #D6D9E0;;
+    background-color: #e8e8e8;
+    position: fixed;
+    top: 0;
 }
 
 ul.list {
@@ -29,6 +30,8 @@ ul.left {
     margin-left: 10px;
     margin-right: 10px;
     cursor: pointer;
+    font-size: 1.1rem;
+    font-family: 'JetBrains Mono', monospace, sans-serif;
 }
 
 /*
@@ -48,6 +51,11 @@ ul.left {
 }
 */
 
+.home-item {
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 .home-item img {
     width: 2rem;
@@ -56,7 +64,7 @@ ul.left {
 .nav-item::before {
     content: "";
     position: absolute;
-    bottom: 0;
+    bottom: -3px;
     width: 0;
     height: 3px;
     background-color: rgba(0,0,0,.5);
@@ -64,8 +72,38 @@ ul.left {
 }
 
 .nav-item.active::before {
-    width: 50%;
+    width: 100%;
     transition: width 0.2s ease-out;
+}
+
+.nav-item:hover {
+    opacity: .8;
+}
+
+.nav-item::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    width: 110%;
+    bottom: -3px;
+    right: -5%;
+    height: 0;
+    z-index: -1;
+    background-color: rgba(0,0,0,.2);
+    transition: height 0.1s ease-in;
+}
+
+.nav-item:hover::after {
+    height: 110%;
+    transition: height 0.2s ease-out;
+}
+
+.nav-icon {
+    position: relative;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 .list-dropdown {
@@ -91,12 +129,31 @@ ul.left {
 }
 
 .title {
+    display: flex;
     margin: 0;
     text-align: center;
     position: absolute;
-    font-size: 2rem;
+    font-size: 2.1rem;
+    font-family: 'JetBrains Mono', monospace, sans-serif;
+    height: 100%;
     width: 100%;
     pointer-events: none;
     z-index: 0;
-    opacity: .5;
+    opacity: .7;
+    justify-content: center; /* horizontal center */
+    align-items: center; 
+}
+
+.title.incomplete::after {
+    content: "|";
+    display: inline;
+    vertical-align: baseline;
+    bottom: 0rem;
+    color: black;
+    animation: blink .5s steps(1) infinite;
+}
+
+@keyframes blink {
+    0%, 100% {opacity: 1;}
+    50% {opacity: 0;}
 }

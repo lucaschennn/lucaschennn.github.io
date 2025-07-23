@@ -1,13 +1,9 @@
 #portfolio {
-    margin: 200px 15px 15px 15px;
-    padding: 15px;
+    margin-top: 65px;
+    padding: 16px;
     background-color: #FCF9FA;
 }
 
 .image-wrapper {
-    width: 100%;
-}
-
-img {
-    width: 100%;
+    margin: 8px;
 }

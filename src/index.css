@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
 palette {
   color: #B02C37;
   color: #FCF9FA;
@@ -14,7 +16,12 @@ html, body {
   scroll-behavior: smooth;
   font-family: system-ui, sans-serif;
   color: #342323;
-  background: #D6D9E0;;
+  background: #e8e8e8;
+}
+
+.page-marker {
+  height: 1px;
+  width: 100%;
 }
 
 .page-container {
@@ -57,4 +64,15 @@ h3::before {
 .section-header {
     text-align: center;
     width: 100%;
+}
+
+
+img {
+  opacity: 1;
+  transition: 1s;
+}
+
+img.hidden {
+  opacity: 0;
+  transition: 1s;
 }
