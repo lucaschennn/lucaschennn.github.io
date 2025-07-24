@@ -5,6 +5,8 @@ import {AdvancedImage, placeholder} from '@cloudinary/react';
 import { quality } from "@cloudinary/url-gen/actions/delivery";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
+import PortfolioViewer from './portfolioviewer.jsx';
+
 import '../App.css'
 import '../styles/gallery.css'
 
@@ -26,15 +28,37 @@ function Gallery({pageref, cloud}) {
             }
         )
     }
+
+    //PORTFOLIO VIEWER STUFF
+    const [viewerActive, setViewerActive] = useState(false);
+    const [viewerUrlIdx, setViewerUrlIdx] = useState("");
+    const [viewerGallery, setViewerGallery] = useState("");
+
+    const handleOpenViewer = (gallery, idx) => {
+        setViewerGallery(gallery);
+        setViewerActive(true);
+        setViewerUrlIdx(idx);
+    }
+
+    const viewerNavigationHandler = (goLeft) => {
+        const numImages = galleriesData[viewerGallery].length;
+
+        setViewerUrlIdx((prev) => {
+            if (goLeft) {
+                return (prev - 1 + numImages) % numImages;
+            } else {
+                return (prev + 1 + numImages) % numImages;
+            }
+        })
+    }
+    // END
+
     return (
-    <div id="gallery">
-        <div className="page-marker" id="gallery-marker" ref={pageref}></div>
-        <div className="section-header">
-            <h3>Galleries</h3>
-        </div>
+    <div id="gallery" ref={pageref}>
+        <div className="page-marker" id="gallery-marker"></div>
         <h4>UMich School of Music, Theatre & Dance</h4>
         <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 2, 750: 3}}
+                columnsCountBreakPoints={{350: 3, 750: 4}}
                 gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
         >
             <Masonry>
@@ -44,6 +68,7 @@ function Gallery({pageref, cloud}) {
                         <img
                             className={`${imagesLoaded["smtd"][idx] ? "active" : "hidden"}`}
                             onLoad={() => handleImageLoad("smtd", idx)}
+                            onClick={() => handleOpenViewer("smtd", idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
                         />
                     </div>
@@ -53,7 +78,7 @@ function Gallery({pageref, cloud}) {
         </ResponsiveMasonry>
         <h4>Sports</h4>
         <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 2, 750: 3}}
+                columnsCountBreakPoints={{350: 3, 750: 4}}
                 gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
         >
             <Masonry>
@@ -63,6 +88,7 @@ function Gallery({pageref, cloud}) {
                         <img
                             className={`${imagesLoaded["sports"][idx] ? "active" : "hidden"}`}
                             onLoad={() => handleImageLoad("sports", idx)}
+                            onClick={() => handleOpenViewer("sports", idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
                         />
                     </div>
@@ -70,6 +96,33 @@ function Gallery({pageref, cloud}) {
             }
             </Masonry>
         </ResponsiveMasonry>
+        <h4>Astrophotography</h4>
+        <ResponsiveMasonry
+                columnsCountBreakPoints={{350: 3, 750: 4}}
+                gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
+        >
+            <Masonry>
+            {
+                galleriesData["astro"].map((item, idx) => (
+                    <div key={idx} className="image-wrapper">
+                        <img
+                            className={`${imagesLoaded["astro"][idx] ? "active" : "hidden"}`}
+                            onLoad={() => handleImageLoad("astro", idx)}
+                            onClick={() => handleOpenViewer("astro", idx)}
+                            src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                        />
+                    </div>
+                ))
+            }
+            </Masonry>
+        </ResponsiveMasonry>
+        <PortfolioViewer
+            url={galleriesData[viewerGallery]?.[viewerUrlIdx]?.url}
+            active={viewerActive}
+            setActive={setViewerActive}
+            updateHandler={viewerNavigationHandler}
+            cloud={cloud}
+        />
     </div>
     );
 }

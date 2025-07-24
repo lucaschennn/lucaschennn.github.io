@@ -16,7 +16,7 @@
 }
 
 #about.hidden div.content {
-    right: -100%;
+    right: -200vw;
     transition: all 0.4s ease;
 }
 
@@ -28,6 +28,7 @@
 
 .content {
     box-sizing:border-box;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -35,6 +36,7 @@
     top: 0;
     right: 0;
     width: 600px;
+    max-width: 100vw;
     height: 100%;
     z-index: 9999;
     padding: 0 32px;
@@ -103,8 +105,6 @@
 
 
 
-
-
 .alert {
     display: inline-flex;
     gap: 10px;
@@ -112,10 +112,11 @@
     left: 50%;
     padding: 16px;
     transform: translate(-50%, 0);
-    background-color: #c4c4ff;
+    background-color: #cfcfe0;
     opacity: .9;
     border-radius: 99999px;
     transition: opacity 1s ease;
+    z-index: 9999;
 }
 
 .alert.hidden {

@@ -1,7 +1,14 @@
 #portfolio {
-    margin-top: 65px;
-    padding: 16px;
+    margin-top: 68px;
+    margin-bottom: 64px;
+    padding: 16px 96px;
     background-color: #FCF9FA;
+}
+
+@media (max-width: 1024px) {
+    #portfolio {
+        padding: 100px 16px;
+    }
 }
 
 .image-wrapper {

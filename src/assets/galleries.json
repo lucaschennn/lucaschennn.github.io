@@ -5,6 +5,10 @@
             "caption": "https://issuu.com/michigandaily/docs/2024-10-30"
         },
         {
+            "url": "DSC08439_adzyir",
+            "caption": "https://issuu.com/michigandaily/docs/2024-01-31"
+        },
+        {
             "url": "DSC06047_sfly5j",
             "caption": "https://issuu.com/michigandaily/docs/2024-09-18"
         },
@@ -22,10 +26,6 @@
         },
         {
             "url": "_27A6677_krt2vi",
-            "caption": "https://issuu.com/michigandaily/docs/2024-01-31"
-        },
-        {
-            "url": "DSC08439_adzyir",
             "caption": "https://issuu.com/michigandaily/docs/2024-01-31"
         },
         {
@@ -85,6 +85,44 @@
         {
             "url": "0_oymzew",
             "caption": "https://issuu.com/michigandaily/docs/2024-01-31"
+        }
+    ],
+    "astro": [
+        {
+            "url": "DSC00099_xe61ii",
+            "caption": ""
+        },
+        {
+            "url": "DSC08774-Pano--2_nslgeh",
+            "caption": ""
+        },
+        {
+            "url": "DSC08158-Pano-3_r2tg4m",
+            "caption": ""
+        },
+        {
+            "url": "DSC08556_declyh",
+            "caption": ""
+        },
+        {
+            "url": "DSC07330-Pano-2_ebmexl",
+            "caption": ""
+        },
+        {
+            "url": "DSC08768-Pano-Daily_Online-2_lyidsx",
+            "caption": ""
+        },
+        {
+            "url": "DSC08779_s7rrxn",
+            "caption": ""
+        },
+        {
+            "url": "DSC00114_j9ul6l",
+            "caption": ""
+        },
+        {
+            "url": "DSC08797-Pano_2_ytf7ta",
+            "caption": ""
         }
     ]
 }

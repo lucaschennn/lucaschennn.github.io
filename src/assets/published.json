@@ -23,16 +23,22 @@
     ],
     "projects": [
         {
-            "url": "Screenshot_2025-07-11_122845_rwthdu",
-            "caption": "https://specials.michigandaily.com/2024/photographers-favorites/"
+            "title": "Photograhers' Favorites 2024",
+            "url": "Screenshot_2025-07-23_141107_ejukev",
+            "ref": "https://specials.michigandaily.com/2024/photographers-favorites/",
+            "description": ""
         },
         {
-            "url": "Screenshot_2025-07-11_123417_gjkq1o",
-            "caption": "https://www.michigandaily.com/multimedia/year-in-photos-2024/"
+            "title": "Year in Photos 2024",
+            "url": "Screenshot_2025-07-23_140737_jugdf5",
+            "ref": "https://www.michigandaily.com/multimedia/year-in-photos-2024/",
+            "description": ""
         },
         {
-            "url": "Screenshot_2025-07-11_124005_fic4si",
-            "caption": "https://www.michigandaily.com/multimedia/photo-essay-summer-in-ann-arbor/"
+            "title": "Photo Essay: Summer in Ann Arbor",
+            "url": "Screenshot_2025-07-23_140859_bayl7o",
+            "ref": "https://www.michigandaily.com/multimedia/photo-essay-summer-in-ann-arbor/",
+            "description": ""
         }
     ]
 }

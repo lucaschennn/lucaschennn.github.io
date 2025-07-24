@@ -33,29 +33,29 @@ function About({active, setAboutActive, cloud}) {
 
     return (
     <div id="about" className={`${active ? "active" : "hidden"}`}>
-        <div className="bg"></div>
+        <div className="bg" onClick={() => setAboutActive(false)}></div>
         <div className="content">
             <div className="header">
-                <IoMdClose onClick={() => setAboutActive(false)} size={"1rem"} style={{'cursor' : 'pointer'}}/>
+                <IoMdClose onClick={() => setAboutActive(false)} size={"1.5rem"} style={{'cursor' : 'pointer'}}/>
             </div>  
             <div className="intro">
                 <div className="intro-text">
                     <p className="heading">Hi, I'm Lucas Chen!</p>
                     <p className="bio">
-                        I'm a photographer based in Ann Arbor specializing in <span>sports, news, and events.</span> <br/><br/>
+                        I'm a photographer based in Ann Arbor specializing in <span>sports, news, and astrophotography.</span> <br/><br/>
                         I graduated from the University of Michigan with a degree in <a href="https://lucaschen.me" target="_blank">computer science <FaExternalLinkAlt size={"1rem"}/></a> as well as a deep love for photography.
                         I photographed for our school paper, The Michigan Daily, as well as for the University of Michigan School of Music, Theatre, & Dance.
                     </p>
                 </div>
                 <div className="intro-portrait">
-                    <AdvancedImage cldImg={cloud.image('lucas-at-fb-crop_pd3afy')} plugins={[placeholder({ mode: 'blur' })]} />
+                    <AdvancedImage cldImg={cloud.image('lucas-at-fb-crop_pd3afy')}/>
                 </div>
             </div>
             <div className="body">
                 <div className="lil-thing">
 
                 </div>
-                I'm currently available for freelance. Please don't hesitate to reach out at <span onClick={() => handleCopy("lucasch@umich.edu")}>lucasch@umich.edu <FaCopy /></span>. I look forward to working with you!
+                I'm currently available for freelance assignment. Please don't hesitate to reach out at <span onClick={() => handleCopy("lucasch@umich.edu")}>lucasch@umich.edu <FaCopy /></span>. I look forward to working with you!
             </div>
             <div className="socials">
                 <div className="icon-container">
@@ -67,7 +67,7 @@ function About({active, setAboutActive, cloud}) {
             </div>
         </div>
         <div className={`alert ${alertActive ? "" : "hidden"}`}>
-            Copied to clipboard! <span onClick={() => setAlertActive(false)}><IoMdClose size={"1rem"} style={{'cursor' : 'pointer'}}/></span>
+            Copied to clipboard! <span onClick={() => setAlertActive(false)}><IoMdClose size={"1.5rem"} style={{'cursor' : 'pointer'}}/></span>
         </div>
     </div>
     );
