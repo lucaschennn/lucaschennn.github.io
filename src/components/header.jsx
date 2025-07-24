@@ -28,7 +28,8 @@ function Header({pagerefs, setAboutActive}) {
     const [width, setWidth] = useState(window.innerWidth);
     const [navOpen, setNavOpen] = useState(width > MEDIA_QUERY_WIDTH)
 
-    const fullTitle = "lucaschenphoto"
+
+    const fullTitle = "lucaschenphoto";
     useEffect(() => {
         let i = title.length;
 
@@ -43,8 +44,6 @@ function Header({pagerefs, setAboutActive}) {
                 return prev + next;
             })
         }, 50)
-        
-
     }, []);
 
     useEffect(() => {
@@ -74,7 +73,6 @@ function Header({pagerefs, setAboutActive}) {
         };
 
         window.addEventListener("scroll", handleScroll);
-        handleScroll(); // initial call
 
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
