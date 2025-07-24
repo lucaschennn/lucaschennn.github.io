@@ -58,7 +58,7 @@ function Gallery({pageref, cloud}) {
         <div className="page-marker" id="gallery-marker"></div>
         <h4>UMich School of Music, Theatre & Dance</h4>
         <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 3, 750: 4}}
+                columnsCountBreakPoints={{350: 2, 750: 3, 900: 4}}
                 gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
         >
             <Masonry>
@@ -78,7 +78,7 @@ function Gallery({pageref, cloud}) {
         </ResponsiveMasonry>
         <h4>Sports</h4>
         <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 3, 750: 4}}
+                columnsCountBreakPoints={{350: 2, 750: 3, 900: 4}}
                 gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
         >
             <Masonry>
@@ -98,7 +98,7 @@ function Gallery({pageref, cloud}) {
         </ResponsiveMasonry>
         <h4>Astrophotography</h4>
         <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 3, 750: 4}}
+                columnsCountBreakPoints={{350: 2, 750: 3, 900: 4}}
                 gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
         >
             <Masonry>

@@ -14,3 +14,14 @@
 .image-wrapper {
     margin: 8px;
 }
+
+.image-wrapper img {
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity .8s ease;
+}
+
+.image-wrapper img:hover {
+    opacity: .8;
+    transition: opacity .3s ease;
+}

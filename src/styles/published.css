@@ -115,3 +115,12 @@ h3::before {
 .visit-site a:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 1024px) {
+    .projects-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        margin: 0 16px;
+    }
+}

@@ -43,3 +43,9 @@
     align-items: center;
     margin: 24px;
 }
+
+@media (max-width: 1024px) {
+    .go-left, .go-right {
+        margin: 12px;
+    }
+}

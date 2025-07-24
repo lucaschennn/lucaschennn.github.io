@@ -52,7 +52,7 @@ function Published({pageref, cloud}) {
         <div className="page-marker" id="published-marker"></div>
         <h4>Tear Sheets</h4>
         <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 3, 750: 4}}
+                columnsCountBreakPoints={{350: 2, 750: 3, 900: 4}}
                 gutterBreakpoints={{350: "12px", 750: "16px", 900: "24px"}}            
         >
             <Masonry>

@@ -10,7 +10,7 @@ function Footer() {
                 Lucas Chen
             </h5>
             <p className="footer-contact">
-                (402)419-0219 | lucasch@umich.edu
+                lucasch@umich.edu | <a href="https://lucaschen.me">lucaschen.me</a>
             </p>
         </div>
     )

@@ -48,7 +48,7 @@ function About({active, setAboutActive, cloud}) {
                     </p>
                 </div>
                 <div className="intro-portrait">
-                    <AdvancedImage cldImg={cloud.image('lucas-at-fb-crop_pd3afy')}/>
+                    <AdvancedImage cldImg={cloud.image('lukey_ymdsmv')}/>
                 </div>
             </div>
             <div className="body">

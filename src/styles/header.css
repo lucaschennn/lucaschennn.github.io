@@ -189,11 +189,13 @@ ul.left {
     }
     .nav.inactive {
         top: -100%;
-        transition: top .5s ease-out;
+        color: rgba(0,0,0,0);
+        transition: top .5s ease-out, color .3s ease;
     }
     .nav.active {
         top: 0;
-        transition: top .3s ease-out;
+        color: rgba(0,0,0,.8);
+        transition: top .3s ease-out, color .3s ease;
     }
     .home-item {
         display: none;
