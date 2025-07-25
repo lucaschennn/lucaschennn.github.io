@@ -23,5 +23,5 @@
 
 .image-wrapper img:hover {
     opacity: .8;
-    transition: opacity .3s ease;
+    transition: opacity .2s ease;
 }
