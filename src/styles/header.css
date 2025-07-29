@@ -150,7 +150,7 @@ ul.left {
 
 .title.incomplete p::after, .title-text:hover::after {
     content: "|";
-    color: #4c4c9c;
+    color: #638EA1;
     display: inline;
     animation: blink 1s steps(1) infinite;
 }

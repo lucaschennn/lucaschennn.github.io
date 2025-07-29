@@ -5,6 +5,8 @@ import { FaLinkedin, FaInstagram, FaExternalLinkAlt, FaCopy } from "react-icons/
 import { quality } from "@cloudinary/url-gen/actions/delivery";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
+import Divider from './divider.jsx';
+
 import '../App.css'
 import '../styles/published.css'
 
@@ -49,7 +51,6 @@ function Published({pageref, cloud}) {
 
     return (
     <div id="published" ref={pageref}>
-        <div className="page-marker" id="published-marker"></div>
         <h4>Tear Sheets</h4>
         <ResponsiveMasonry
                 columnsCountBreakPoints={{350: 2, 750: 3}}
@@ -76,6 +77,9 @@ function Published({pageref, cloud}) {
                     <div className="project" key={idx}>
                         <p className="project-title">
                             <a href={item.ref} target="_blank">{item.title} <FaExternalLinkAlt size={"1rem"}/></a>
+                        </p>
+                        <p className="project-subtitle">
+                            {item.description}
                         </p>
                         <div className="project-content">
                             <div className="project-overlay">

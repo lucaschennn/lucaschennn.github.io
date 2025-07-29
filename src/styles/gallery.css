@@ -1,7 +1,6 @@
 #gallery {
     background-color: #FCF9FA;
-    margin: 64px 0;
-    padding: 100px 96px;
+    padding: 16px 96px 128px 96px;
 }
 
 .image-wrapper {

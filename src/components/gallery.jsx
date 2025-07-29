@@ -6,6 +6,7 @@ import { quality } from "@cloudinary/url-gen/actions/delivery";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
 import PortfolioViewer from './portfolioviewer.jsx';
+import Divider from './divider.jsx';
 
 import '../App.css'
 import '../styles/gallery.css'

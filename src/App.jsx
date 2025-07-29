@@ -6,6 +6,7 @@ import Published from './components/published.jsx'
 import Gallery from './components/gallery.jsx'
 import Footer from './components/footer.jsx'
 import About from './components/about.jsx'
+import Divider from './components/divider.jsx'
 
 import './App.css'
 
@@ -25,7 +26,9 @@ function App() {
       <Header pagerefs={pageRefs} setAboutActive={setAboutActive}/>
       <About active={aboutActive} setAboutActive={setAboutActive} cloud={cld}/>
       <Portfolio pageref={pageRefs[0]} cloud={cld}/>
+      <Divider text={"Published"}/>
       <Published pageref={pageRefs[1]} cloud={cld}/>
+      <Divider text={"Galleries"}/>
       <Gallery pageref={pageRefs[2]} cloud={cld}/>
       <Footer/>
     </div>
