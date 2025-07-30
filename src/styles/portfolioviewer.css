@@ -18,7 +18,14 @@
 
 .close {
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 50%;
     z-index: 9999;
+    width: 3rem;
+    height: 3rem;
     top: 68px;
     right: 32px;
 }

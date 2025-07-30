@@ -40,7 +40,7 @@ function About({active, setAboutActive, cloud}) {
             </div>  
             <div className="intro">
                 <div className="intro-text">
-                    <p className="heading">Hi, I'm Lucas Chen!</p>
+                    <p className="heading">Hi, I'm <span>Lucas Chen</span>!</p>
                     <p className="bio">
                         I'm a photographer based in Ann Arbor specializing in <span>sports, news, and astrophotography.</span> <br/><br/>
                         I graduated from the University of Michigan with a degree in <a href="https://lucaschen.me" target="_blank">computer science <FaExternalLinkAlt size={"1rem"}/></a> as well as a deep love for photography.

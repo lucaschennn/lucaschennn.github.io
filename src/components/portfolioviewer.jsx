@@ -13,7 +13,7 @@ function PortfolioViewer({url, active, setActive, updateHandler, cloud}) {
     return (
     <div id="portfolioViewer" className={`${active ? "active" : "inactive"}`}>
         <div className="close" onClick={() => setActive(false)}>
-            <IoMdClose size={"2.5rem"} style={{'cursor' : 'pointer'}} color={"white"}/>
+            <IoMdClose size={"2rem"} style={{'cursor' : 'pointer'}} color={"white"}/>
         </div> 
         <div className="container">
             <div className="go-left" style={{'cursor' : 'pointer'}} onClick={() => updateHandler(true)}>
