@@ -71,6 +71,7 @@ function Gallery({pageref, cloud}) {
                             onLoad={() => handleImageLoad("smtd", idx)}
                             onClick={() => handleOpenViewer("smtd", idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                            loading="lazy"
                         />
                     </div>
                 ))
@@ -91,6 +92,7 @@ function Gallery({pageref, cloud}) {
                             onLoad={() => handleImageLoad("sports", idx)}
                             onClick={() => handleOpenViewer("sports", idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                            loading="lazy"
                         />
                     </div>
                 ))
@@ -111,6 +113,7 @@ function Gallery({pageref, cloud}) {
                             onLoad={() => handleImageLoad("astro", idx)}
                             onClick={() => handleOpenViewer("astro", idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                            loading="lazy"
                         />
                     </div>
                 ))

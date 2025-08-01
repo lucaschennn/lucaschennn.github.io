@@ -64,6 +64,7 @@ function Published({pageref, cloud}) {
                             className={`${imagesLoaded["featured"][idx] ? "active" : "hidden"}`}
                             onLoad={() => handleImageLoad("featured", idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                            loading="lazy"
                         />
                     </div>
                 ))
@@ -91,6 +92,7 @@ function Published({pageref, cloud}) {
                                 className={`${imagesLoaded["featured"][idx] ? "active" : "hidden"}`}
                                 onLoad={() => handleImageLoad("featured", idx)}
                                 src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                                loading="lazy"
                             />
                         </div>
                     </div>

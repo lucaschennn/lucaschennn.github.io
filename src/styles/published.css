@@ -54,16 +54,25 @@ h3::before {
 .projects-wrapper {
     display: flex;
     flex-direction: row;
-    gap: 5rem;
+    justify-content: space-evenly;
+    gap: 2rem;
     margin: 0 16px;
 }
 
 .project {
     display: flex;
     position: relative;
+    background-color: #cde3ec;
+    padding: 16px 16px;
+    border-radius: 16px;
+    filter: drop-shadow(13px 13px 15px #bbb);
     width: 100%;
     height: 100%;
     flex-direction: column;
+    transition: scale .1s ease;
+}
+.project:hover {
+    scale: 101%;
 }
 
 .project-title {

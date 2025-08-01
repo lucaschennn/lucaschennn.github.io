@@ -2,6 +2,7 @@
     margin-top: 68px;
     padding: 16px 96px 128px 96px;
     background-color: #FCF9FA;
+    min-height: 100vh;
 }
 
 @media (max-width: 1024px) {

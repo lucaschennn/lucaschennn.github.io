@@ -64,6 +64,7 @@ function Portfolio({pageref, cloud}) {
                             onLoad={() => handleImageLoad(idx)}
                             onClick={() => handleOpenViewer(idx)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                            loading="lazy"
                         />
                     </div>
                 ))

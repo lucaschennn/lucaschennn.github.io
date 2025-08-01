@@ -40,10 +40,10 @@ function About({active, setAboutActive, cloud}) {
             </div>  
             <div className="intro">
                 <div className="intro-text">
-                    <p className="heading">Hi, I'm <span>Lucas Chen</span>!</p>
+                    <p className="heading">Hi, I'm <span className={`${active ? "wipe-fade" : ""}`}>Lucas Chen</span>!</p>
                     <p className="bio">
-                        I'm a photographer based in Ann Arbor specializing in <span>sports, news, and astrophotography.</span> <br/><br/>
-                        I graduated from the University of Michigan with a degree in <a href="https://lucaschen.me" target="_blank">computer science <FaExternalLinkAlt size={"1rem"}/></a> as well as a deep love for photography.
+                        I'm a photographer based in Ann Arbor specializing in <span className={`${active ? "wipe-fade" : ""}`}>sports, news, and astrophotography.</span> <br/><br/>
+                        I graduated from the University of Michigan with a degree in <a className={`${active ? "wipe-fade" : ""}`} href="https://lucaschen.me" target="_blank">computer science <FaExternalLinkAlt size={"1rem"}/></a> as well as a deep love for photography.
                         I photographed for our school paper, The Michigan Daily, as well as for the University of Michigan School of Music, Theatre, & Dance.
                     </p>
                 </div>
@@ -53,7 +53,6 @@ function About({active, setAboutActive, cloud}) {
             </div>
             <div className="body">
                 <div className="lil-thing">
-
                 </div>
                 I'm currently available for freelance assignment. Please don't hesitate to reach out at <span onClick={() => handleCopy("lucasch@umich.edu")}>lucasch@umich.edu <FaCopy /></span>. I look forward to working with you!
             </div>
