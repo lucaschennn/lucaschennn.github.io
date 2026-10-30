@@ -18,8 +18,8 @@ Lucas Chen's photography portfolio: a single-page React 18 + Vite site deployed 
 - [src/App.jsx](src/App.jsx) renders one scrolling page: `Header`, `About` (slide-in panel toggled via `aboutActive` state), `Portfolio`, `Divider`, `Published`, `Divider`, `Gallery`, `Footer`. There is no router in use.
 - `App` creates a single Cloudinary client (cloud name `dch9wtpmk`) and passes it as the `cloud` prop to every image-rendering component. Header nav scrolls to sections via three `pageRefs` (portfolio, published, gallery) passed to `Header` and to each section's `pageref` prop.
 - **Images are hosted on Cloudinary, not in the repo.** Content is driven by JSON in [src/assets/](src/assets/):
-  - `portfolio.json` — array of `{url, caption}`
-  - `published.json` — object keyed by group (e.g. `featured`); captions are Issuu tear-sheet links
+  - `portfolio.json` — array of `{url, source}`
+  - `published.json` — object keyed by group (e.g. `featured`); `source` is an Issuu tear-sheet link (metadata only, not rendered)
   - `galleries.json` — object keyed by gallery (`smtd`, `sports`, `astro`)
 
   `url` is a Cloudinary **public ID** (including its random suffix, e.g. `DSC00780_aasdfz`), not a path. Components render `cloud.image(item.url).delivery(quality(auto())).toURL()`. To add/reorder photos, edit the JSON; upload the image to Cloudinary first.
