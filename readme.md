@@ -1,2 +1,3 @@
-## HOW TO DEPLOY
-run npm run deploy duh
+### For my future self
+
+`npm run deploy` to deploy
