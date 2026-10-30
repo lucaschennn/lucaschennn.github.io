@@ -7,6 +7,7 @@ import Gallery from './components/gallery.jsx'
 import Footer from './components/footer.jsx'
 import About from './components/about.jsx'
 import Divider from './components/divider.jsx'
+import GradBanner from './components/gradbanner.jsx'
 
 import './App.css'
 
@@ -24,6 +25,7 @@ function App() {
   return (
     <div className="page-container">
       <Header pagerefs={pageRefs} setAboutActive={setAboutActive}/>
+      <GradBanner/>
       <About active={aboutActive} setAboutActive={setAboutActive} cloud={cld}/>
       <Portfolio pageref={pageRefs[0]} cloud={cld}/>
       <Divider text={"Published"}/>
