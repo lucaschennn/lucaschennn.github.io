@@ -36,3 +36,4 @@ button:disabled { cursor: default; }
 .remove:hover { background: #c00; }
 .source { font: inherit; font-size: 0.8rem; padding: 2px 4px; border: 1px solid #ddd; border-radius: 4px; min-width: 0; }
 .meta { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.grid.drop-target { outline: 2px solid #2f7de1; outline-offset: 2px; background: #eef5ff; }

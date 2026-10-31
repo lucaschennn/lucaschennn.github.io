@@ -21,6 +21,11 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { FLAT_GROUP, thumbUrl } from "@/lib/registry";
 
+// Only animate sorting within the dragged item's own group. Across groups,
+// both grids stay still and the target group is highlighted instead.
+const sameGroupStrategy = (args) =>
+  args.activeIndex === -1 || args.overIndex === -1 ? null : rectSortingStrategy(args);
+
 // Droppable ids for groups are prefixed so they never collide with item ids.
 const groupId = (key) => `group:${key}`;
 
@@ -28,6 +33,7 @@ const groupId = (key) => `group:${key}`;
 // groups of the same file. `onChange(groups)` receives the new groups object.
 export default function FileBoard({ fileKey, groups, onChange }) {
   const [activeId, setActiveId] = useState(null);
+  const [overGroup, setOverGroup] = useState(null);
   const sensors = useSensors(
     // A small distance keeps clicks on buttons and inputs from starting a drag.
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -43,33 +49,41 @@ export default function FileBoard({ fileKey, groups, onChange }) {
     ? Object.values(groups).flat().find((e) => e.id === activeId)
     : null;
 
-  // Moving into another group happens while dragging, so the item shows up there live.
-  function handleDragOver({ active, over }) {
+  // Data only changes on drop. Moving items between groups during the drag shifts
+  // the layout under the pointer, which can make dnd-kit loop (max update depth).
+  function handleDragOver({ over }) {
+    const to = over ? findGroup(over.id) : null;
+    setOverGroup((prev) => (prev === to ? prev : to));
+  }
+
+  function handleDragEnd({ active, over }) {
+    setActiveId(null);
+    setOverGroup(null);
     if (!over) return;
     const from = findGroup(active.id);
     const to = findGroup(over.id);
-    if (!from || !to || from === to) return;
+    if (!from || !to) return;
 
+    if (from === to) {
+      const oldIndex = groups[from].findIndex((e) => e.id === active.id);
+      const newIndex = groups[from].findIndex((e) => e.id === over.id);
+      if (newIndex === -1 || oldIndex === newIndex) return;
+      onChange({ ...groups, [from]: arrayMove(groups[from], oldIndex, newIndex) });
+      return;
+    }
+
+    // Into another group: next to the item dropped on (after it if dropped past its
+    // centre), or at the end if dropped on the group itself.
     const entry = groups[from].find((e) => e.id === active.id);
     const overIndex = groups[to].findIndex((e) => e.id === over.id);
-    const insertAt = overIndex === -1 ? groups[to].length : overIndex;
+    const dropped = active.rect.current.translated;
+    const pastCentre = dropped && dropped.left + dropped.width / 2 > over.rect.left + over.rect.width / 2;
+    const insertAt = overIndex === -1 ? groups[to].length : overIndex + (pastCentre ? 1 : 0);
     onChange({
       ...groups,
       [from]: groups[from].filter((e) => e.id !== active.id),
       [to]: [...groups[to].slice(0, insertAt), entry, ...groups[to].slice(insertAt)],
     });
-  }
-
-  function handleDragEnd({ active, over }) {
-    setActiveId(null);
-    if (!over) return;
-    const from = findGroup(active.id);
-    const to = findGroup(over.id);
-    if (!from || from !== to) return;
-    const oldIndex = groups[from].findIndex((e) => e.id === active.id);
-    const newIndex = groups[from].findIndex((e) => e.id === over.id);
-    if (newIndex === -1 || oldIndex === newIndex) return;
-    onChange({ ...groups, [from]: arrayMove(groups[from], oldIndex, newIndex) });
   }
 
   const updateItem = (group, id, patch) =>
@@ -88,7 +102,7 @@ export default function FileBoard({ fileKey, groups, onChange }) {
       onDragStart={({ active }) => setActiveId(active.id)}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
-      onDragCancel={() => setActiveId(null)}
+      onDragCancel={() => { setActiveId(null); setOverGroup(null); }}
     >
       {Object.entries(groups).map(([key, entries]) => (
         <Group
@@ -96,6 +110,7 @@ export default function FileBoard({ fileKey, groups, onChange }) {
           groupKey={key}
           title={key === FLAT_GROUP ? fileKey : key}
           entries={entries}
+          highlight={activeId !== null && overGroup === key && findGroup(activeId) !== key}
           onUpdate={(id, patch) => updateItem(key, id, patch)}
           onRemove={(id) => removeItem(key, id)}
         />
@@ -109,15 +124,15 @@ export default function FileBoard({ fileKey, groups, onChange }) {
   );
 }
 
-function Group({ groupKey, title, entries, onUpdate, onRemove }) {
+function Group({ groupKey, title, entries, highlight, onUpdate, onRemove }) {
   const { setNodeRef } = useDroppable({ id: groupId(groupKey) });
   return (
     <section className="group">
       <h3>
         {title} <span className="count">{entries.length}</span>
       </h3>
-      <SortableContext items={entries.map((e) => e.id)} strategy={rectSortingStrategy}>
-        <div ref={setNodeRef} className="grid">
+      <SortableContext items={entries.map((e) => e.id)} strategy={sameGroupStrategy}>
+        <div ref={setNodeRef} className={`grid${highlight ? " drop-target" : ""}`}>
           {entries.map((entry) => (
             <Card
               key={entry.id}
