@@ -1,9 +1,7 @@
 import { requireUser, signIn, signOut } from "@/auth";
 import { getHead, getRegistry } from "@/lib/github";
 import StatusBar from "./status-bar";
-
-// Flat arrays (portfolio.json) are one unnamed group.
-const groups = (data) => (Array.isArray(data) ? { "": data } : data);
+import Editor from "./editor";
 
 export default async function Home() {
   const session = await requireUser();
@@ -18,26 +16,19 @@ export default async function Home() {
   }
 
   const head = await getHead();
-  const registry = await getRegistry(head);
+  const files = await getRegistry(head);
 
   return (
     <>
+      <header className="header">
+        <h1>skyview</h1>
+        <form action={async () => { "use server"; await signOut(); }}>
+          <span className="muted">{session.user.name}</span>{" "}
+          <button type="submit">Sign out</button>
+        </form>
+      </header>
       <StatusBar />
-      <form action={async () => { "use server"; await signOut(); }}>
-        <h1>Hello, {session.user.name}</h1>
-        <button type="submit">Sign out</button>
-      </form>
-      <h2>Registry at {head.slice(0, 7)}</h2>
-      <ul>
-        {Object.entries(registry).map(([key, file]) => (
-          <li key={key}>
-            <code>{file.path}</code>:{" "}
-            {Object.entries(groups(file.data))
-              .map(([group, items]) => `${group || key} ${items.length}`)
-              .join(", ")}
-          </li>
-        ))}
-      </ul>
+      <Editor head={head} files={files} />
     </>
   );
 }
