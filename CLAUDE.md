@@ -11,7 +11,12 @@ Lucas Chen's photography portfolio: a single-page React 18 + Vite site deployed 
 - `npm run dev` — Vite dev server
 - `npm run build` — production build to `dist/` (`base: ""` in [vite.config.js](vite.config.js) so asset paths are relative, as GitHub Pages needs)
 - `npm run preview` — serve the built `dist/`
-- `npm run deploy` — runs `predeploy` (build) then `gh-pages -d dist`, pushing `dist/` to the `gh-pages` branch. Deploy from `v2`.
+
+## Deploy
+
+**`v2` is production.** Every push to `v2` runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which builds and deploys to GitHub Pages (custom domain `lucaschenphoto.com`, set in repo Settings → Pages). There is no manual deploy. Work in progress goes on other branches. `/version.txt` on the live site holds the deployed commit's short sha.
+
+The `skyview/` subproject (admin tool, deployed separately to Vercel) is planned in [skyview/ARCHITECTURE.md](skyview/ARCHITECTURE.md) and [skyview/BUILD.md](skyview/BUILD.md).
 
 ## Architecture
 
@@ -19,10 +24,10 @@ Lucas Chen's photography portfolio: a single-page React 18 + Vite site deployed 
 - `App` creates a single Cloudinary client (cloud name `dch9wtpmk`) and passes it as the `cloud` prop to every image-rendering component. Header nav scrolls to sections via three `pageRefs` (portfolio, published, gallery) passed to `Header` and to each section's `pageref` prop.
 - **Images are hosted on Cloudinary, not in the repo.** Content is driven by JSON in [src/assets/](src/assets/):
   - `portfolio.json` — array of `{url, source}`
-  - `published.json` — object keyed by group (e.g. `featured`); `source` is an Issuu tear-sheet link (metadata only, not rendered)
+  - `published.json` — `featured`: `[{url, source}]` (`source` is an Issuu tear-sheet link, metadata only, not rendered); `projects`: `[{title, url, ref, description}]` (all rendered)
   - `galleries.json` — object keyed by gallery (`smtd`, `sports`, `astro`)
 
-  `url` is a Cloudinary **public ID** (including its random suffix, e.g. `DSC00780_aasdfz`), not a path. Components render `cloud.image(item.url).delivery(quality(auto())).toURL()`. To add/reorder photos, edit the JSON; upload the image to Cloudinary first.
+  [src/main.jsx](src/main.jsx) imports the three files and passes them through `App`'s `registry` prop to each section as `data`. `url` is a Cloudinary **public ID** (including its random suffix, e.g. `DSC00780_aasdfz`), not a path. Components render `cloud.image(item.url).delivery(quality(auto())).toURL()`. To add/reorder photos, edit the JSON; upload the image to Cloudinary first.
 - Layout uses `react-responsive-masonry` (`ResponsiveMasonry` + `Masonry`, breakpoints 350/750/900 → 2/3/4 columns). Each image fades in via an `imagesLoaded` state map toggling an `active`/`hidden` class on `onLoad`.
 - Clicking an image opens `PortfolioViewer` (lightbox). `Portfolio` and `Gallery` each own their viewer state (`viewerActive`, index, and for `Gallery` the gallery key) and a wrap-around prev/next handler. `Gallery` repeats the masonry block per gallery key — a new gallery means copying a block and adding the JSON key.
 - Styles: global [src/App.css](src/App.css) and [src/index.css](src/index.css), plus one CSS file per component in [src/styles/](src/styles/) (imported by the component).

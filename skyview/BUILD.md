@@ -14,11 +14,11 @@ How to get from the design in [ARCHITECTURE.md](ARCHITECTURE.md) to a working sk
 
 ## Progress
 
-- [ ] 0.1 Commit pending changes
-- [ ] 1.1 Site refactor: registry as props
-- [ ] 1.2 Deploy workflow
-- [ ] 1.3 Switch Pages to GitHub Actions
-- [ ] 1.4 Remove the manual deploy path
+- [x] 0.1 Commit pending changes
+- [x] 1.1 Site refactor: registry as props
+- [x] 1.2 Deploy workflow
+- [x] 1.3 Switch Pages to GitHub Actions
+- [x] 1.4 Remove the manual deploy path
 - [ ] 2.1 Accounts and credentials
 - [ ] 2.2 Scaffold skyview with auth
 - [ ] 2.3 Vercel project
