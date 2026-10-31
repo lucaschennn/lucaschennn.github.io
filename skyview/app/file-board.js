@@ -19,7 +19,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { FLAT_GROUP, thumbUrl } from "@/lib/registry";
+import { FLAT_GROUP, newEntry, thumbUrl } from "@/lib/registry";
 
 // Only animate sorting within the dragged item's own group. Across groups,
 // both grids stay still and the target group is highlighted instead.
@@ -30,8 +30,9 @@ const sameGroupStrategy = (args) =>
 const groupId = (key) => `group:${key}`;
 
 // All groups of one registry file. Items can be reordered and moved between
-// groups of the same file. `onChange(groups)` receives the new groups object.
-export default function FileBoard({ fileKey, groups, onChange }) {
+// groups of the same file. `onChange` receives the new groups object, or an
+// updater function of the current groups. `picker` is from useMediaLibrary().
+export default function FileBoard({ fileKey, groups, onChange, picker }) {
   const [activeId, setActiveId] = useState(null);
   const [overGroup, setOverGroup] = useState(null);
   const sensors = useSensors(
@@ -95,6 +96,15 @@ export default function FileBoard({ fileKey, groups, onChange }) {
   const removeItem = (group, id) =>
     onChange({ ...groups, [group]: groups[group].filter((e) => e.id !== id) });
 
+  // Appends to the group, skipping photos already in it. Uses an updater because
+  // the widget calls back after the user has picked, possibly after other edits.
+  const addItems = (group, publicIds) =>
+    onChange((current) => {
+      const present = new Set(current[group].map((e) => e.item.url));
+      const added = [...new Set(publicIds)].filter((id) => !present.has(id)).map(newEntry);
+      return { ...current, [group]: [...current[group], ...added] };
+    });
+
   return (
     <DndContext
       sensors={sensors}
@@ -113,6 +123,7 @@ export default function FileBoard({ fileKey, groups, onChange }) {
           highlight={activeId !== null && overGroup === key && findGroup(activeId) !== key}
           onUpdate={(id, patch) => updateItem(key, id, patch)}
           onRemove={(id) => removeItem(key, id)}
+          onAdd={picker.ready ? () => picker.open((ids) => addItems(key, ids)) : null}
         />
       ))}
       <DragOverlay>
@@ -124,12 +135,19 @@ export default function FileBoard({ fileKey, groups, onChange }) {
   );
 }
 
-function Group({ groupKey, title, entries, highlight, onUpdate, onRemove }) {
+function Group({ groupKey, title, entries, highlight, onUpdate, onRemove, onAdd }) {
   const { setNodeRef } = useDroppable({ id: groupId(groupKey) });
+  // Project entries need a title, link and description, which skyview can't edit yet.
+  const canAdd = !entries.some((e) => "title" in e.item);
   return (
     <section className="group">
       <h3>
         {title} <span className="count">{entries.length}</span>
+        {canAdd && (
+          <button type="button" className="add" onClick={onAdd} disabled={!onAdd}>
+            + Add photos
+          </button>
+        )}
       </h3>
       <SortableContext items={entries.map((e) => e.id)} strategy={sameGroupStrategy}>
         <div ref={setNodeRef} className={`grid${highlight ? " drop-target" : ""}`}>

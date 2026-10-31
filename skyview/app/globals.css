@@ -37,3 +37,5 @@ button:disabled { cursor: default; }
 .source { font: inherit; font-size: 0.8rem; padding: 2px 4px; border: 1px solid #ddd; border-radius: 4px; min-width: 0; }
 .meta { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .grid.drop-target { outline: 2px solid #2f7de1; outline-offset: 2px; background: #eef5ff; }
+.add { margin-left: 0.75rem; font-size: 0.8rem; font-weight: normal; padding: 0.2rem 0.6rem; border: 1px solid #ccc; border-radius: 6px; background: #f6f6f6; }
+.add { margin-left: 0.75rem; font-size: 0.8rem; font-weight: normal; padding: 0.2rem 0.6rem; border: 1px solid #ccc; border-radius: 6px; background: #f6f6f6; }

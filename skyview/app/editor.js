@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { fromEditable, sameData, toEditable } from "@/lib/registry";
+import useMediaLibrary from "@/lib/use-media-library";
 import FileBoard from "./file-board";
 
 const TABS = [
@@ -39,6 +40,7 @@ export default function Editor({ head, files }) {
     [files],
   );
 
+  const picker = useMediaLibrary();
   const [tab, setTab] = useState("portfolio");
   const [state, setState] = useState(() =>
     Object.fromEntries(Object.entries(loaded).map(([k, data]) => [k, toEditable(data)])),
@@ -124,8 +126,15 @@ export default function Editor({ head, files }) {
         key={tab}
         fileKey={tab}
         groups={state[tab].groups}
-        onChange={(groups) => setState((s) => ({ ...s, [tab]: { ...s[tab], groups } }))}
+        onChange={(next) =>
+          setState((s) => ({
+            ...s,
+            [tab]: { ...s[tab], groups: typeof next === "function" ? next(s[tab].groups) : next },
+          }))
+        }
+        picker={picker}
       />
+      {picker.error && <p className="muted">{picker.error}</p>}
     </div>
   );
 }

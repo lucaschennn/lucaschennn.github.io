@@ -28,6 +28,9 @@ export function fromEditable({ array, groups }) {
   return array ? raw[FLAT_GROUP] : raw;
 }
 
+// A new registry entry for a photo picked from Cloudinary.
+export const newEntry = (publicId) => ({ id: crypto.randomUUID(), item: { url: publicId, source: "" } });
+
 export const sameData = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 export function thumbUrl(publicId, size = 200) {
