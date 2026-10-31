@@ -1,0 +1,5 @@
+body { font-family: system-ui, sans-serif; margin: 2rem; }
+.status { padding: 0.5rem 0.75rem; border-radius: 6px; background: #eee; margin-bottom: 1.5rem; }
+.status-live { background: #dff3e4; }
+.status-pending, .status-deploying { background: #fff4d6; }
+.status-failed { background: #fbe0e0; }

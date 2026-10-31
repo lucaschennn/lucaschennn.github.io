@@ -20,8 +20,8 @@ How to get from the design in [ARCHITECTURE.md](ARCHITECTURE.md) to a working sk
 - [x] 1.3 Switch Pages to GitHub Actions
 - [x] 1.4 Remove the manual deploy path
 - [x] 2.1 Accounts and credentials
-- [ ] 2.2 Scaffold skyview with auth
-- [ ] 2.3 Vercel project
+- [x] 2.2 Scaffold skyview with auth
+- [x] 2.3 Vercel project
 - [ ] 3.1 Read path and status bar
 - [ ] 3.2 Editor grid
 - [ ] 3.3 Add photos (Media Library widget)
