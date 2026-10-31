@@ -2,5 +2,16 @@
   "name": "skyview",
   "private": true,
   "version": "0.0.0",
-  "description": "Admin backend for rearranging and publishing the portfolio site"
+  "description": "Admin backend for rearranging and publishing the portfolio site",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.4.3",
+    "next-auth": "^5.0.0-beta.32",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
 }

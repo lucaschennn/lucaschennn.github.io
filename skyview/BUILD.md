@@ -19,7 +19,7 @@ How to get from the design in [ARCHITECTURE.md](ARCHITECTURE.md) to a working sk
 - [x] 1.2 Deploy workflow
 - [x] 1.3 Switch Pages to GitHub Actions
 - [x] 1.4 Remove the manual deploy path
-- [ ] 2.1 Accounts and credentials
+- [x] 2.1 Accounts and credentials
 - [ ] 2.2 Scaffold skyview with auth
 - [ ] 2.3 Vercel project
 - [ ] 3.1 Read path and status bar
