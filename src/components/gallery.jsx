@@ -11,9 +11,8 @@ import Divider from './divider.jsx';
 import '../App.css'
 import '../styles/gallery.css'
 
-import galleriesData from '../assets/galleries.json'
 
-function Gallery({pageref, cloud}) {
+function Gallery({pageref, cloud, data: galleriesData}) {
 
     const [imagesLoaded, setImagesLoaded] = useState(() => 
     Object.fromEntries(

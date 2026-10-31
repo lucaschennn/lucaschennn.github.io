@@ -10,11 +10,10 @@ import PortfolioViewer from './portfolioviewer.jsx';
 import '../App.css'
 import '../styles/portfolio.css'
 
-import portfolioData from '../assets/portfolio.json'
 
 
 
-function Portfolio({pageref, cloud}) {
+function Portfolio({pageref, cloud, data: portfolioData}) {
 
     const [imagesLoaded, setImagesLoaded] = useState(portfolioData.map(() => false))
 

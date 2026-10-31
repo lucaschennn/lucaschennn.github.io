@@ -11,7 +11,7 @@ import GradBanner from './components/gradbanner.jsx'
 
 import './App.css'
 
-function App() {
+function App({registry}) {
 
   const pageRefs = [useRef(null), useRef(null), useRef(null)];
   const [aboutActive, setAboutActive] = useState(false);
@@ -27,11 +27,11 @@ function App() {
       <Header pagerefs={pageRefs} setAboutActive={setAboutActive}/>
       <GradBanner/>
       <About active={aboutActive} setAboutActive={setAboutActive} cloud={cld}/>
-      <Portfolio pageref={pageRefs[0]} cloud={cld}/>
+      <Portfolio pageref={pageRefs[0]} cloud={cld} data={registry.portfolio}/>
       <Divider text={"Published"}/>
-      <Published pageref={pageRefs[1]} cloud={cld}/>
+      <Published pageref={pageRefs[1]} cloud={cld} data={registry.published}/>
       <Divider text={"Galleries"}/>
-      <Gallery pageref={pageRefs[2]} cloud={cld}/>
+      <Gallery pageref={pageRefs[2]} cloud={cld} data={registry.galleries}/>
       <Footer/>
     </div>
   )

@@ -10,7 +10,6 @@ import Divider from './divider.jsx';
 import '../App.css'
 import '../styles/published.css'
 
-import publishedData from '../assets/published.json'
 
 /*
 
@@ -31,7 +30,7 @@ summer in ann arbor
 
 */
 
-function Published({pageref, cloud}) {
+function Published({pageref, cloud, data: publishedData}) {
 
 
     const [imagesLoaded, setImagesLoaded] = useState(() => 
