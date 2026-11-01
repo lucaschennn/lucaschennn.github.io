@@ -37,25 +37,25 @@ npm run dev                  # http://localhost:3000 (must match the local OAuth
 
 ## Tech walkthrough
 
-A guided tour of skyview, in the spirit of a museum audio guide. Each stop opens with a short **placard**: enough to understand what's in the room and why it's there. Read only the placards for a 10-minute overview. When something catches your eye, open **Look closer** for the underlying technology and links to the exact lines of code.
+A guided tour of skyview, like a museum audio guide. Each stop opens with a short summary: enough to understand what it is and why it's there. Read only the summaries for a 10-minute overview. For the underlying technology and links to the exact lines of code, open the **Details** under a stop.
 
 **The route**
 
-0. [The exhibit at a glance](#stop-0-the-exhibit-at-a-glance)
+0. [Overview](#stop-0-overview)
 1. [The registry: what skyview edits](#stop-1-the-registry-what-skyview-edits)
-2. [The entrance: signing in](#stop-2-the-entrance-signing-in)
-3. [The archive: reading from GitHub](#stop-3-the-archive-reading-from-github)
-4. [The status board: what's live](#stop-4-the-status-board-whats-live)
-5. [The workshop: drag and drop](#stop-5-the-workshop-drag-and-drop)
-6. [The darkroom: Cloudinary](#stop-6-the-darkroom-cloudinary)
-7. [The preview gallery: the real site, with your draft](#stop-7-the-preview-gallery-the-real-site-with-your-draft)
-8. [The ledger: the diff](#stop-8-the-ledger-the-diff)
-9. [The vault door: publishing](#stop-9-the-vault-door-publishing)
-10. [Behind the walls: deploying the site](#stop-10-behind-the-walls-deploying-the-site)
-11. [The test lab: Playwright](#stop-11-the-test-lab-playwright)
-12. [Exit and further reading](#exit-and-further-reading)
+2. [Signing in](#stop-2-signing-in)
+3. [Reading from GitHub](#stop-3-reading-from-github)
+4. [Deploy status: what's live](#stop-4-deploy-status-whats-live)
+5. [Drag and drop](#stop-5-drag-and-drop)
+6. [Cloudinary](#stop-6-cloudinary)
+7. [Preview: the real site, with your draft](#stop-7-preview-the-real-site-with-your-draft)
+8. [The diff](#stop-8-the-diff)
+9. [Publishing](#stop-9-publishing)
+10. [Deploying the site](#stop-10-deploying-the-site)
+11. [Playwright tests](#stop-11-playwright-tests)
+12. [Further reading](#further-reading)
 
-### Stop 0: The exhibit at a glance
+### Stop 0: Overview
 
 lucaschenphoto.com is a static React site on GitHub Pages. Which photos it shows, and in what order, comes from three JSON files in the repo. skyview is a private web app on Vercel that edits those files: you drag photos around, preview the real site with your changes, and publish. Publishing is just a git commit to `v2`. A GitHub Action deploys every commit on `v2`, so the site updates about a minute later.
 
@@ -68,7 +68,7 @@ lucaschenphoto.com is a static React site on GitHub Pages. Which photos it shows
 Two ideas hold the design together: **git is the database** (history is the undo button) and **`v2` is production** (whatever is on `v2` is live, or about to be).
 
 <details>
-<summary><b>Look closer:</b> how the code is organized</summary>
+<summary><b>Details:</b> how the code is organized</summary>
 
 | Layer | Where | Runs on |
 | --- | --- | --- |
@@ -89,7 +89,7 @@ Next.js "App Router" conventions: a file in `app/` is a route, `"use client"` at
 Three files in the site's `src/assets/` decide what appears on the site: `portfolio.json`, `published.json` and `galleries.json`. Each entry is mainly a Cloudinary **public ID** (`url`), and array order is display order. skyview reads them, lets you change them, and writes them back. It never invents a new format.
 
 <details>
-<summary><b>Look closer:</b> the shapes, and how the editor models them</summary>
+<summary><b>Details:</b> the shapes, and how the editor models them</summary>
 
 | File | Shape |
 | --- | --- |
@@ -107,12 +107,12 @@ The site reads the same files: [../src/main.jsx](../src/main.jsx) imports them a
 
 </details>
 
-### Stop 2: The entrance: signing in
+### Stop 2: Signing in
 
 Only one person may use skyview. You sign in with GitHub, and skyview checks your numeric GitHub account ID against an allowlist of one, on every page and every API call. Your GitHub login only proves *who you are*. Commits are made with a separate token that can touch this one repo and nothing else.
 
 <details>
-<summary><b>Look closer:</b> OAuth, Auth.js and the allowlist</summary>
+<summary><b>Details:</b> OAuth, Auth.js and the allowlist</summary>
 
 **The OAuth dance.** The "OAuth app" registered on GitHub isn't code. It's a registration: a client ID, a client secret and an allowed callback URL.
 
@@ -136,12 +136,12 @@ The **client secret** proves to GitHub that the server doing the exchange is rea
 
 </details>
 
-### Stop 3: The archive: reading from GitHub
+### Stop 3: Reading from GitHub
 
 When you open skyview, its server asks GitHub two questions: "what commit is `v2` on?" and "what are the three files at that commit?" It also records a fingerprint of each file, which later lets it tell whether anything changed underneath you.
 
 <details>
-<summary><b>Look closer:</b> the GitHub client and blob shas</summary>
+<summary><b>Details:</b> the GitHub client and blob shas</summary>
 
 [lib/github.js#L27-L41](lib/github.js#L27-L41), `gh()`, is a tiny wrapper around `fetch`. It adds the token, uses `cache: "no-store"` (Next.js would otherwise cache server fetches), and throws a `GitHubError`. The error carries a human hint for 401, 403 and 404 ([#L14-L25](lib/github.js#L14-L25)), so an expired token shows up as "GITHUB_REPO_TOKEN is invalid, expired or revoked…" rather than a crash ([app/page.js#L17-L23](app/page.js#L17-L23)).
 
@@ -151,12 +151,12 @@ When you open skyview, its server asks GitHub two questions: "what commit is `v2
 
 </details>
 
-### Stop 4: The status board: what's live
+### Stop 4: Deploy status: what's live
 
 The coloured bar at the top answers "is the live site up to date with `v2`?" Green means live. Yellow means a push is waiting or deploying. Red means the last deploy failed, with a link to the logs. Publishing is only allowed on green.
 
 <details>
-<summary><b>Look closer:</b> deriving status from two GitHub APIs</summary>
+<summary><b>Details:</b> deriving status from two GitHub APIs</summary>
 
 [lib/github.js#L60-L88](lib/github.js#L60-L88):
 
@@ -168,12 +168,12 @@ The browser side is [lib/use-deploy-status.js](lib/use-deploy-status.js): a Reac
 
 </details>
 
-### Stop 5: The workshop: drag and drop
+### Stop 5: Drag and drop
 
-This is the main room. One tab per file, one grid per group. Drag a photo to reorder it, or drop it into another group in the same file. × removes a photo from the site (it stays in Cloudinary), and the input below each photo edits its `source`. Every change is saved as a draft in your browser, so a reload loses nothing.
+One tab per file, one grid per group. Drag a photo to reorder it, or drop it into another group in the same file. × removes a photo from the site (it stays in Cloudinary), and the input below each photo edits its `source`. Every change is saved as a draft in your browser, so a reload loses nothing.
 
 <details>
-<summary><b>Look closer:</b> dnd-kit, piece by piece</summary>
+<summary><b>Details:</b> dnd-kit, piece by piece</summary>
 
 [dnd-kit](https://dndkit.com) is a toolkit of small pieces rather than a ready-made component. Everything is in [app/file-board.js](app/file-board.js):
 
@@ -195,12 +195,12 @@ This is the main room. One tab per file, one grid per group. Drag a photo to reo
 
 </details>
 
-### Stop 6: The darkroom: Cloudinary
+### Stop 6: Cloudinary
 
 The photos themselves never live in the repo. They're on Cloudinary, and the JSON only holds their public IDs. skyview uses Cloudinary in two ways: tiny thumbnails for the editor, and Cloudinary's own Media Library picker for adding photos.
 
 <details>
-<summary><b>Look closer:</b> delivery URLs and the Media Library widget</summary>
+<summary><b>Details:</b> delivery URLs and the Media Library widget</summary>
 
 **Thumbnails are just URLs.** [lib/registry.js#L36-L38](lib/registry.js#L36-L38):
 
@@ -220,12 +220,12 @@ You sign in to Cloudinary *inside* the widget, so skyview holds no Cloudinary se
 
 </details>
 
-### Stop 7: The preview gallery: the real site, with your draft
+### Stop 7: Preview: the real site, with your draft
 
 **Final save → preview** shows lucaschenphoto.com exactly as it will look, at phone, tablet or desktop width. It isn't a mock-up. It's the site's own code, built inside skyview and fed your draft instead of the published JSON. If it looks right here, it will look right live.
 
 <details>
-<summary><b>Look closer:</b> building the site inside skyview, and the iframe handshake</summary>
+<summary><b>Details:</b> building the site inside skyview, and the iframe handshake</summary>
 
 **Building it.** [preview/vite.config.mjs](preview/vite.config.mjs) builds `../src/App.jsx` with the repo root's Vite into `public/preview/`. Two details keep it faithful:
 
@@ -249,12 +249,12 @@ Opened directly, `/preview/index.html` renders nothing, because there's no paren
 
 </details>
 
-### Stop 8: The ledger: the diff
+### Stop 8: The diff
 
 Under the preview, skyview lists exactly what will change: photos added, removed, moved between groups, reordered, and `source` edits. Moving one photo to the front shows as one move, not as every other photo shifting down.
 
 <details>
-<summary><b>Look closer:</b> the longest increasing subsequence</summary>
+<summary><b>Details:</b> the longest increasing subsequence</summary>
 
 [lib/diff.js](lib/diff.js) compares HEAD and the draft per file and group, identifying photos by public ID ([#L31-L72](lib/diff.js#L31-L72)).
 
@@ -264,12 +264,12 @@ Reordering is the interesting part. Take the photos that stayed in a group, and 
 
 </details>
 
-### Stop 9: The vault door: publishing
+### Stop 9: Publishing
 
-Tick "I've checked the preview…" and **Publish** makes one commit to `v2` with exactly the files you changed. Three locks guard the door: the live site must be up to date, the files must not have changed since you loaded them, and nobody may have pushed in the meantime. If any lock holds, nothing is written and your draft is kept.
+Tick "I've checked the preview…" and **Publish** makes one commit to `v2` with exactly the files you changed. Three checks guard it: the live site must be up to date, the files must not have changed since you loaded them, and nobody may have pushed in the meantime. If any check fails, nothing is written and your draft is kept.
 
 <details>
-<summary><b>Look closer:</b> the publish algorithm and git's data API</summary>
+<summary><b>Details:</b> the publish algorithm and git's data API</summary>
 
 The browser posts the draft and its base blob shas to [app/api/publish/route.js](app/api/publish/route.js), which checks the session and calls `publishRegistry` ([lib/github.js#L104-L146](lib/github.js#L104-L146)):
 
@@ -287,12 +287,12 @@ In the browser, [app/publish-panel.js#L22-L23](app/publish-panel.js#L22-L23) ena
 
 </details>
 
-### Stop 10: Behind the walls: deploying the site
+### Stop 10: Deploying the site
 
 skyview never deploys anything itself. It commits, and GitHub takes over. Every push to `v2`, from skyview or from you, runs one workflow that builds the site and publishes it to GitHub Pages. The live site carries a tag, `/version.txt`, saying which commit it was built from.
 
 <details>
-<summary><b>Look closer:</b> the workflow, Pages and concurrency</summary>
+<summary><b>Details:</b> the workflow, Pages and concurrency</summary>
 
 [../.github/workflows/deploy.yml](../.github/workflows/deploy.yml):
 
@@ -308,12 +308,12 @@ Together with git's fast-forward rule (Stop 9) and skyview waiting for green, th
 
 </details>
 
-### Stop 11: The test lab: Playwright
+### Stop 11: Playwright tests
 
 A suite of 19 browser tests drives skyview the way you would (sign in, drag, preview, publish) and replays every failure scenario: a hand edit mid-draft, a broken build, a revoked token, a push that races a publish. It runs against a fake GitHub, so it's safe to run any time with `npm run test:e2e`.
 
 <details>
-<summary><b>Look closer:</b> the fake GitHub, minted sessions and network stubs</summary>
+<summary><b>Details:</b> the fake GitHub, minted sessions and network stubs</summary>
 
 The full guide, written for learning Playwright, is [e2e/README.md](e2e/README.md). The three tricks:
 
@@ -323,7 +323,7 @@ The full guide, written for learning Playwright, is [e2e/README.md](e2e/README.m
 
 </details>
 
-### Exit and further reading
+### Further reading
 
 - [ARCHITECTURE.md](ARCHITECTURE.md): the reference version of this tour, covering every rule, failure mode and setting.
 - [BUILD.md](BUILD.md): how skyview was built, step by step.
