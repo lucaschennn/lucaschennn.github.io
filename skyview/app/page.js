@@ -1,5 +1,5 @@
 import { requireUser, signIn, signOut } from "@/auth";
-import { getHead, getRegistry } from "@/lib/github";
+import { getHead, getRegistry, GitHubError } from "@/lib/github";
 import Editor from "./editor";
 
 export default async function Home() {
@@ -14,8 +14,14 @@ export default async function Home() {
     );
   }
 
-  const head = await getHead();
-  const files = await getRegistry(head);
+  let head, files, error;
+  try {
+    head = await getHead();
+    files = await getRegistry(head);
+  } catch (e) {
+    if (!(e instanceof GitHubError)) throw e;
+    error = e.message;
+  }
 
   return (
     <>
@@ -26,7 +32,11 @@ export default async function Home() {
           <button type="submit">Sign out</button>
         </form>
       </header>
-      <Editor head={head} files={files} />
+      {error ? (
+        <p className="notice error">Can't read the registry from GitHub: {error}</p>
+      ) : (
+        <Editor head={head} files={files} />
+      )}
     </>
   );
 }

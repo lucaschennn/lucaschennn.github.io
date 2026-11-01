@@ -22,11 +22,11 @@ How to get from the design in [ARCHITECTURE.md](ARCHITECTURE.md) to a working sk
 - [x] 2.1 Accounts and credentials
 - [x] 2.2 Scaffold skyview with auth
 - [x] 2.3 Vercel project
-- [ ] 3.1 Read path and status bar
-- [ ] 3.2 Editor grid
-- [ ] 3.3 Add photos (Media Library widget)
-- [ ] 3.4 Preview
-- [ ] 3.5 Diff and publish
+- [x] 3.1 Read path and status bar
+- [x] 3.2 Editor grid
+- [x] 3.3 Add photos (Media Library widget)
+- [x] 3.4 Preview
+- [x] 3.5 Diff and publish
 - [ ] 4.1 Failure-mode drills
 
 ---
@@ -137,9 +137,14 @@ Each step is a separate branch, merged by Lucas after the check. Merging to `v2`
 
 ### 4.1 Failure-mode drills (Lucas, Claude fixes anything that fails)
 Run through each row of the Failure modes table in ARCHITECTURE.md:
-- Hand-edit a JSON file on `v2` mid-draft, then publish: refused, draft kept.
-- Edit only code on `v2` mid-draft, then publish: succeeds.
-- Use a revoked token: publish fails with a clear auth error.
-- Make the build fail on a branch, then merge: status shows "last deploy failed".
-- Run `npm run deploy`: the script no longer exists.
+Already done by Claude (no writes to the repo):
+- [x] Stale base on publish: refused ("Changed on v2 since you loaded it"), nothing written. Tested against GitHub in 3.5.
+- [x] Revoked token: every GitHub call fails with a 401 that says to rotate . Found and fixed: the main page crashed with Next's generic error instead of showing this.
+- [x] Deploy status states (live, pending, deploying, failed, cancelled): checked against simulated GitHub responses.
+- [x] : "Missing script".
+
+For Lucas, in the real app:
+- [ ] Hand-edit a JSON file on  mid-draft, then publish: refused, draft kept. After a reload, the stale-draft notice appears.
+- [ ] Edit only code on  mid-draft (e.g. a comment), wait for it to go live, then publish: succeeds.
+- [ ] Optional: merge a deliberately broken build. Status shows "Last deploy failed", Publish is disabled, and the live site stays on the last good version. Revert to recover.
 - **Check:** every row behaves as documented. Update ARCHITECTURE.md where reality differs.

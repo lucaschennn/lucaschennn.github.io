@@ -8,9 +8,16 @@ export const REGISTRY_FILES = {
   galleries: "src/assets/galleries.json",
 };
 
+// What usually causes each status for this token, so errors say what to do.
+const HINTS = {
+  401: "GITHUB_REPO_TOKEN is invalid, expired or revoked. Create a new one and update it in Vercel.",
+  403: "GITHUB_REPO_TOKEN lacks a permission (Contents read/write, Deployments read, Actions read), or the API rate limit was hit.",
+  404: "GITHUB_REPO_TOKEN can't see the repo, or the path doesn't exist. Check the token's repository access.",
+};
+
 export class GitHubError extends Error {
   constructor(status, path) {
-    super(`GitHub API ${status} on ${path}`);
+    super(`GitHub API ${status} on ${path}.${HINTS[status] ? ` ${HINTS[status]}` : ""}`);
     this.status = status;
   }
 }
