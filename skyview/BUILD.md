@@ -139,12 +139,12 @@ Each step is a separate branch, merged by Lucas after the check. Merging to `v2`
 Run through each row of the Failure modes table in ARCHITECTURE.md:
 Already done by Claude (no writes to the repo):
 - [x] Stale base on publish: refused ("Changed on v2 since you loaded it"), nothing written. Tested against GitHub in 3.5.
-- [x] Revoked token: every GitHub call fails with a 401 that says to rotate . Found and fixed: the main page crashed with Next's generic error instead of showing this.
+- [x] Revoked token: every GitHub call fails with a 401 that says to rotate `GITHUB_REPO_TOKEN`. Found and fixed: the main page crashed with Next's generic error instead of showing this.
 - [x] Deploy status states (live, pending, deploying, failed, cancelled): checked against simulated GitHub responses.
-- [x] : "Missing script".
+- [x] `npm run deploy`: "Missing script".
 
 For Lucas, in the real app:
-- [ ] Hand-edit a JSON file on  mid-draft, then publish: refused, draft kept. After a reload, the stale-draft notice appears.
-- [ ] Edit only code on  mid-draft (e.g. a comment), wait for it to go live, then publish: succeeds.
+- [ ] Hand-edit a JSON file on `v2` mid-draft, then publish: refused, draft kept. After a reload, the stale-draft notice appears.
+- [ ] Edit only code on `v2` mid-draft (e.g. a comment), wait for it to go live, then publish: succeeds.
 - [ ] Optional: merge a deliberately broken build. Status shows "Last deploy failed", Publish is disabled, and the live site stays on the last good version. Revert to recover.
 - **Check:** every row behaves as documented. Update ARCHITECTURE.md where reality differs.
