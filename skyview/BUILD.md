@@ -143,7 +143,9 @@ Already done by Claude (no writes to the repo):
 - [x] Deploy status states (live, pending, deploying, failed, cancelled): checked against simulated GitHub responses.
 - [x] `npm run deploy`: "Missing script".
 
-For Lucas, in the real app:
+Automated: `npm run test:e2e` (see [e2e/README.md](e2e/README.md)) runs all of the drills below against a fake GitHub, so they can be re-checked any time without touching the real repo.
+
+For Lucas, in the real app (optional once the suite passes):
 - [ ] Hand-edit a JSON file on `v2` mid-draft, then publish: refused, draft kept. After a reload, the stale-draft notice appears.
 - [ ] Edit only code on `v2` mid-draft (e.g. a comment), wait for it to go live, then publish: succeeds.
 - [ ] Optional: merge a deliberately broken build. Status shows "Last deploy failed", Publish is disabled, and the live site stays on the last good version. Revert to recover.

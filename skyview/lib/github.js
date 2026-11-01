@@ -1,4 +1,6 @@
 // Server-only GitHub access for the site repo. Uses GITHUB_REPO_TOKEN, never the user's token.
+// GITHUB_API_URL is only set by the e2e tests, to point at a fake GitHub (e2e/fake-github.mjs).
+const API = process.env.GITHUB_API_URL ?? "https://api.github.com";
 const REPO = "lucaschennn/lucaschennn.github.io";
 export const BRANCH = "v2";
 const WORKFLOW = "deploy.yml";
@@ -23,7 +25,7 @@ export class GitHubError extends Error {
 }
 
 async function gh(path, { method = "GET", body } = {}) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}${path}`, {
+  const res = await fetch(`${API}/repos/${REPO}${path}`, {
     method,
     headers: {
       Authorization: `Bearer ${process.env.GITHUB_REPO_TOKEN}`,

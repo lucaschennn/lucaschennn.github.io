@@ -22,6 +22,10 @@ npm run dev                  # http://localhost:3000 (must match the local OAuth
 - `npm run dev` and `npm run build` rebuild it first. After changing site code in `src/`, run `npm run build:preview` (or restart dev) to see it in the preview.
 - On Vercel, `vercel-build` installs the root dependencies before building. This needs "Include files outside the root directory" on, and no custom Build Command in the Vercel settings (one would replace `vercel-build`).
 
+## Tests
+
+`npm run test:e2e` runs the Playwright suite against a fake GitHub: safe to run any time. See [e2e/README.md](e2e/README.md).
+
 ## Auth
 
 - `auth.js`: Auth.js (GitHub provider, `read:user` scope, PKCE). `signIn` only admits `ALLOWED_GITHUB_ID`.
