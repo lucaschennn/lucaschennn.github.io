@@ -14,6 +14,14 @@ npm run dev                  # http://localhost:3000 (must match the local OAuth
 
 `next start` locally needs `AUTH_TRUST_HOST=true`. `next dev` and Vercel trust the host automatically.
 
+## Preview
+
+`preview/` builds the site's own `src/` (React 18, the site's CSS) into `public/preview/` (gitignored) with the repo root's Vite. skyview shows it in an iframe and sends the draft registry via `postMessage`.
+
+- Needs the site's dependencies installed at the repo root (`npm install` in the repo root).
+- `npm run dev` and `npm run build` rebuild it first. After changing site code in `src/`, run `npm run build:preview` (or restart dev) to see it in the preview.
+- On Vercel, `vercel-build` installs the root dependencies before building. This needs "Include files outside the root directory" on, and no custom Build Command in the Vercel settings (one would replace `vercel-build`).
+
 ## Auth
 
 - `auth.js`: Auth.js (GitHub provider, `read:user` scope, PKCE). `signIn` only admits `ALLOWED_GITHUB_ID`.

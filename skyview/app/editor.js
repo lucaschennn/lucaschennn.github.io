@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { fromEditable, sameData, toEditable } from "@/lib/registry";
 import useMediaLibrary from "@/lib/use-media-library";
 import FileBoard from "./file-board";
+import Preview from "./preview";
 
 const TABS = [
   ["portfolio", "Portfolio"],
@@ -48,6 +49,7 @@ export default function Editor({ head, files }) {
   // A saved draft whose files have since changed on v2; kept until discarded.
   const [staleDraft, setStaleDraft] = useState(null);
   const [restored, setRestored] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
 
   // Restore a draft after mount (localStorage is browser-only). A draft is still
   // valid on a newer HEAD as long as none of the three files changed.
@@ -90,6 +92,9 @@ export default function Editor({ head, files }) {
   // Render only in the browser: item ids and dnd-kit's aria ids are generated client-side.
   if (!restored) return <p className="muted">Loading editor…</p>;
 
+  // The editor state stays in memory while previewing, so going back keeps everything.
+  if (previewing) return <Preview registry={current} onClose={() => setPreviewing(false)} />;
+
   return (
     <div className="editor">
       {staleDraft && (
@@ -118,6 +123,9 @@ export default function Editor({ head, files }) {
           {dirtyFiles.length ? <span>Unpublished edits</span> : <span className="muted">No edits</span>}
           <button type="button" onClick={cancel} disabled={!dirtyFiles.length}>
             Cancel
+          </button>
+          <button type="button" className="primary" onClick={() => setPreviewing(true)}>
+            Final save → preview
           </button>
         </div>
       </div>
