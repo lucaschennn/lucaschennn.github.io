@@ -31,7 +31,8 @@ npm run dev                  # http://localhost:3000 (must match the local OAuth
 ## Auth
 
 - `auth.js`: Auth.js (GitHub provider, `read:user` scope, PKCE). `signIn` only admits `ALLOWED_GITHUB_ID`.
-- Every page and API route calls `requireUser()`, which re-checks the ID on the server. `app/api/me/route.js` is the template.
+- Every page and API route calls `requireOwner()`, which re-checks the ID on the server. `app/api/me/route.js` is the template for new routes: owner-only by default.
+- Everyone else is a visitor: they tour the editor and preview without signing in, from cached GitHub reads, and can't publish.
 
 ---
 
@@ -109,7 +110,7 @@ The site reads the same files: [../src/main.jsx](../src/main.jsx) imports them a
 
 ### Stop 2: Signing in
 
-Only one person may use skyview. You sign in with GitHub, and skyview checks your numeric GitHub account ID against an allowlist of one, on every page and every API call. Your GitHub login only proves *who you are*. Commits are made with a separate token that can touch this one repo and nothing else.
+Only one person may publish. You sign in with GitHub, and skyview checks your numeric GitHub account ID against an allowlist of one, on every page and every API call. Anyone else can look around as a visitor, without signing in, but can't publish. Your GitHub login only proves *who you are*. Commits are made with a separate token that can touch this one repo and nothing else.
 
 <details>
 <summary><b>Details:</b> OAuth, Auth.js and the allowlist</summary>
@@ -123,14 +124,17 @@ Only one person may use skyview. You sign in with GitHub, and skyview checks you
 
 The **client secret** proves to GitHub that the server doing the exchange is really skyview, so a code leaked from a URL is useless on its own. **PKCE** (`code_challenge`) adds a one-time proof tied to the browser that started the login, which blocks forged callbacks.
 
-**Auth.js** does all of that. [auth.js#L7-L26](auth.js#L7-L26):
+**Auth.js** does all of that. [auth.js#L7-L29](auth.js#L7-L29):
 
 - `scope: "read:user"`: skyview asks GitHub for nothing but your public profile.
-- `signIn` callback: rejects any account whose `profile.id` isn't `ALLOWED_GITHUB_ID`.
+- `signIn` callback: rejects any account whose `profile.id` isn't `ALLOWED_GITHUB_ID`. The rejected user lands on [app/auth-error/page.js](app/auth-error/page.js): "Access denied" and a button back to skyview home, where they can tour as a visitor.
+- `pages`: points Auth.js's sign-in and error pages at that page, so its built-in ones (whose Access Denied "Sign in" link is broken) are never shown.
 - `jwt` and `session` callbacks: copy the GitHub ID into the encrypted session cookie, which is signed with `AUTH_SECRET` and lasts 12 hours.
 - The route `app/api/auth/[...nextauth]/route.js` mounts Auth.js's handlers.
 
-**Checked twice.** [auth.js#L28-L34](auth.js#L28-L34) defines `requireUser()`, which every page and API route calls first. It re-checks the ID, so changing `ALLOWED_GITHUB_ID` also locks out existing sessions. [app/api/me/route.js](app/api/me/route.js) is the smallest example.
+**Checked twice.** [auth.js#L31-L38](auth.js#L31-L38) defines `requireOwner()`, which every page and API route calls first. It re-checks the ID, so changing `ALLOWED_GITHUB_ID` also demotes existing sessions to visitors. [app/api/me/route.js](app/api/me/route.js) is the smallest example.
+
+**Visitors.** Without the owner's session, [app/page.js](app/page.js) still renders the editor, with a visitor notice and no Add or Publish. `/api/publish` refuses them on the server regardless of the UI. Their GitHub reads go through `cachedForVisitors` in [lib/github.js](lib/github.js): one shared read per 15 seconds, so a crowd of visitors costs the repo token about as much as one, and the owner never runs out of rate limit.
 
 **Two credentials, deliberately.** Your sign-in token isn't used for commits. `GITHUB_REPO_TOKEN` is a fine-grained token limited to this one repo, with Contents read/write, Deployments read and Actions read. A stolen session could at worst commit to that repo, which git can revert.
 
@@ -143,7 +147,7 @@ When you open skyview, its server asks GitHub two questions: "what commit is `v2
 <details>
 <summary><b>Details:</b> the GitHub client and blob shas</summary>
 
-[lib/github.js#L27-L41](lib/github.js#L27-L41), `gh()`, is a tiny wrapper around `fetch`. It adds the token, uses `cache: "no-store"` (Next.js would otherwise cache server fetches), and throws a `GitHubError`. The error carries a human hint for 401, 403 and 404 ([#L14-L25](lib/github.js#L14-L25)), so an expired token shows up as "GITHUB_REPO_TOKEN is invalid, expired or revoked…" rather than a crash ([app/page.js#L17-L23](app/page.js#L17-L23)).
+[lib/github.js#L27-L41](lib/github.js#L27-L41), `gh()`, is a tiny wrapper around `fetch`. It adds the token, uses `cache: "no-store"` (Next.js would otherwise cache server fetches), and throws a `GitHubError`. The error carries a human hint for 401, 403 and 404 ([#L14-L25](lib/github.js#L14-L25)), so an expired token shows up as "GITHUB_REPO_TOKEN is invalid, expired or revoked…" rather than a crash ([app/page.js#L16-L22](app/page.js#L16-L22)).
 
 [lib/github.js#L43-L58](lib/github.js#L43-L58): `getHead()` reads the branch, and `getRegistry(sha)` reads the three files through the contents API at that exact commit. Each file comes back with its **blob sha**, git's hash of the file's exact contents. Change one character and the hash changes. Drafts and publishing both rely on it (Stops 5 and 9).
 
@@ -179,17 +183,17 @@ One tab per file, one grid per group. Drag a photo to reorder it, or drop it int
 
 | Piece | What it does here | Where |
 | --- | --- | --- |
-| `DndContext` | The drag "world" for one tab: holds sensors, collision detection and the drag event handlers | [#L109-L134](app/file-board.js#L109-L134) |
+| `DndContext` | The drag "world" for one tab: holds sensors, collision detection and the drag event handlers | [#L109-L135](app/file-board.js#L109-L135) |
 | Sensors | `PointerSensor` with `distance: 5`: a drag starts only after the pointer moves 5px, so clicks on × and inputs still work. `KeyboardSensor`: Space to pick up, arrows to move | [#L38-L42](app/file-board.js#L38-L42) |
-| `useDroppable` | Makes each group's grid a drop target, so even an empty group can receive photos | [#L139](app/file-board.js#L139) |
-| `SortableContext` | Declares "these ids are an ordered list" for one group | [#L152-L164](app/file-board.js#L152-L164) |
-| `useSortable` | Makes each card draggable *and* a drop target, and provides the transform for the shuffle animation | [#L169-L171](app/file-board.js#L169-L171) |
+| `useDroppable` | Makes each group's grid a drop target, so even an empty group can receive photos | [#L140](app/file-board.js#L140) |
+| `SortableContext` | Declares "these ids are an ordered list" for one group | [#L153-L165](app/file-board.js#L153-L165) |
+| `useSortable` | Makes each card draggable *and* a drop target, and provides the transform for the shuffle animation | [#L170-L172](app/file-board.js#L170-L172) |
 | `setActivatorNodeRef` | Only the image is the drag handle, not the whole card | in `Card` |
-| `DragOverlay` | The floating thumbnail under your pointer, rendered outside the grids | [#L129-L133](app/file-board.js#L129-L133) |
+| `DragOverlay` | The floating thumbnail under your pointer, rendered outside the grids | [#L130-L134](app/file-board.js#L130-L134) |
 
 **Why moves between groups happen on drop.** The common dnd-kit pattern moves an item into the new group *during* the drag (`onDragOver`). Here that shifted the layout under the pointer, changed what was "over", and triggered another move: an infinite loop ("Maximum update depth exceeded"). So `handleDragOver` only records which group to highlight ([#L55-L58](app/file-board.js#L55-L58)), and `handleDragEnd` does the actual move ([#L60-L94](app/file-board.js#L60-L94)). A drop goes before the card you dropped on, or after it if you let go past its centre (`pastCentre`). `sameGroupStrategy` ([#L24-L27](app/file-board.js#L24-L27)) keeps the grids still while you hover a different group.
 
-**Drafts.** [app/editor.js#L19-L35](app/editor.js#L19-L35) reads and writes `localStorage`, wrapped in `try/catch` so private windows still work. Each draft stores the blob shas of the files it was based on. On load ([#L61-L71](app/editor.js#L61-L71)), the draft is restored only if those shas still match `v2`. Otherwise it's set aside with a "Discard old draft" notice, never silently applied to different data.
+**Drafts.** [app/editor.js#L19-L35](app/editor.js#L19-L35) reads and writes `localStorage`, wrapped in `try/catch` so private windows still work. Each draft stores the blob shas of the files it was based on. On load ([#L62-L72](app/editor.js#L62-L72)), the draft is restored only if those shas still match `v2`. Otherwise it's set aside with a "Discard old draft" notice, never silently applied to different data.
 
 **Rendering only in the browser.** Item ids are random, and dnd-kit generates ids for accessibility. Rendering those on the server would mismatch the browser's render, so the editor shows "Loading editor…" until it has mounted.
 
@@ -271,7 +275,7 @@ Tick "I've checked the preview…" and **Publish** makes one commit to `v2` with
 <details>
 <summary><b>Details:</b> the publish algorithm and git's data API</summary>
 
-The browser posts the draft and its base blob shas to [app/api/publish/route.js](app/api/publish/route.js), which checks the session and calls `publishRegistry` ([lib/github.js#L104-L146](lib/github.js#L104-L146)):
+The browser posts the draft and its base blob shas to [app/api/publish/route.js](app/api/publish/route.js), which checks the session and calls `publishRegistry` ([lib/github.js#L119-L161](lib/github.js#L119-L161)):
 
 1. **Lock 1, deploy state.** Unless status is `live`, it refuses. The server checks this itself and doesn't trust the button.
 2. **Lock 2, blob shas.** It re-reads HEAD. If any registry file's blob sha differs from the draft's base, it refuses with "Changed on v2 since you loaded it". Code-only commits don't change those hashes, so they don't block.
@@ -310,7 +314,7 @@ Together with git's fast-forward rule (Stop 9) and skyview waiting for green, th
 
 ### Stop 11: Playwright tests
 
-A suite of 19 browser tests drives skyview the way you would (sign in, drag, preview, publish) and replays every failure scenario: a hand edit mid-draft, a broken build, a revoked token, a push that races a publish. It runs against a fake GitHub, so it's safe to run any time with `npm run test:e2e`.
+A suite of 22 browser tests drives skyview the way you would (sign in, drag, preview, publish) and replays every failure scenario: a hand edit mid-draft, a broken build, a revoked token, a push that races a publish. It runs against a fake GitHub, so it's safe to run any time with `npm run test:e2e`.
 
 <details>
 <summary><b>Details:</b> the fake GitHub, minted sessions and network stubs</summary>

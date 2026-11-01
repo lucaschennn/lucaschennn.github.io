@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-const POLL_MS = 15_000;
-
-// Deploy status from /api/status, polled every 15s and on window focus.
+// Deploy status from /api/status, polled every pollMs and on window focus.
 // refresh() forces a check (e.g. right after publishing).
-export default function useDeployStatus() {
+export default function useDeployStatus(pollMs) {
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
 
@@ -24,13 +22,13 @@ export default function useDeployStatus() {
 
   useEffect(() => {
     refresh();
-    const timer = setInterval(refresh, POLL_MS);
+    const timer = setInterval(refresh, pollMs);
     window.addEventListener("focus", refresh);
     return () => {
       clearInterval(timer);
       window.removeEventListener("focus", refresh);
     };
-  }, [refresh]);
+  }, [refresh, pollMs]);
 
   return { status, error, refresh };
 }

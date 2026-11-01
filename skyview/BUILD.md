@@ -150,3 +150,17 @@ For Lucas, in the real app (optional once the suite passes):
 - [ ] Edit only code on `v2` mid-draft (e.g. a comment), wait for it to go live, then publish: succeeds.
 - [ ] Optional: merge a deliberately broken build. Status shows "Last deploy failed", Publish is disabled, and the live site stays on the last good version. Revert to recover.
 - **Check:** every row behaves as documented. Update ARCHITECTURE.md where reality differs. **Done:** the e2e suite passes (19/19, stable over repeated runs), and ARCHITECTURE.md reflects the final system.
+
+
+## Phase 5: after launch
+
+### 5.1 Visitor tour (Claude)
+- Anyone can open skyview without signing in and tour it as a visitor: the editor, drafts and preview work, with a visitor notice, no **+ Add photos** and no Publish. Only `ALLOWED_GITHUB_ID` can sign in and publish; `/api/publish` refuses visitors on the server.
+- `requireUser()` is now `requireOwner()`, so a route copied from the `/api/me` template is owner-only by default.
+- Visitor reads (status and registry) share one cached GitHub read per 15s (`cachedForVisitors`), so visitors can't use up the repo token's rate limit. Visitors poll status every 60s. The owner and publishing always read fresh. The page is `noindex`.
+- **Check (Lucas):** in a private window, the tour works and shows the notice; signed in, nothing changed. The visitor copy is `VISITOR_NOTICE` in `app/page.js`.
+
+### 5.2 Access denied page (Claude)
+- Bug: a non-owner sign-in landed on Auth.js's built-in Access Denied page, whose "Sign in" button linked to `/api/auth/error?error=AccessDenied/signin` (Auth.js appends `/signin` to the full URL, query included). That showed a generic "Error / localhost:3000" page.
+- Fix: `pages: { signIn: "/auth-error", error: "/auth-error" }` in `auth.js`, so the built-in pages are never shown. [app/auth-error/page.js](app/auth-error/page.js) says "Access denied" with a **Return to skyview home** button (visitors can still tour). Without an error code it redirects home.
+- **Check (Lucas):** sign in with a non-owner GitHub account: "Access denied", and the button returns to the visitor tour.

@@ -1,11 +1,11 @@
-import { requireUser } from "@/auth";
+import { requireOwner } from "@/auth";
 import { GitHubError, PublishRefused, publishRegistry } from "@/lib/github";
 
 const KEYS = ["portfolio", "published", "galleries"];
 
 // Body: { baseBlobShas, files: { [key]: data }, summary: string[] }.
 export async function POST(request) {
-  const session = await requireUser();
+  const session = await requireOwner();
   if (!session) return Response.json({ error: "unauthorized" }, { status: 401 });
 
   let body;

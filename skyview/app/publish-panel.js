@@ -11,7 +11,7 @@ const BLOCKED = {
 
 // Shown under the preview: what will change, a confirmation, and Publish.
 // before/after: { portfolio, published, galleries } at HEAD and in the draft.
-export default function PublishPanel({ before, after, blobShas, deploy, onPublished }) {
+export default function PublishPanel({ before, after, blobShas, deploy, visitor, onPublished }) {
   const diff = useMemo(() => diffRegistry(before, after), [before, after]);
   const lines = Object.entries(diff).flatMap(([file, changes]) => changes.map((c) => describe(file, c)));
   const [confirmed, setConfirmed] = useState(false);
@@ -54,7 +54,10 @@ export default function PublishPanel({ before, after, blobShas, deploy, onPublis
         <p className="muted">No changes. Nothing to publish.</p>
       )}
 
-      {lines.length > 0 && (
+      {lines.length > 0 && visitor && (
+        <p className="notice">Visitors can't publish.</p>
+      )}
+      {lines.length > 0 && !visitor && (
         <>
           {blocked && <p className="notice">{blocked}</p>}
           {error && <p className="notice error">Not published: {error}</p>}

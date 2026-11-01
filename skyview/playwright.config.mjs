@@ -42,7 +42,9 @@ export default defineConfig({
   // production build, as on Vercel, but every external dependency is swapped out:
   webServer: {
     command: `npm run build && npx next start -p ${E2E.port}`,
-    url: E2E.baseURL,
+    // Readiness check. Not "/": visitors read GitHub there, and the fake isn't up yet.
+    // /api/me answers 401 without calling GitHub, which Playwright counts as ready.
+    url: `${E2E.baseURL}/api/me`,
     timeout: 240_000,
     // Never reuse a server that happens to be running: it could have real credentials.
     reuseExistingServer: false,

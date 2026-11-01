@@ -48,7 +48,7 @@ Useful variations:
 
 | File | Covers |
 | --- | --- |
-| [auth.spec.mjs](auth.spec.mjs) | Signed out sees only the sign-in button; every API route returns 401; signed in sees the editor. |
+| [auth.spec.mjs](auth.spec.mjs) | A visitor (signed out) tours the editor and preview with the notice, no Add and no Publish; owner-only routes return 401 and nothing is written; visitor status reads are cached; a denied sign-in shows "Access denied" with a button home, and Auth.js's built-in pages are never shown; the owner sees the editor without the notice. |
 | [editor.spec.mjs](editor.spec.mjs) | Order matches v2; drag to reorder; draft survives reload; cancel; remove; edit source; add photos (duplicates and videos skipped); no Add on projects. |
 | [preview-publish.spec.mjs](preview-publish.spec.mjs) | Preview renders the site's own code with the draft; publish makes one commit with exactly the edited file, formatted like the repo; status goes pending → live. |
 | [drills.spec.mjs](drills.spec.mjs) | JSON hand-edited mid-draft (refused, draft kept); code-only change mid-draft (succeeds); deploy in progress and broken build (Publish disabled); the server enforces the deploy rule; a racing push (refused); revoked token (clear message). |

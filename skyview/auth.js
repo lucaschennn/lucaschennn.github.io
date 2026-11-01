@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 
-// Single-user app: only the GitHub account with this numeric ID may sign in.
+// Only the GitHub account with this numeric ID may sign in. Visitors don't sign in.
 const allowedId = () => process.env.ALLOWED_GITHUB_ID;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -10,6 +10,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     GitHub({ authorization: { params: { scope: "read:user" } } }),
   ],
   session: { maxAge: 12 * 60 * 60 },
+  // Never show Auth.js's built-in pages: its Access Denied page links "Sign in" to a
+  // broken URL. Failed sign-ins land on our own page, which links back home.
+  pages: { signIn: "/auth-error", error: "/auth-error" },
   callbacks: {
     signIn({ profile }) {
       return String(profile?.id) === allowedId();
@@ -26,8 +29,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 
 // Re-checks the allowlist on every request, so changing ALLOWED_GITHUB_ID
-// locks out existing sessions too. Returns the session or null.
-export async function requireUser() {
+// demotes existing sessions to visitors too. Returns the owner's session or null.
+// Anyone else is a visitor: they can tour with cached reads but never publish.
+export async function requireOwner() {
   const session = await auth();
   if (!session?.user?.githubId || session.user.githubId !== allowedId()) return null;
   return session;

@@ -41,3 +41,8 @@ The `skyview/` subproject is a Next.js admin tool, deployed separately to Vercel
 - Unused dependencies: `react-router-dom`, `masonic`, `react-masonry-css`, `@emailjs/browser` (only used by dead `message.jsx`)
 - `public/images/` (~59MB, nothing in `src/` references it) and `vite.config.js.timestamp-*.mjs` are leftovers. Only `public/icons/` is used
 - Many components import `AdvancedImage`, `placeholder`, etc. without using them
+
+
+## Skyview documentation
+
+- Updates to Skyview or related to skyview should be mentioned in skyview/BUILD.md. Update ARCHITECTURE.md and README.md when there either go stale or require updated information.

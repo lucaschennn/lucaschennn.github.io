@@ -86,6 +86,21 @@ export async function getDeployStatus() {
   return { ...base, ...runInfo, state: "failed" };
 }
 
+// Visitors share one GitHub read per key every 15s (per server instance), so any number
+// of visitor tabs costs GITHUB_REPO_TOKEN's rate limit about the same as one. The owner
+// and publishing always read fresh.
+const VISITOR_TTL_MS = 15_000;
+const visitorCache = new Map();
+
+export function cachedForVisitors(key, read) {
+  const hit = visitorCache.get(key);
+  if (hit && Date.now() - hit.at < VISITOR_TTL_MS) return hit.promise;
+  const promise = read();
+  visitorCache.set(key, { at: Date.now(), promise });
+  promise.catch(() => visitorCache.delete(key)); // don't cache failures
+  return promise;
+}
+
 // Same formatting as the files in the repo (4-space indent, no trailing newline),
 // so an untouched file serializes byte-for-byte identically.
 export const serialize = (data) => JSON.stringify(data, null, 4);

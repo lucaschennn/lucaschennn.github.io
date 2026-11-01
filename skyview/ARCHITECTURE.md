@@ -2,7 +2,7 @@
 
 Status: built and in use. The first real publish was `082ec9e` ("skyview: update portfolio"). How it was built, step by step: [BUILD.md](BUILD.md). Day-to-day commands: [README.md](README.md).
 
-skyview is a private, single-user admin tool for rearranging the photos on lucaschenphoto.com and publishing the change without hand-editing JSON.
+skyview is a single-owner admin tool for rearranging the photos on lucaschenphoto.com and publishing the change without hand-editing JSON. Visitors can tour it without signing in, but only the owner can publish.
 
 ## Registry
 
@@ -22,7 +22,7 @@ Three JSON files in `src/assets/` are the contract between skyview, Cloudinary a
 
 ## User flow
 
-1. **Sign in with GitHub.** Only the numeric GitHub user ID in `ALLOWED_GITHUB_ID` gets in.
+1. **Sign in with GitHub.** Only the numeric GitHub user ID in `ALLOWED_GITHUB_ID` can sign in. Anyone else is a **visitor**: the same editor and preview, with a visitor notice, no **+ Add photos** and no Publish.
 2. **The status bar** shows the deploy state: Live = `v2` HEAD, Pushed / waiting, Deploying, or Last deploy failed (with a link to the run). It refreshes every 15s and when the window regains focus.
 3. **Tabs:** Portfolio, Published and Galleries, with one grid per group. Thumbnails are 200px Cloudinary crops.
 4. **Editing:**
@@ -67,7 +67,10 @@ A bad public ID shows as a broken image (grey square, with the ID as alt text) i
 - **Cloudinary:** delivery URLs only, plus the Media Library widget in the browser. skyview holds no Cloudinary API secret.
 - **Auth** ([auth.js](auth.js)):
   - Auth.js 5 with the GitHub provider: `read:user` scope only, PKCE, 12-hour sessions in an encrypted cookie.
-  - `signIn` admits only `ALLOWED_GITHUB_ID`, and `requireUser()` re-checks the ID on every page and API route. Changing the ID locks out existing sessions too.
+  - `signIn` admits only `ALLOWED_GITHUB_ID`, and `requireOwner()` re-checks the ID on every page and API route. Changing the ID demotes existing sessions to visitors too.
+  - Owner-only: `/api/publish`, `/api/registry`, `/api/me` (401 otherwise). Open to visitors: the page and `/api/status`.
+  - A rejected sign-in lands on [app/auth-error/page.js](app/auth-error/page.js) ("Access denied", **Return to skyview home**). `pages.signIn` and `pages.error` both point there, so Auth.js's built-in pages are never shown: their Access Denied "Sign in" link is broken (it appends `/signin` to the query string).
+  - **Visitor reads are cached** (`cachedForVisitors` in [lib/github.js](lib/github.js)): one shared GitHub read per 15s per server instance for the status and for the registry, so visitor traffic can't use up `GITHUB_REPO_TOKEN`'s rate limit (5,000 requests/hour, shared with the owner). Visitors also poll status every 60s instead of 15s. The owner and publishing always read fresh. The page is `noindex`.
   - Commits use a separate fine-grained token: this repo only, with Contents read/write, Deployments read and Actions read.
 
 ## Invariant: `v2` is production
@@ -101,12 +104,13 @@ These are all covered by the e2e suite ([e2e/drills.spec.mjs](e2e/drills.spec.mj
 | Path | Role |
 | --- | --- |
 | `app/page.js` | Server component: sign-in gate, reads HEAD and the registry, shows GitHub errors clearly |
+| `app/auth-error/page.js` | Where failed sign-ins land: access denied, link home |
 | `app/editor.js` | Client: tabs, draft persistence, Cancel, preview and publish states |
 | `app/file-board.js` | dnd-kit board for one file: groups, cards, drag/drop, remove, source, Add |
 | `app/preview.js`, `preview/` | Preview iframe, width switch; the preview's Vite entry and config |
 | `app/publish-panel.js` | Diff, confirmation, Publish |
 | `app/status-bar.js`, `lib/use-deploy-status.js` | Deploy status display and polling |
-| `app/api/{status,registry,publish,me}` | API routes; each calls `requireUser()` first |
+| `app/api/{status,registry,publish,me}` | API routes; each calls `requireOwner()` first (only `status` lets visitors through) |
 | `lib/github.js` | All GitHub access: reads, deploy status, publish |
 | `lib/registry.js`, `lib/diff.js` | Editor data model, thumbnails; the diff |
 | `lib/use-media-library.js` | Loads and drives the Cloudinary widget |
@@ -116,7 +120,7 @@ These are all covered by the e2e suite ([e2e/drills.spec.mjs](e2e/drills.spec.mj
 
 | Env var | Where | Purpose |
 | --- | --- | --- |
-| `ALLOWED_GITHUB_ID` | Vercel, `.env.local` | The only GitHub account that may sign in (numeric ID) |
+| `ALLOWED_GITHUB_ID` | Vercel, `.env.local` | The only GitHub account that may sign in and publish (numeric ID) |
 | `AUTH_GITHUB_ID`, `AUTH_GITHUB_SECRET` | Vercel, `.env.local` | GitHub OAuth app. Separate apps for localhost:3000 and production, since an OAuth app accepts callbacks for only one host |
 | `AUTH_SECRET` | Vercel, `.env.local` | Encrypts session cookies |
 | `GITHUB_REPO_TOKEN` | Vercel, `.env.local` | Fine-grained token for this repo. It expires, so set a reminder |
@@ -127,7 +131,7 @@ Vercel: Root Directory `skyview`, production branch `v2`, env vars scoped to Pro
 
 ## Testing
 
-`npm run test:e2e` runs 19 Playwright tests in Chromium against a production build of skyview. GitHub is replaced by an in-memory fake ([e2e/fake-github.mjs](e2e/fake-github.mjs)), sessions are minted with Auth.js's own `encode()` and a test secret, and all other internet access is stubbed. The suite never touches the real repo, Vercel or Cloudinary. See [e2e/README.md](e2e/README.md).
+`npm run test:e2e` runs 22 Playwright tests in Chromium against a production build of skyview. GitHub is replaced by an in-memory fake ([e2e/fake-github.mjs](e2e/fake-github.mjs)), sessions are minted with Auth.js's own `encode()` and a test secret, and all other internet access is stubbed. The suite never touches the real repo, Vercel or Cloudinary. See [e2e/README.md](e2e/README.md).
 
 ## Tech debt and possible improvements
 

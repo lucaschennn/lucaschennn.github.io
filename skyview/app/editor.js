@@ -34,7 +34,8 @@ function writeDraft(draft) {
 }
 
 // files: { [key]: { path, blobSha, data } } as read at `head`.
-export default function Editor({ head, files }) {
+// visitor: touring without signing in. Same editor and preview, but no Add and no Publish.
+export default function Editor({ head, files, visitor }) {
   const loaded = useMemo(
     () => Object.fromEntries(Object.entries(files).map(([k, f]) => [k, f.data])),
     [files],
@@ -44,7 +45,7 @@ export default function Editor({ head, files }) {
     [files],
   );
 
-  const deploy = useDeployStatus();
+  const deploy = useDeployStatus(visitor ? 60_000 : 15_000);
   const picker = useMediaLibrary();
   const [tab, setTab] = useState("portfolio");
   const [state, setState] = useState(() =>
@@ -125,7 +126,7 @@ export default function Editor({ head, files }) {
       <>
         {statusBar}
         <Preview registry={current} onClose={() => setPreviewing(false)}>
-          <PublishPanel before={loaded} after={current} blobShas={blobShas} deploy={deploy} onPublished={handlePublished} />
+          <PublishPanel before={loaded} after={current} blobShas={blobShas} deploy={deploy} visitor={visitor} onPublished={handlePublished} />
         </Preview>
       </>
     );
@@ -177,7 +178,7 @@ export default function Editor({ head, files }) {
             [tab]: { ...s[tab], groups: typeof next === "function" ? next(s[tab].groups) : next },
           }))
         }
-        picker={picker}
+        picker={visitor ? null : picker}
       />
       {picker.error && <p className="muted">{picker.error}</p>}
     </div>

@@ -1,23 +1,20 @@
-import { requireUser, signIn, signOut } from "@/auth";
-import { getHead, getRegistry, GitHubError } from "@/lib/github";
+import { requireOwner, signIn, signOut } from "@/auth";
+import { cachedForVisitors, getHead, getRegistry, GitHubError } from "@/lib/github";
 import Editor from "./editor";
 
-export default async function Home() {
-  const session = await requireUser();
+const VISITOR_NOTICE = "Welcome to skyview, the LucasChenPhoto portfolio editor and deploy pipeline! You won't be able to update the portfolio, but you can explore, preview, and edit freely.";
 
-  if (!session) {
-    return (
-      <form action={async () => { "use server"; await signIn("github"); }}>
-        <h1>skyview</h1>
-        <button type="submit">Sign in with GitHub</button>
-      </form>
-    );
-  }
+async function readRegistry() {
+  const head = await getHead();
+  return { head, files: await getRegistry(head) };
+}
+
+export default async function Home() {
+  const owner = await requireOwner();
 
   let head, files, error;
   try {
-    head = await getHead();
-    files = await getRegistry(head);
+    ({ head, files } = await (owner ? readRegistry() : cachedForVisitors("registry", readRegistry)));
   } catch (e) {
     if (!(e instanceof GitHubError)) throw e;
     error = e.message;
@@ -27,15 +24,22 @@ export default async function Home() {
     <>
       <header className="header">
         <h1>skyview</h1>
-        <form action={async () => { "use server"; await signOut(); }}>
-          <span className="muted">{session.user.name}</span>{" "}
-          <button type="submit">Sign out</button>
-        </form>
+        {owner ? (
+          <form action={async () => { "use server"; await signOut(); }}>
+            <span className="muted">{owner.user.name}</span>{" "}
+            <button type="submit">Sign out</button>
+          </form>
+        ) : (
+          <form action={async () => { "use server"; await signIn("github"); }}>
+            <button type="submit">Sign in with GitHub</button>
+          </form>
+        )}
       </header>
+      {!owner && <p className="notice visitor">{VISITOR_NOTICE}</p>}
       {error ? (
         <p className="notice error">Can't read the registry from GitHub: {error}</p>
       ) : (
-        <Editor head={head} files={files} />
+        <Editor head={head} files={files} visitor={!owner} />
       )}
     </>
   );

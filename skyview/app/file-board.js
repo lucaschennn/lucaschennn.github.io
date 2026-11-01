@@ -31,7 +31,7 @@ const groupId = (key) => `group:${key}`;
 
 // All groups of one registry file. Items can be reordered and moved between
 // groups of the same file. `onChange` receives the new groups object, or an
-// updater function of the current groups. `picker` is from useMediaLibrary().
+// updater function of the current groups. `picker` is from useMediaLibrary(), or null to hide Add (visitors).
 export default function FileBoard({ fileKey, groups, onChange, picker }) {
   const [activeId, setActiveId] = useState(null);
   const [overGroup, setOverGroup] = useState(null);
@@ -123,7 +123,8 @@ export default function FileBoard({ fileKey, groups, onChange, picker }) {
           highlight={activeId !== null && overGroup === key && findGroup(activeId) !== key}
           onUpdate={(id, patch) => updateItem(key, id, patch)}
           onRemove={(id) => removeItem(key, id)}
-          onAdd={picker.ready ? () => picker.open((ids) => addItems(key, ids)) : null}
+          addable={!!picker}
+          onAdd={picker?.ready ? () => picker.open((ids) => addItems(key, ids)) : null}
         />
       ))}
       <DragOverlay>
@@ -135,10 +136,10 @@ export default function FileBoard({ fileKey, groups, onChange, picker }) {
   );
 }
 
-function Group({ groupKey, title, entries, highlight, onUpdate, onRemove, onAdd }) {
+function Group({ groupKey, title, entries, highlight, onUpdate, onRemove, addable, onAdd }) {
   const { setNodeRef } = useDroppable({ id: groupId(groupKey) });
   // Project entries need a title, link and description, which skyview can't edit yet.
-  const canAdd = !entries.some((e) => "title" in e.item);
+  const canAdd = addable && !entries.some((e) => "title" in e.item);
   return (
     <section className="group">
       <h3>
