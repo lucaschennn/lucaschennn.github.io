@@ -2,8 +2,15 @@ body { font-family: system-ui, sans-serif; margin: 1.5rem 2rem; color: #222; }
 button { font: inherit; cursor: pointer; }
 button:disabled { cursor: default; }
 .muted { color: #888; }
+/* Steel blue from lucaschenphoto.com. */
+a { color: #638EA1; }
+a:hover { color: #4a7183; }
 
-.header { display: flex; justify-content: space-between; align-items: center; }
+@media (max-width: 600px) {
+  body { margin: 1rem; }
+}
+
+.header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
 .header h1 { margin: 0; }
 
 .status { padding: 0.5rem 0.75rem; border-radius: 6px; background: #eee; margin: 1rem 0 1.5rem; }
@@ -13,12 +20,12 @@ button:disabled { cursor: default; }
 
 .notice { padding: 0.5rem 0.75rem; border-radius: 6px; background: #fff4d6; margin-bottom: 1rem; }
 
-.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem 1rem; flex-wrap: wrap;
   position: sticky; top: 0; background: #fff; padding: 0.5rem 0; z-index: 10; border-bottom: 1px solid #ddd; }
-.tabs { display: flex; gap: 0.25rem; }
+.tabs { display: flex; gap: 0.25rem; flex-wrap: wrap; }
 .tabs button { border: 1px solid #ccc; background: #f6f6f6; padding: 0.4rem 0.9rem; border-radius: 6px; }
 .tabs button.active { background: #222; color: #fff; border-color: #222; }
-.actions { display: flex; gap: 0.75rem; align-items: center; }
+.actions { display: flex; gap: 0.5rem 0.75rem; align-items: center; flex-wrap: wrap; }
 
 .group h3 { margin: 1.5rem 0 0.5rem; }
 .count { color: #888; font-weight: normal; font-size: 0.9em; }

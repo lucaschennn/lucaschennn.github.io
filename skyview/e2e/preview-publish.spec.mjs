@@ -57,7 +57,7 @@ test("publish: one commit to v2 with exactly the edited file", async ({ page, gi
   await expect(page.locator(".status")).toContainText("waiting for the deploy");
   github.deployHead();
   await refreshStatus(page);
-  await expect(page.locator(".status")).toContainText("Live = v2 HEAD");
+  await expect(page.locator(".status")).toContainText("Live site is on v2 HEAD");
 });
 
 test("no edits: the preview says there's nothing to publish", async ({ page }) => {

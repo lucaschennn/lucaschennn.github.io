@@ -6,7 +6,7 @@ test("visitor: tours the editor with a notice, and no Add or Publish", async ({ 
   await openEditor(anonPage);
   await expect(anonPage.locator(".notice.visitor")).toBeVisible();
   await expect(anonPage.getByRole("button", { name: "Sign in with GitHub" })).toBeVisible();
-  await expect(anonPage.locator(".status")).toContainText("Live = v2 HEAD");
+  await expect(anonPage.locator(".status")).toContainText("Live site is on v2 HEAD");
   await expect(anonPage.getByRole("button", { name: /Add photos/ })).toHaveCount(0);
 
   // Editing and the preview work as for the owner; publishing doesn't.
@@ -56,7 +56,7 @@ test("Auth.js's built-in sign-in page is never shown", async ({ anonPage }) => {
 
 test("owner: the editor loads with the deploy status", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator(".status")).toContainText("Live = v2 HEAD");
+  await expect(page.locator(".status")).toContainText("Live site is on v2 HEAD");
   await expect(page.getByText("Test Lucas")).toBeVisible();
   await expect(page.locator(".notice.visitor")).toHaveCount(0);
 });

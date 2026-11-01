@@ -164,3 +164,10 @@ For Lucas, in the real app (optional once the suite passes):
 - Bug: a non-owner sign-in landed on Auth.js's built-in Access Denied page, whose "Sign in" button linked to `/api/auth/error?error=AccessDenied/signin` (Auth.js appends `/signin` to the full URL, query included). That showed a generic "Error / localhost:3000" page.
 - Fix: `pages: { signIn: "/auth-error", error: "/auth-error" }` in `auth.js`, so the built-in pages are never shown. [app/auth-error/page.js](app/auth-error/page.js) says "Access denied" with a **Return to skyview home** button (visitors can still tour). Without an error code it redirects home.
 - **Check (Lucas):** sign in with a non-owner GitHub account: "Access denied", and the button returns to the visitor tour.
+
+### 5.3 UI polish (Claude)
+- Status bar: the live label is "✅ Live site is on v2 HEAD". The HEAD hash (and the live hash while a deploy is pending) links to its commit on GitHub, and the site link reads "lucaschenphoto.com".
+- Links use the site's steel blue (`#638EA1`) instead of the browser default.
+- The editor's **Final save → preview** button is now **Preview & publish**, and "Unpublished edits" carries the same • as a dirty tab.
+- Mobile: the header, toolbar, tabs and action buttons wrap instead of running past the viewport, and the page margin shrinks to 1rem below 600px.
+- **Check (Lucas):** at 390px wide, the toolbar wraps with no horizontal scroll; the HEAD hash opens the commit on GitHub.

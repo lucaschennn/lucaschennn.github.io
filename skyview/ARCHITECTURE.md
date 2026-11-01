@@ -23,7 +23,7 @@ Three JSON files in `src/assets/` are the contract between skyview, Cloudinary a
 ## User flow
 
 1. **Sign in with GitHub.** Only the numeric GitHub user ID in `ALLOWED_GITHUB_ID` can sign in. Anyone else is a **visitor**: the same editor and preview, with a visitor notice, no **+ Add photos** and no Publish.
-2. **The status bar** shows the deploy state: Live = `v2` HEAD, Pushed / waiting, Deploying, or Last deploy failed (with a link to the run). It refreshes every 15s and when the window regains focus.
+2. **The status bar** shows the deploy state: Live site is on `v2` HEAD, Pushed / waiting, Deploying, or Last deploy failed (with a link to the run), with the HEAD commit linked to GitHub and a link to lucaschenphoto.com. It refreshes every 15s and when the window regains focus.
 3. **Tabs:** Portfolio, Published and Galleries, with one grid per group. Thumbnails are 200px Cloudinary crops.
 4. **Editing:**
    - Drag to reorder, or to move a photo to another group in the same file. The move happens on drop, and the target group is highlighted while you drag.
@@ -32,7 +32,7 @@ Three JSON files in `src/assets/` are the contract between skyview, Cloudinary a
    - **+ Add photos** opens the Cloudinary Media Library, with its own Cloudinary login. Picked images are appended, and duplicates are skipped. Project groups have no Add button.
    - **Cancel** asks for confirmation, then discards all edits.
 5. **Drafts:** saved to `localStorage` on every edit, together with the blob shas of the three files they were based on. After a reload, the draft is restored only if those shas still match `v2`. Otherwise you get a stale-draft notice with "Discard old draft".
-6. **Final save → preview:** the real site, rendered with the draft, at Phone 390, Tablet 768 or Desktop 1280. Below it is the diff against HEAD: added, removed, moved between groups, reordered, `source` changed. A move counts once, not as a shift of every later photo.
+6. **Preview & publish:** the real site, rendered with the draft, at Phone 390, Tablet 768 or Desktop 1280. Below it is the diff against HEAD: added, removed, moved between groups, reordered, `source` changed. A move counts once, not as a shift of every later photo.
 7. **Publish:** tick "I've checked the preview…" to enable it. The button only works while the live site equals `v2` HEAD. skyview then commits to `v2`, shows a link to the commit, and the status bar follows the deploy.
 
 A bad public ID shows as a broken image (grey square, with the ID as alt text) in both the editor and the preview. Catching it there is the user's job.

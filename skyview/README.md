@@ -226,7 +226,7 @@ You sign in to Cloudinary *inside* the widget, so skyview holds no Cloudinary se
 
 ### Stop 7: Preview: the real site, with your draft
 
-**Final save → preview** shows lucaschenphoto.com exactly as it will look, at phone, tablet or desktop width. It isn't a mock-up. It's the site's own code, built inside skyview and fed your draft instead of the published JSON. If it looks right here, it will look right live.
+**Preview & publish** shows lucaschenphoto.com exactly as it will look, at phone, tablet or desktop width. It isn't a mock-up. It's the site's own code, built inside skyview and fed your draft instead of the published JSON. If it looks right here, it will look right live.
 
 <details>
 <summary><b>Details:</b> building the site inside skyview, and the iframe handshake</summary>

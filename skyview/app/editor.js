@@ -158,12 +158,12 @@ export default function Editor({ head, files, visitor }) {
           ))}
         </nav>
         <div className="actions">
-          {dirtyFiles.length ? <span>Unpublished edits</span> : <span className="muted">No edits</span>}
+          {dirtyFiles.length ? <span>Unpublished edits •</span> : <span className="muted">No edits</span>}
           <button type="button" onClick={cancel} disabled={!dirtyFiles.length}>
             Cancel
           </button>
           <button type="button" className="primary" onClick={() => setPreviewing(true)}>
-            Final save → preview
+            Preview &amp; publish
           </button>
         </div>
       </div>

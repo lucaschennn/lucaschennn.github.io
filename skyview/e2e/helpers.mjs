@@ -48,9 +48,9 @@ export async function refreshStatus(page) {
   await page.evaluate(() => window.dispatchEvent(new Event("focus")));
 }
 
-// "Final save → preview", then the publish panel underneath the preview.
+// "Preview & publish", then the publish panel underneath the preview.
 export async function openPreview(page) {
-  await page.getByRole("button", { name: /Final save/ }).click();
+  await page.getByRole("button", { name: "Preview & publish" }).click();
   await expect(page.getByRole("heading", { name: "Changes" })).toBeVisible();
 }
 
