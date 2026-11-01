@@ -27,7 +27,7 @@ How to get from the design in [ARCHITECTURE.md](ARCHITECTURE.md) to a working sk
 - [x] 3.3 Add photos (Media Library widget)
 - [x] 3.4 Preview
 - [x] 3.5 Diff and publish
-- [ ] 4.1 Failure-mode drills
+- [x] 4.1 Failure-mode drills (automated: `npm run test:e2e`)
 
 ---
 
@@ -149,4 +149,4 @@ For Lucas, in the real app (optional once the suite passes):
 - [ ] Hand-edit a JSON file on `v2` mid-draft, then publish: refused, draft kept. After a reload, the stale-draft notice appears.
 - [ ] Edit only code on `v2` mid-draft (e.g. a comment), wait for it to go live, then publish: succeeds.
 - [ ] Optional: merge a deliberately broken build. Status shows "Last deploy failed", Publish is disabled, and the live site stays on the last good version. Revert to recover.
-- **Check:** every row behaves as documented. Update ARCHITECTURE.md where reality differs.
+- **Check:** every row behaves as documented. Update ARCHITECTURE.md where reality differs. **Done:** the e2e suite passes (19/19, stable over repeated runs), and ARCHITECTURE.md reflects the final system.

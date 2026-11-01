@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Lucas Chen's photography portfolio: a single-page React 18 + Vite site deployed to GitHub Pages. **`v2` is the working/main branch** (the `main` branch holds the old v1). There are no tests and no linter configured.
+Lucas Chen's photography portfolio: a single-page React 18 + Vite site deployed to GitHub Pages. **`v2` is the working branch and production** (`main` is stale and not deployed). The site has no tests or linter; skyview has a Playwright suite (`skyview/e2e/`).
 
 ## Commands
 
@@ -16,7 +16,7 @@ Lucas Chen's photography portfolio: a single-page React 18 + Vite site deployed 
 
 **`v2` is production.** Every push to `v2` runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which builds and deploys to GitHub Pages (custom domain `lucaschenphoto.com`, set in repo Settings → Pages). There is no manual deploy. Work in progress goes on other branches. `/version.txt` on the live site holds the deployed commit's short sha.
 
-The `skyview/` subproject (admin tool, deployed separately to Vercel) is planned in [skyview/ARCHITECTURE.md](skyview/ARCHITECTURE.md) and [skyview/BUILD.md](skyview/BUILD.md).
+The `skyview/` subproject is a Next.js admin tool, deployed separately to Vercel, that edits the registry JSON and publishes it as a commit to `v2`. It also renders `src/` as its preview, so site changes affect it. See [skyview/ARCHITECTURE.md](skyview/ARCHITECTURE.md).
 
 ## Architecture
 
@@ -39,5 +39,5 @@ The `skyview/` subproject (admin tool, deployed separately to Vercel) is planned
 - `src/photos.json`, `src/nav-animate.js` — unused
 - [tools/](tools/) — old Flask/Jupyter helper for local `public/images/portfolio/*` files (images now live on Cloudinary); `script.js` imports a nonexistent `captions.json`
 - Unused dependencies: `react-router-dom`, `masonic`, `react-masonry-css`, `@emailjs/browser` (only used by dead `message.jsx`)
-- `public/images/` and `vite.config.js.timestamp-*.mjs` are likely leftovers
+- `public/images/` (~59MB, nothing in `src/` references it) and `vite.config.js.timestamp-*.mjs` are leftovers. Only `public/icons/` is used
 - Many components import `AdvancedImage`, `placeholder`, etc. without using them
