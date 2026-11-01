@@ -20,7 +20,7 @@ npm run dev                  # http://localhost:3000 (must match the local OAuth
 
 - Needs the site's dependencies installed at the repo root (`npm install` in the repo root).
 - `npm run dev` and `npm run build` rebuild it first. After changing site code in `src/`, run `npm run build:preview` (or restart dev) to see it in the preview.
-- On Vercel, `vercel-build` installs the root dependencies before building. This needs "Include files outside the root directory" on, and no custom Build Command in the Vercel settings (one would replace `vercel-build`).
+- On Vercel, [vercel.json](vercel.json) sets the build command to `npm run vercel-build`, which installs the root dependencies before building. This needs "Include files outside the root directory" on. `vercel.json` takes precedence over a Build Command set in the dashboard.
 
 ## Tests
 
