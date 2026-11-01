@@ -1,8 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-const POLL_MS = 15_000;
 const short = (sha) => sha?.slice(0, 7) ?? "none";
 
 const LABELS = {
@@ -12,34 +7,8 @@ const LABELS = {
   failed: "Last deploy failed",
 };
 
-export default function StatusBar() {
-  const [status, setStatus] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    async function load() {
-      try {
-        const res = await fetch("/api/status", { cache: "no-store" });
-        const body = await res.json();
-        if (cancelled) return;
-        if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
-        setStatus(body);
-        setError(null);
-      } catch (e) {
-        if (!cancelled) setError(e.message);
-      }
-    }
-    load();
-    const timer = setInterval(load, POLL_MS);
-    window.addEventListener("focus", load);
-    return () => {
-      cancelled = true;
-      clearInterval(timer);
-      window.removeEventListener("focus", load);
-    };
-  }, []);
-
+// Presentational; status comes from useDeployStatus().
+export default function StatusBar({ status, error }) {
   if (error) return <div className="status status-failed">Status unavailable: {error}</div>;
   if (!status) return <div className="status">Checking deploy status…</div>;
 
