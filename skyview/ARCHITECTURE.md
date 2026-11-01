@@ -24,7 +24,7 @@ Three JSON files in `src/assets/` are the contract between skyview, Cloudinary, 
 2. A status bar shows whether the deployed site matches `v2` HEAD (or a deploy is pending or failed).
 3. One tab per registry file, with one section per group. Thumbnails come from Cloudinary.
 4. Edit: drag to reorder (moving between groups is allowed, not special-cased), remove (off the site only, the image stays in Cloudinary), add via the Media Library widget (separate Cloudinary login), and edit `source`. Cancel discards the changes. Drafts persist in `localStorage`.
-5. **Final save** opens the preview: the real site rendered with the draft JSON, plus a diff (added, removed, moved) against the **live** JSON (from the deployed sha), split into "your edits" and "already on `v2`, not yet live". Publishing ships both.
+5. **Final save** opens the preview: the real site rendered with the draft JSON, plus a diff against `v2` HEAD (added, removed, moved between groups, reordered, `source` changed). **Publish is only enabled when the live site equals `v2` HEAD** (enforced on the server too), so a publish only ever ships the photo edits.
 6. Tick the confirm checkbox, then **Publish**. This commits to `v2`, and the deploy action runs.
 
 A bad public ID shows as a broken image in the preview. Catching it there is my responsibility.
@@ -57,8 +57,8 @@ Every push to `v2` deploys (the action has no path filter), so `v2` HEAD is alwa
 
 | Situation | What skyview shows | Fix |
 | --- | --- | --- |
-| Deploy in progress | "Deploying" | Wait (~1–2 min) |
-| Deploy failed | "Deploy failed" + link to the run | Re-run the workflow, or fix and push |
+| Deploy in progress | "Deploying", Publish disabled | Wait (~1–2 min) |
+| Deploy failed | "Deploy failed" + link to the run, Publish disabled | Re-run the workflow, or fix and push |
 | JSON changed on `v2` since load | Publish refused, draft kept | Reload, redo the edits |
 | Bad publish went live | Normal | `git revert` the skyview commit (auto-redeploys) |
 | `npm run deploy` run manually | Nothing | No effect: Pages serves from Actions, not the `gh-pages` branch |

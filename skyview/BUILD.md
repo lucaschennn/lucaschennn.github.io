@@ -130,7 +130,7 @@ Each step is a separate branch, merged by Lucas after the check. Merging to `v2`
 - A confirm checkbox enables **Publish**. On publish, the server re-reads HEAD:
   - If any of the three files changed since the draft was loaded, the publish is refused and the draft is kept.
   - Otherwise skyview makes one commit with all three files (git data API), authored by `skyview`, on top of HEAD.
-- Open decision: also block Publish while live ≠ HEAD (deploying or failed)? Lucas decides before this step.
+- Publish is blocked while live ≠ HEAD (deploying or failed), in the UI and on the server. (Decided by Lucas.)
 - **Check (Lucas):** publish a small reorder. The commit appears on `v2`, the action deploys it, the live site changes, and the status returns to "live = HEAD". Then `git revert` it and confirm the site goes back.
 
 ## Phase 4: hardening

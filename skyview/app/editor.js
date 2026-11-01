@@ -2,9 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { fromEditable, sameData, toEditable } from "@/lib/registry";
+import useDeployStatus from "@/lib/use-deploy-status";
 import useMediaLibrary from "@/lib/use-media-library";
 import FileBoard from "./file-board";
 import Preview from "./preview";
+import PublishPanel from "./publish-panel";
+import StatusBar from "./status-bar";
 
 const TABS = [
   ["portfolio", "Portfolio"],
@@ -41,6 +44,7 @@ export default function Editor({ head, files }) {
     [files],
   );
 
+  const deploy = useDeployStatus();
   const picker = useMediaLibrary();
   const [tab, setTab] = useState("portfolio");
   const [state, setState] = useState(() =>
@@ -50,6 +54,7 @@ export default function Editor({ head, files }) {
   const [staleDraft, setStaleDraft] = useState(null);
   const [restored, setRestored] = useState(false);
   const [previewing, setPreviewing] = useState(false);
+  const [published, setPublished] = useState(null);
 
   // Restore a draft after mount (localStorage is browser-only). A draft is still
   // valid on a newer HEAD as long as none of the three files changed.
@@ -89,14 +94,46 @@ export default function Editor({ head, files }) {
     setStaleDraft(null);
   }
 
+  function handlePublished(result) {
+    writeDraft(null);
+    setPublished(result);
+    deploy.refresh();
+  }
+
+  const statusBar = <StatusBar status={deploy.status} error={deploy.error} />;
+
   // Render only in the browser: item ids and dnd-kit's aria ids are generated client-side.
-  if (!restored) return <p className="muted">Loading editor…</p>;
+  if (!restored) return <>{statusBar}<p className="muted">Loading editor…</p></>;
+
+  // After publishing, the loaded registry is out of date; reload to start from the new HEAD.
+  if (published) {
+    return (
+      <>
+        {statusBar}
+        <div className="notice success">
+          Published <a href={published.url} target="_blank" rel="noreferrer">{published.sha.slice(0, 7)}</a> to v2.
+          The site deploys in about a minute; the status bar turns green when it's live.{" "}
+          <button type="button" onClick={() => window.location.reload()}>Continue editing</button>
+        </div>
+      </>
+    );
+  }
 
   // The editor state stays in memory while previewing, so going back keeps everything.
-  if (previewing) return <Preview registry={current} onClose={() => setPreviewing(false)} />;
+  if (previewing) {
+    return (
+      <>
+        {statusBar}
+        <Preview registry={current} onClose={() => setPreviewing(false)}>
+          <PublishPanel before={loaded} after={current} blobShas={blobShas} deploy={deploy} onPublished={handlePublished} />
+        </Preview>
+      </>
+    );
+  }
 
   return (
     <div className="editor">
+      {statusBar}
       {staleDraft && (
         <div className="notice">
           A draft from {staleDraft.head.slice(0, 7)} can't be restored: the registry changed on v2

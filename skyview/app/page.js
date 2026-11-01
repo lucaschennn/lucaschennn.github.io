@@ -1,6 +1,5 @@
 import { requireUser, signIn, signOut } from "@/auth";
 import { getHead, getRegistry } from "@/lib/github";
-import StatusBar from "./status-bar";
 import Editor from "./editor";
 
 export default async function Home() {
@@ -27,7 +26,6 @@ export default async function Home() {
           <button type="submit">Sign out</button>
         </form>
       </header>
-      <StatusBar />
       <Editor head={head} files={files} />
     </>
   );

@@ -15,13 +15,16 @@ export class GitHubError extends Error {
   }
 }
 
-async function gh(path) {
+async function gh(path, { method = "GET", body } = {}) {
   const res = await fetch(`https://api.github.com/repos/${REPO}${path}`, {
+    method,
     headers: {
       Authorization: `Bearer ${process.env.GITHUB_REPO_TOKEN}`,
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
+      ...(body && { "Content-Type": "application/json" }),
     },
+    body: body && JSON.stringify(body),
     cache: "no-store",
   });
   if (!res.ok) throw new GitHubError(res.status, path);
@@ -72,4 +75,63 @@ export async function getDeployStatus() {
   // A successful run whose deployment isn't reported yet is still finishing.
   if (run.conclusion === "success") return { ...base, ...runInfo, state: "deploying" };
   return { ...base, ...runInfo, state: "failed" };
+}
+
+// Same formatting as the files in the repo (4-space indent, no trailing newline),
+// so an untouched file serializes byte-for-byte identically.
+export const serialize = (data) => JSON.stringify(data, null, 4);
+
+export class PublishRefused extends Error {
+  constructor(reason, message) {
+    super(message);
+    this.reason = reason;
+  }
+}
+
+// Commits the changed registry files to v2 as one commit on top of the current HEAD.
+// baseBlobShas: the blob shas the draft was based on. Refuses (PublishRefused) if a
+// deploy isn't live, if any registry file changed on v2 since the draft was loaded,
+// or if v2 moves while committing.
+export async function publishRegistry({ baseBlobShas, files, summary }) {
+  const status = await getDeployStatus();
+  if (status.state !== "live") {
+    throw new PublishRefused("deploy", `The live site doesn't match v2 yet (${status.state}). Try again once it's live.`);
+  }
+
+  const head = status.head;
+  const current = await getRegistry(head);
+  const changedOnV2 = Object.keys(REGISTRY_FILES).filter((k) => current[k].blobSha !== baseBlobShas?.[k]);
+  if (changedOnV2.length) {
+    throw new PublishRefused("changed", `Changed on v2 since you loaded it: ${changedOnV2.join(", ")}.`);
+  }
+
+  const changes = Object.keys(REGISTRY_FILES)
+    .filter((k) => k in files && serialize(files[k]) !== serialize(current[k].data))
+    .map((k) => ({ path: REGISTRY_FILES[k], mode: "100644", type: "blob", content: serialize(files[k]) }));
+  if (!changes.length) throw new PublishRefused("empty", "Nothing to publish.");
+
+  const headCommit = await gh(`/git/commits/${head}`);
+  const tree = await gh(`/git/trees`, { method: "POST", body: { base_tree: headCommit.tree.sha, tree: changes } });
+  const names = changes.map((c) => c.path.split("/").pop().replace(".json", ""));
+  const message = [`skyview: update ${names.join(", ")}`, "", ...summary].join("\n").trim();
+  const commit = await gh(`/git/commits`, {
+    method: "POST",
+    body: {
+      message,
+      tree: tree.sha,
+      parents: [head],
+      author: { name: "skyview", email: "skyview@users.noreply.github.com" },
+    },
+  });
+
+  // Not forced: if v2 moved since `head`, GitHub rejects this (422) instead of overwriting.
+  try {
+    await gh(`/git/refs/heads/${BRANCH}`, { method: "PATCH", body: { sha: commit.sha, force: false } });
+  } catch (e) {
+    if (e instanceof GitHubError && e.status === 422) {
+      throw new PublishRefused("changed", "v2 moved while publishing. Nothing was published; reload and try again.");
+    }
+    throw e;
+  }
+  return { sha: commit.sha, url: commit.html_url };
 }
