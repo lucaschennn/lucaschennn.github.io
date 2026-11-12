@@ -32,21 +32,11 @@ summer in ann arbor
 
 function Published({pageref, cloud, data: publishedData}) {
 
-
-    const [imagesLoaded, setImagesLoaded] = useState(() => 
-    Object.fromEntries(
-        // convert galleriesData into arr of [key,val] pairs, turn val to false, then recreate obj.
-        Object.entries(publishedData).map(([key, arr]) => [key, arr.map(() => false)])
-    ))
-
-    const handleImageLoad = (category, idx) => {
-        setImagesLoaded((prev) => {
-                const updated = {...prev};
-                updated[category][idx] = true;
-                return updated;
-            }
-        )
-    }
+    // Loaded image URLs, so each image fades in on its own load. Keyed by public ID
+    // rather than index, so tear sheets and projects don't share state.
+    const [loaded, setLoaded] = useState(() => new Set())
+    const handleImageLoad = (url) => setLoaded((prev) => new Set(prev).add(url))
+    const fade = (url) => loaded.has(url) ? "active" : "hidden"
 
     return (
     <div id="published" ref={pageref}>
@@ -60,8 +50,8 @@ function Published({pageref, cloud, data: publishedData}) {
                 publishedData["featured"].map((item, idx) => (
                     <div key={idx} className="tear-sheets-wrapper">
                         <img
-                            className={`${imagesLoaded["featured"][idx] ? "active" : "hidden"}`}
-                            onLoad={() => handleImageLoad("featured", idx)}
+                            className={fade(item.url)}
+                            onLoad={() => handleImageLoad(item.url)}
                             src={cloud.image(item.url).delivery(quality(auto())).toURL()}
                             loading="lazy"
                         />
@@ -73,29 +63,31 @@ function Published({pageref, cloud, data: publishedData}) {
         <h4>Projects</h4>
         <div className="projects-wrapper">
             {
-                publishedData["projects"].map((item, idx) => (
-                    <div className="project" key={idx}>
-                        <p className="project-title">
-                            <a href={item.ref} target="_blank">{item.title} <FaExternalLinkAlt size={"1rem"}/></a>
-                        </p>
-                        <p className="project-subtitle">
-                            {item.description}
-                        </p>
-                        <div className="project-content">
-                            <div className="project-overlay">
-                                <p className="visit-site">
-                                    <a href={item.ref} target="_blank">Visit Site <FaExternalLinkAlt size={"1rem"}/></a>
-                                </p>
+                publishedData["projects"].map((item, idx) => {
+                    // The whole card is the link. Without one, it's a plain card with no hover.
+                    const Card = item.ref ? "a" : "div"
+                    const link = item.ref ? {href: item.ref, target: "_blank", rel: "noreferrer"} : {}
+                    return (
+                        <Card className="project" key={idx} {...link}>
+                            <div className="project-image">
+                                <img
+                                    className={fade(item.url)}
+                                    onLoad={() => handleImageLoad(item.url)}
+                                    src={cloud.image(item.url).delivery(quality(auto())).toURL()}
+                                    alt={item.title}
+                                    loading="lazy"
+                                />
                             </div>
-                            <img
-                                className={`${imagesLoaded["featured"][idx] ? "active" : "hidden"}`}
-                                onLoad={() => handleImageLoad("featured", idx)}
-                                src={cloud.image(item.url).delivery(quality(auto())).toURL()}
-                                loading="lazy"
-                            />
-                        </div>
-                    </div>
-                ))
+                            <div className="project-text">
+                                <p className="project-title">
+                                    {item.title}
+                                    {item.ref && <FaExternalLinkAlt className="project-icon" aria-hidden/>}
+                                </p>
+                                {item.description && <p className="project-subtitle">{item.description}</p>}
+                            </div>
+                        </Card>
+                    )
+                })
             }
         </div>
     </div>

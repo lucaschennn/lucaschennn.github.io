@@ -42,9 +42,7 @@ a:hover { color: #4a7183; }
   border: none; background: rgba(0, 0, 0, 0.6); color: #fff; line-height: 1; padding: 0; }
 .remove:hover { background: #c00; }
 .source { font: inherit; font-size: 0.8rem; padding: 2px 4px; border: 1px solid #ddd; border-radius: 4px; min-width: 0; }
-.meta { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .grid.drop-target { outline: 2px solid #2f7de1; outline-offset: 2px; background: #eef5ff; }
-.add { margin-left: 0.75rem; font-size: 0.8rem; font-weight: normal; padding: 0.2rem 0.6rem; border: 1px solid #ccc; border-radius: 6px; background: #f6f6f6; }
 .add { margin-left: 0.75rem; font-size: 0.8rem; font-weight: normal; padding: 0.2rem 0.6rem; border: 1px solid #ccc; border-radius: 6px; background: #f6f6f6; }
 button.primary { background: #222; color: #fff; border: 1px solid #222; border-radius: 6px; padding: 0.4rem 0.9rem; }
 
@@ -60,3 +58,4 @@ button.primary { background: #222; color: #fff; border: 1px solid #222; border-r
 .confirm { display: flex; gap: 0.5rem; align-items: flex-start; margin: 0.75rem 0; }
 .notice.error { background: #fbe0e0; }
 .notice.success { background: #dff3e4; }
+.source.missing { border-color: #e0a84a; background: #fffaf0; }

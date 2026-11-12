@@ -101,7 +101,7 @@ Three files in the site's `src/assets/` decide what appears on the site: `portfo
 [lib/registry.js#L12-L30](lib/registry.js#L12-L30) converts each file into one editing model: `{ array, groups: { [group]: [{ id, item }] } }`.
 
 - A flat array becomes a single group named `_`, and `fromEditable` turns it back into an array on save.
-- `item` is the original JSON object, untouched, so fields skyview doesn't understand (like a project's `title`) survive.
+- `item` is the original JSON object, untouched, so fields skyview doesn't show survive. Items moving into or out of a project group are reshaped by `shapeFor` (photo `{url, source}` ↔ project `{title, url, ref, description}`).
 - `id` is a random UUID that exists only in the editor. dnd-kit needs a stable id per draggable item, and the same photo may legitimately appear in two groups.
 
 The site reads the same files: [../src/main.jsx](../src/main.jsx) imports them and passes them down as a `registry` prop. That small refactor is what lets skyview render the site with *different* data (Stop 7).
@@ -174,7 +174,7 @@ The browser side is [lib/use-deploy-status.js](lib/use-deploy-status.js): a Reac
 
 ### Stop 5: Drag and drop
 
-One tab per file, one grid per group. Drag a photo to reorder it, or drop it into another group in the same file. × removes a photo from the site (it stays in Cloudinary), and the input below each photo edits its `source`. Every change is saved as a draft in your browser, so a reload loses nothing.
+One tab per file, one grid per group. Drag a photo to reorder it, or drop it into another group in the same file. × removes a photo from the site (it stays in Cloudinary), and the input below each photo edits its `source`. Project cards (Published → projects) have title, link and subtitle inputs instead, and **+ Add projects** adds new ones. Every change is saved as a draft in your browser, so a reload loses nothing.
 
 <details>
 <summary><b>Details:</b> dnd-kit, piece by piece</summary>
@@ -255,7 +255,7 @@ Opened directly, `/preview/index.html` renders nothing, because there's no paren
 
 ### Stop 8: The diff
 
-Under the preview, skyview lists exactly what will change: photos added, removed, moved between groups, reordered, and `source` edits. Moving one photo to the front shows as one move, not as every other photo shifting down.
+Under the preview, skyview lists exactly what will change: photos added, removed, moved between groups, reordered, and field edits (`source`, or a project's title, link and subtitle). Projects missing a title or link get a warning. Moving one photo to the front shows as one move, not as every other photo shifting down.
 
 <details>
 <summary><b>Details:</b> the longest increasing subsequence</summary>
@@ -314,7 +314,7 @@ Together with git's fast-forward rule (Stop 9) and skyview waiting for green, th
 
 ### Stop 11: Playwright tests
 
-A suite of 22 browser tests drives skyview the way you would (sign in, drag, preview, publish) and replays every failure scenario: a hand edit mid-draft, a broken build, a revoked token, a push that races a publish. It runs against a fake GitHub, so it's safe to run any time with `npm run test:e2e`.
+A suite of 25 browser tests drives skyview the way you would (sign in, drag, preview, publish) and replays every failure scenario: a hand edit mid-draft, a broken build, a revoked token, a push that races a publish. It runs against a fake GitHub, so it's safe to run any time with `npm run test:e2e`.
 
 <details>
 <summary><b>Details:</b> the fake GitHub, minted sessions and network stubs</summary>

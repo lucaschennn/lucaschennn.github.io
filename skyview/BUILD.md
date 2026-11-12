@@ -171,3 +171,14 @@ For Lucas, in the real app (optional once the suite passes):
 - The editor's **Final save → preview** button is now **Preview & publish**, and "Unpublished edits" carries the same • as a dirty tab.
 - Mobile: the header, toolbar, tabs and action buttons wrap instead of running past the viewport, and the page margin shrinks to 1rem below 600px.
 - **Check (Lucas):** at 390px wide, the toolbar wraps with no horizontal scroll; the HEAD hash opens the commit on GitHub.
+
+### 5.4 Editable projects (Claude)
+- Bug: projects couldn't be edited or added. A tear sheet dragged into `projects` kept its `{url, source}` shape, so its text box edited `source`, which the site never renders for projects: nothing changed in the preview, and it would have deployed as a card with no title or link. Title, link and subtitle (`description`, e.g. "Co-author") had no inputs at all, and the diff only compared `source`, so editing them by hand would have shown "No changes" and couldn't be published.
+- Fix:
+  - Project cards have **title**, **link** and **subtitle** inputs; an empty title or link is outlined. Project groups are declared in `PROJECT_GROUPS` (`lib/registry.js`).
+  - Items dropped into a project group become projects (`{title, url, ref, description}`, the tear sheet's `source` kept as `ref`), and back into photos when dragged out. **+ Add projects** appends new projects with empty fields.
+  - The diff compares every field, not just `source` (`edited` change: `published/projects: <id> title "a" → "b"`), and names projects by title when added or moved.
+  - The publish panel warns about projects missing a title or link (doesn't block).
+  - Site: `published.jsx` tracked project fade-in under the tear sheets' indices; it now tracks every image by public ID (tech debt #8).
+- Tests: `e2e/projects.spec.mjs` (edit → diff → preview; tear sheet → project → published JSON; missing-field warning) and an Add-projects test in `editor.spec.mjs`. 25/25 pass.
+- **Check (Lucas):** in the Published tab, edit a project's subtitle and drag a tear sheet into projects; both show in the preview and the diff.

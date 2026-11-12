@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { describe, diffRegistry } from "@/lib/diff";
+import { isIncompleteProject, isProjectGroup } from "@/lib/registry";
 
 const BLOCKED = {
   pending: "A push to v2 is waiting to deploy. Publish unlocks once it's live.",
@@ -14,6 +15,12 @@ const BLOCKED = {
 export default function PublishPanel({ before, after, blobShas, deploy, visitor, onPublished }) {
   const diff = useMemo(() => diffRegistry(before, after), [before, after]);
   const lines = Object.entries(diff).flatMap(([file, changes]) => changes.map((c) => describe(file, c)));
+  // Projects the site would show without a title or link. A warning only: the preview shows them as they'll look.
+  const incomplete = Object.entries(after).flatMap(([file, data]) =>
+    Array.isArray(data) ? [] : Object.entries(data)
+      .filter(([group]) => isProjectGroup(file, group))
+      .flatMap(([, items]) => items.filter(isIncompleteProject).map((item) => item.url)),
+  );
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
@@ -54,6 +61,12 @@ export default function PublishPanel({ before, after, blobShas, deploy, visitor,
         <p className="muted">No changes. Nothing to publish.</p>
       )}
 
+      {lines.length > 0 && incomplete.length > 0 && (
+        <p className="notice">
+          {incomplete.length === 1 ? "A project is" : `${incomplete.length} projects are`} missing a title or link:{" "}
+          {incomplete.join(", ")}.
+        </p>
+      )}
       {lines.length > 0 && visitor && (
         <p className="notice">Visitors can't publish.</p>
       )}

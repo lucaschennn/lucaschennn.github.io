@@ -2,7 +2,12 @@
 // Photos are identified by public ID (`url`) within a file.
 //
 // Change types: added, removed, moved (to another group), reordered (within its
-// group), source (the `source` field changed).
+// group), edited (a text field changed: `source` on photos; title, link or subtitle
+// on projects).
+
+import { PROJECT_FIELDS } from "./registry.js";
+
+const LABELS = Object.fromEntries(PROJECT_FIELDS);
 
 const asGroups = (data) => (Array.isArray(data) ? { "": data } : data);
 
@@ -44,7 +49,10 @@ function diffFile(before, after) {
     for (const item of newItems) {
       if (oldUrls.has(item.url)) continue;
       const from = groups.find((h) => h !== g && urlsIn(h, old).has(item.url) && !urlsIn(h, now).has(item.url));
-      changes.push(from !== undefined ? { type: "moved", group: g, url: item.url, from } : { type: "added", group: g, url: item.url });
+      const change = from !== undefined ? { type: "moved", group: g, url: item.url, from } : { type: "added", group: g, url: item.url };
+      // New to this group, so its fields aren't compared; name a project by its title instead.
+      if (item.title) change.title = item.title;
+      changes.push(change);
     }
     for (const item of oldItems) {
       if (newUrls.has(item.url)) continue;
@@ -60,10 +68,14 @@ function diffFile(before, after) {
       if (!keep.has(idx)) changes.push({ type: "reordered", group: g, url: item.url, position: newItems.indexOf(item) + 1 });
     });
 
+    // Every field but the public ID, so project edits count as changes too.
     for (const item of kept) {
       const was = oldItems.find((i) => i.url === item.url);
-      if ((was.source ?? "") !== (item.source ?? "")) {
-        changes.push({ type: "source", group: g, url: item.url, before: was.source ?? "", after: item.source ?? "" });
+      const fields = [...new Set([...Object.keys(was), ...Object.keys(item)])].filter((f) => f !== "url");
+      for (const field of fields) {
+        const before = was[field] ?? "";
+        const after = item[field] ?? "";
+        if (before !== after) changes.push({ type: "edited", group: g, url: item.url, field, before, after });
       }
     }
   }
@@ -82,11 +94,12 @@ export function diffRegistry(before, after) {
 // One line per change, for the UI and the commit message.
 export function describe(file, c) {
   const where = c.group ? `${file}/${c.group}` : file;
+  const named = c.title ? ` ("${c.title}")` : "";
   switch (c.type) {
-    case "added": return `${where}: added ${c.url}`;
+    case "added": return `${where}: added ${c.url}${named}`;
     case "removed": return `${where}: removed ${c.url}`;
-    case "moved": return `${where}: moved ${c.url} from ${c.from || file}`;
+    case "moved": return `${where}: moved ${c.url}${named} from ${c.from || file}`;
     case "reordered": return `${where}: moved ${c.url} to position ${c.position}`;
-    case "source": return `${where}: ${c.url} source "${c.before}" → "${c.after}"`;
+    case "edited": return `${where}: ${c.url} ${LABELS[c.field] ?? c.field} "${c.before}" → "${c.after}"`;
   }
 }

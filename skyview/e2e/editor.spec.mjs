@@ -1,4 +1,4 @@
-// Editing in skyview: reorder, remove, edit source, add photos, drafts, cancel.
+// Editing in skyview: reorder, remove, edit source, add photos and projects, drafts, cancel.
 // Nothing here publishes; changes stay in the browser.
 import { test, expect } from "./fixtures.mjs";
 import { PORTFOLIO, dragPhoto, group, openEditor, photoOrder } from "./helpers.mjs";
@@ -75,9 +75,20 @@ test("add photos from the Media Library: new images appended, duplicates and vid
   expect(order).toEqual([...existing, "new_photo_e2e"]);
 });
 
-test("project groups have no Add button", async ({ page }) => {
+test("Add in projects appends projects with empty fields to fill in", async ({ page }) => {
   await openEditor(page);
   await page.getByRole("button", { name: "Published" }).click();
-  await expect(group(page, "featured").getByRole("button", { name: "+ Add photos" })).toBeVisible();
-  await expect(group(page, "projects").getByRole("button", { name: "+ Add photos" })).toHaveCount(0);
+  await page.evaluate(() => {
+    window.__pickedAssets = [{ public_id: "new_project_e2e", resource_type: "image" }];
+  });
+
+  const add = group(page, "projects").getByRole("button", { name: "+ Add projects" });
+  await expect(add).toBeEnabled();
+  await add.click();
+
+  const card = group(page, "projects").locator(".card").filter({ has: page.getByAltText("new_project_e2e", { exact: true }) });
+  for (const label of ["title", "link", "subtitle"]) {
+    await expect(card.getByPlaceholder(label, { exact: true })).toHaveValue("");
+  }
+  await expect(card.getByPlaceholder("source")).toHaveCount(0);
 });

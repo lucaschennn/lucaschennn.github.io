@@ -17,7 +17,8 @@ Three JSON files in `src/assets/` are the contract between skyview, Cloudinary a
 - `url` is a Cloudinary **public ID** including its random suffix (e.g. `DSC00780_aasdfz`).
 - `source` is free-form metadata (e.g. an Issuu tear-sheet link). The site doesn't render it; skyview edits it.
 - Array order is display order. A flat array (`portfolio.json`) is edited as one unnamed group.
-- skyview keeps fields it doesn't know as they are (the project fields), and writes files exactly as the repo formats them: `JSON.stringify(data, null, 4)`, no trailing newline. Untouched lines therefore never show up in a diff.
+- Projects (`published.json` → `projects`, listed in `PROJECT_GROUPS` in [lib/registry.js](lib/registry.js)) have `title`, `ref` (the link) and `description` (the subtitle, e.g. "Co-author"); skyview edits all three. An item dropped or added into a project group is reshaped into a project, and back into a photo when it leaves one; the link carries across as `source` ↔ `ref`.
+- skyview keeps fields it doesn't show as they are, and writes files exactly as the repo formats them: `JSON.stringify(data, null, 4)`, no trailing newline. Untouched lines therefore never show up in a diff.
 - The site lays photos into masonry columns **in rotation**: photo *i* goes to column *i* mod *N*, with 2/3/4 columns at the 350/750/900px breakpoints. Heights don't affect placement, so the JSON order fully determines the layout. Check the layout in the preview at both phone and desktop widths.
 
 ## User flow
@@ -28,11 +29,11 @@ Three JSON files in `src/assets/` are the contract between skyview, Cloudinary a
 4. **Editing:**
    - Drag to reorder, or to move a photo to another group in the same file. The move happens on drop, and the target group is highlighted while you drag.
    - × takes a photo off the site; the image stays in Cloudinary.
-   - Edit `source` in the input under each photo.
-   - **+ Add photos** opens the Cloudinary Media Library, with its own Cloudinary login. Picked images are appended, and duplicates are skipped. Project groups have no Add button.
+   - Edit `source` in the input under each photo. Project cards have title, link and subtitle inputs instead; an empty title or link is outlined.
+   - **+ Add photos** (**+ Add projects** in project groups) opens the Cloudinary Media Library, with its own Cloudinary login. Picked images are appended, and duplicates are skipped. New projects start with empty fields to fill in.
    - **Cancel** asks for confirmation, then discards all edits.
 5. **Drafts:** saved to `localStorage` on every edit, together with the blob shas of the three files they were based on. After a reload, the draft is restored only if those shas still match `v2`. Otherwise you get a stale-draft notice with "Discard old draft".
-6. **Preview & publish:** the real site, rendered with the draft, at Phone 390, Tablet 768 or Desktop 1280. Below it is the diff against HEAD: added, removed, moved between groups, reordered, `source` changed. A move counts once, not as a shift of every later photo.
+6. **Preview & publish:** the real site, rendered with the draft, at Phone 390, Tablet 768 or Desktop 1280. Below it is the diff against HEAD: added, removed, moved between groups, reordered, and edited fields (`source`; a project's title, link or subtitle). A move counts once, not as a shift of every later photo. Projects missing a title or link get a warning, which doesn't block Publish.
 7. **Publish:** tick "I've checked the preview…" to enable it. The button only works while the live site equals `v2` HEAD. skyview then commits to `v2`, shows a link to the commit, and the status bar follows the deploy.
 
 A bad public ID shows as a broken image (grey square, with the ID as alt text) in both the editor and the preview. Catching it there is the user's job.
@@ -106,7 +107,7 @@ These are all covered by the e2e suite ([e2e/drills.spec.mjs](e2e/drills.spec.mj
 | `app/page.js` | Server component: sign-in gate, reads HEAD and the registry, shows GitHub errors clearly |
 | `app/auth-error/page.js` | Where failed sign-ins land: access denied, link home |
 | `app/editor.js` | Client: tabs, draft persistence, Cancel, preview and publish states |
-| `app/file-board.js` | dnd-kit board for one file: groups, cards, drag/drop, remove, source, Add |
+| `app/file-board.js` | dnd-kit board for one file: groups, cards, drag/drop, remove, source and project fields, Add |
 | `app/preview.js`, `preview/` | Preview iframe, width switch; the preview's Vite entry and config |
 | `app/publish-panel.js` | Diff, confirmation, Publish |
 | `app/status-bar.js`, `lib/use-deploy-status.js` | Deploy status display and polling |
@@ -131,17 +132,17 @@ Vercel: Root Directory `skyview`, production branch `v2`, env vars scoped to Pro
 
 ## Testing
 
-`npm run test:e2e` runs 22 Playwright tests in Chromium against a production build of skyview. GitHub is replaced by an in-memory fake ([e2e/fake-github.mjs](e2e/fake-github.mjs)), sessions are minted with Auth.js's own `encode()` and a test secret, and all other internet access is stubbed. The suite never touches the real repo, Vercel or Cloudinary. See [e2e/README.md](e2e/README.md).
+`npm run test:e2e` runs 25 Playwright tests in Chromium against a production build of skyview. GitHub is replaced by an in-memory fake ([e2e/fake-github.mjs](e2e/fake-github.mjs)), sessions are minted with Auth.js's own `encode()` and a test secret, and all other internet access is stubbed. The suite never touches the real repo, Vercel or Cloudinary. See [e2e/README.md](e2e/README.md).
 
 ## Tech debt and possible improvements
 
 1. **Inconsistent registry shapes:** `portfolio.json` is a flat array, the others are keyed by group. skyview adapts; consolidating them is deferred.
 2. **Section keys and titles live in site code** (hardcoded in `Gallery` and `Published`). Adding a section needs a code change. Out of scope.
-3. **Projects can't be added or edited** in skyview (title, link, description). Dragging a tear sheet into `projects` creates a card with no title or link, which the preview shows.
+3. **Project groups are hardcoded** (`PROJECT_GROUPS` in `lib/registry.js`), like the section keys. Moving a project out of `projects` drops its title and subtitle (the diff shows it).
 4. **`source` semantics are loose:** link vs. free text, often empty, no validation.
 5. **Stale drafts can't be merged:** a draft based on old JSON must be redone, even if the other change touched a different file. Also, while the stale-draft notice is showing, new edits aren't saved to `localStorage` until the old draft is discarded.
 6. **Dropping far from any group** still drops next to the nearest card (dnd-kit's closest-center behaviour). Press Esc to cancel a drag.
 7. **The status bar can show "live none" briefly** during a deploy if GitHub marks the old deployment inactive early. Cosmetic.
-8. **Site bug, left untouched:** in `published.jsx`, project images track their fade-in under the `featured` group's indices.
+8. *(Fixed: `published.jsx` now tracks image fade-in by public ID, not by the `featured` group's indices.)*
 9. **The site's header uses `100vw`,** so a horizontal scrollbar appears where scrollbars take up width (Windows). It's visible in the phone preview.
 10. **Repo housekeeping:** `public/images` (59MB, v1, unused) and the other dead v1 code listed in CLAUDE.md. The `main` branch is stale; consider making `v2` the GitHub default branch.

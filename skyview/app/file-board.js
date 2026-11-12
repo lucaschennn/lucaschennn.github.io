@@ -19,7 +19,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { FLAT_GROUP, newEntry, thumbUrl } from "@/lib/registry";
+import { FLAT_GROUP, PROJECT_FIELDS, isProjectGroup, newEntry, shapeFor, thumbUrl } from "@/lib/registry";
 
 // Only animate sorting within the dragged item's own group. Across groups,
 // both grids stay still and the target group is highlighted instead.
@@ -74,8 +74,10 @@ export default function FileBoard({ fileKey, groups, onChange, picker }) {
     }
 
     // Into another group: next to the item dropped on (after it if dropped past its
-    // centre), or at the end if dropped on the group itself.
-    const entry = groups[from].find((e) => e.id === active.id);
+    // centre), or at the end if dropped on the group itself. The item is reshaped
+    // for the target group, e.g. a tear sheet dropped into projects becomes a project.
+    const moving = groups[from].find((e) => e.id === active.id);
+    const entry = { ...moving, item: shapeFor(isProjectGroup(fileKey, to), moving.item) };
     const overIndex = groups[to].findIndex((e) => e.id === over.id);
     const dropped = active.rect.current.translated;
     const pastCentre = dropped && dropped.left + dropped.width / 2 > over.rect.left + over.rect.width / 2;
@@ -101,7 +103,8 @@ export default function FileBoard({ fileKey, groups, onChange, picker }) {
   const addItems = (group, publicIds) =>
     onChange((current) => {
       const present = new Set(current[group].map((e) => e.item.url));
-      const added = [...new Set(publicIds)].filter((id) => !present.has(id)).map(newEntry);
+      const project = isProjectGroup(fileKey, group);
+      const added = [...new Set(publicIds)].filter((id) => !present.has(id)).map((id) => newEntry(id, project));
       return { ...current, [group]: [...current[group], ...added] };
     });
 
@@ -120,6 +123,7 @@ export default function FileBoard({ fileKey, groups, onChange, picker }) {
           groupKey={key}
           title={key === FLAT_GROUP ? fileKey : key}
           entries={entries}
+          project={isProjectGroup(fileKey, key)}
           highlight={activeId !== null && overGroup === key && findGroup(activeId) !== key}
           onUpdate={(id, patch) => updateItem(key, id, patch)}
           onRemove={(id) => removeItem(key, id)}
@@ -136,22 +140,20 @@ export default function FileBoard({ fileKey, groups, onChange, picker }) {
   );
 }
 
-function Group({ groupKey, title, entries, highlight, onUpdate, onRemove, addable, onAdd }) {
+function Group({ groupKey, title, entries, project, highlight, onUpdate, onRemove, addable, onAdd }) {
   const { setNodeRef } = useDroppable({ id: groupId(groupKey) });
-  // Project entries need a title, link and description, which skyview can't edit yet.
-  const canAdd = addable && !entries.some((e) => "title" in e.item);
   return (
     <section className="group">
       <h3>
         {title} <span className="count">{entries.length}</span>
-        {canAdd && (
+        {addable && (
           <button type="button" className="add" onClick={onAdd} disabled={!onAdd}>
-            + Add photos
+            {project ? "+ Add projects" : "+ Add photos"}
           </button>
         )}
       </h3>
       <SortableContext items={entries.map((e) => e.id)} strategy={sameGroupStrategy}>
-        <div ref={setNodeRef} className={`grid${highlight ? " drop-target" : ""}`}>
+        <div ref={setNodeRef} className={`grid${project ? " projects" : ""}${highlight ? " drop-target" : ""}`}>
           {entries.map((entry) => (
             <Card
               key={entry.id}
@@ -190,8 +192,18 @@ function Card({ entry, onUpdate, onRemove }) {
         ×
       </button>
       {"title" in item ? (
-        // Project entries (published.json) have their own fields; shown read-only for now.
-        <div className="meta" title={item.ref}>{item.title}</div>
+        // Project entries (published.json): title, link and subtitle, all rendered by the site.
+        PROJECT_FIELDS.map(([field, label]) => (
+          <input
+            key={field}
+            className={`source${field !== "description" && !item[field]?.trim() ? " missing" : ""}`}
+            placeholder={label}
+            aria-label={label}
+            title={label}
+            value={item[field] ?? ""}
+            onChange={(e) => onUpdate({ [field]: e.target.value })}
+          />
+        ))
       ) : (
         <input
           className="source"
