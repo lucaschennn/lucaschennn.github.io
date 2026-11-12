@@ -55,30 +55,37 @@ h3::before {
    like every other photo on the site, and the title picks up the highlight colour. */
 .projects-wrapper {
     display: grid;
-    /* Up to 2 columns that fill the row, down to 1 on phones. */
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(300px, calc((100% - 48px) / 2))), 1fr));
+    /* Up to 3 columns that fill the row, down to 1 on phones. */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(300px, calc((100% - 48px) / 3))), 1fr));
     gap: 24px;
 }
 
 .project {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     background-color: rgb(207, 207, 224);
     color: inherit;
     text-decoration: none;
 }
 
+/* The visible image area. The screenshot itself is taller (portrait) and runs on
+   down behind the text, clipped by the card, so hovering can reveal more of it. */
 .project-image {
+    position: relative;
     aspect-ratio: 16 / 10;
-    overflow: hidden;
     background-color: rgba(252, 249, 250, .35);
 }
 
-/* Screenshots of web pages: crop from the top so the headline stays in frame. */
+/* Screenshots of web pages: anchored to the top so the headline stays in frame. */
 .project-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     object-fit: cover;
     object-position: top;
     transition: opacity .8s ease;
@@ -90,7 +97,15 @@ a.project:hover .project-image img.active {
 }
 
 .project-text {
+    position: relative; /* paints above the screenshot behind it */
+    flex-grow: 1;
     padding: 16px 20px 20px;
+    background-color: rgb(207, 207, 224);
+    transition: background-color .3s ease;
+}
+
+a.project:hover .project-text {
+    background-color: rgba(207, 207, 224, .8);
 }
 
 /* A short accent bar, echoing the underline under the site's section headings. */
