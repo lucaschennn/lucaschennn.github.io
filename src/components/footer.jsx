@@ -10,7 +10,7 @@ function Footer() {
             <div className="footer-main">
                 <div className="footer-brand">
                     <h5 className="footer-header">Lucas Chen</h5>
-                    <p className="footer-tagline">Photography · Ann Arbor, MI</p>
+                    <p className="footer-tagline">Ann Arbor, MI</p>
                 </div>
                 <ul className="footer-links">
                     <li><a href="mailto:lucasch@umich.edu" aria-label="Email"><FaEnvelope size={20} /></a></li>
