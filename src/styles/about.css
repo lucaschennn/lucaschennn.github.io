@@ -56,6 +56,10 @@
     margin: 16px 0;
 }
 
+.intro-portrait img {
+    width: 100%;
+}
+
 .intro-text {
     flex-grow: 1;
     max-width: 50%;

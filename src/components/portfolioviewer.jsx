@@ -10,19 +10,29 @@ import '../App.css'
 import '../styles/portfolioviewer.css'
 
 function PortfolioViewer({url, active, setActive, updateHandler, cloud}) {
+    // Close only when the click lands on the backdrop itself, not on the
+    // image or the nav columns (those are children, so target differs).
+    const closeOnBackdrop = (e) => {
+        if (e.target === e.currentTarget) setActive(false);
+    };
+
     return (
     <div id="portfolioViewer" className={`${active ? "active" : "inactive"}`}>
         <div className="close" onClick={() => setActive(false)}>
             <IoMdClose size={"2rem"} style={{'cursor' : 'pointer'}} color={"white"}/>
-        </div> 
-        <div className="container">
+        </div>
+        <div className="container" onClick={closeOnBackdrop}>
             <div className="go-left" style={{'cursor' : 'pointer'}} onClick={() => updateHandler(true)}>
                 <FaChevronCircleLeft size={"2rem"} color={"white"}/>
             </div>
-            <img
-                className="image"
-                src={cloud.image(url).delivery(quality(auto())).toURL()}
-            />
+            {/* Fixed-width frame keeps the nav columns in place regardless of
+                the photo's aspect ratio; empty frame space counts as backdrop. */}
+            <div className="image-frame" onClick={closeOnBackdrop}>
+                <img
+                    className="image"
+                    src={cloud.image(url).delivery(quality(auto())).toURL()}
+                />
+            </div>
             <div className="go-right" style={{'cursor' : 'pointer'}} onClick={() => updateHandler(false)}>
                 <FaChevronCircleRight size={"2rem"} color={"white"}/>
             </div>

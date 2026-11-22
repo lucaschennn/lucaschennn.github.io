@@ -38,9 +38,18 @@
     justify-content: center;
 }
 
+.image-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 80vw;
+    min-width: 0;
+    height: 100%;
+}
+
 .image {
     max-height: 100%;
-    max-width: 80vw;
+    max-width: 100%;
     object-fit: contain;
 }
 
