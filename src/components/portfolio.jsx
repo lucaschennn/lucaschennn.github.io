@@ -6,6 +6,7 @@ import { quality } from "@cloudinary/url-gen/actions/delivery";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
 import PortfolioViewer from './portfolioviewer.jsx';
+import { track } from '../analytics.js';
 
 import '../App.css'
 import '../styles/portfolio.css'
@@ -32,18 +33,15 @@ function Portfolio({pageref, cloud, data: portfolioData}) {
     const handleOpenViewer = (idx) => {
         setViewerActive(true);
         setViewerUrlIdx(idx);
+        track('photo_open', {section: 'portfolio', photo_id: portfolioData[idx].url});
     }
 
     const viewerNavigationHandler = (goLeft) => {
         const numImages = portfolioData.length;
+        const next = (viewerUrlIdx + (goLeft ? -1 : 1) + numImages) % numImages;
 
-        setViewerUrlIdx((prev) => {
-            if (goLeft) {
-                return (prev - 1 + numImages) % numImages;
-            } else {
-                return (prev + 1 + numImages) % numImages;
-            }
-        })
+        setViewerUrlIdx(next);
+        track('photo_navigate', {section: 'portfolio', direction: goLeft ? 'prev' : 'next', photo_id: portfolioData[next].url});
     }
     // END
 

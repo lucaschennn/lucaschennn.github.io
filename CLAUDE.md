@@ -32,6 +32,7 @@ The `skyview/` subproject is a Next.js admin tool, deployed separately to Vercel
 - Clicking an image opens `PortfolioViewer` (lightbox). `Portfolio` and `Gallery` each own their viewer state (`viewerActive`, index, and for `Gallery` the gallery key) and a wrap-around prev/next handler. `Gallery` repeats the masonry block per gallery key — a new gallery means copying a block and adding the JSON key.
 - Styles: global [src/App.css](src/App.css) and [src/index.css](src/index.css), plus one CSS file per component in [src/styles/](src/styles/) (imported by the component).
 - [index.html](index.html) includes Google Analytics and Font Awesome 4.7 from a CDN; icons in components come from `react-icons`.
+- Analytics: components send GA4 custom events through `track()` / `trackSocial()` in [src/analytics.js](src/analytics.js) (never call `gtag` directly; skyview's preview has no GA). Events: `photo_open`, `photo_navigate` (`section`, `photo_id`, `direction`), `nav_click` (`tab`), `social_click` (`platform`, `location`), `email_click` (`method`, `location`), `project_click` (`title`). Dev events carry `debug_mode`. New params must be registered as custom dimensions in GA to appear in reports.
 
 ## Dead code from v1 (safe to ignore or delete; don't extend)
 

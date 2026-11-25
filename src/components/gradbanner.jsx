@@ -1,6 +1,7 @@
 import { FaInstagram } from "react-icons/fa";
 
 import Banner from './banner.jsx'
+import { trackSocial } from '../analytics.js'
 
 // Shown September (month 8) through May (month 4)
 function inGradSeason(date = new Date()) {
@@ -22,6 +23,7 @@ function GradBanner() {
             buttonText="Instagram"
             buttonIcon={<FaInstagram size={16} />}
             buttonHref="https://instagram.com/lucaschenphoto"
+            onButtonClick={trackSocial('instagram', 'grad_banner')}
         />
     )
 }

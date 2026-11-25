@@ -1,6 +1,7 @@
 import React, { act } from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { FaLinkedin, FaInstagram, FaBars } from "react-icons/fa";
+import { track, trackSocial } from '../analytics.js';
 
 import '../App.css'
 import '../styles/header.css'
@@ -78,7 +79,8 @@ function Header({pagerefs, setAboutActive}) {
     }, []);
 
 
-    const handleNavClick = (page) => {
+    const handleNavClick = (page, tab) => {
+        track('nav_click', {tab});
         if(page === 0) {
             window.scrollTo(0,0);
         } else if (page === 1) {
@@ -106,17 +108,17 @@ function Header({pagerefs, setAboutActive}) {
 
         <div className={`nav ${navOpen ? "active" : "inactive"}`}>
             <ul className="list left">
-                <li className={`home-item`} onClick={() => handleNavClick(0)}>
+                <li className={`home-item`} onClick={() => handleNavClick(0, 'home')}>
                     <img src="icons/android-chrome-192x192.png"/>
                 </li>
-                <li className={`nav-item ${activePage === 0 ? "active" : "inactive"}`} onClick={() => handleNavClick(0)}>Portfolio</li>
-                <li className={`nav-item ${activePage === 1 ? "active" : "inactive"}`} onClick={() => handleNavClick(1)}>Published</li>
-                <li className={`nav-item ${activePage === 2 ? "active" : "inactive"}`} onClick={() => handleNavClick(2)}>Galleries</li>
+                <li className={`nav-item ${activePage === 0 ? "active" : "inactive"}`} onClick={() => handleNavClick(0, 'portfolio')}>Portfolio</li>
+                <li className={`nav-item ${activePage === 1 ? "active" : "inactive"}`} onClick={() => handleNavClick(1, 'published')}>Published</li>
+                <li className={`nav-item ${activePage === 2 ? "active" : "inactive"}`} onClick={() => handleNavClick(2, 'galleries')}>Galleries</li>
             </ul>
             <ul className="list right">
-                <li className="nav-item inactive" onClick={() => setAboutActive(true)}>About</li>
-                <li className="nav-icon"><a href="https://linkedin.com/in/chen-lucas" target="_blank"><FaLinkedin size={24} /></a></li>
-                <li className="nav-icon"><a href="https://instagram.com/lucaschenphoto" target="_blank"><FaInstagram size={24} /></a></li>
+                <li className="nav-item inactive" onClick={() => { track('nav_click', {tab: 'about'}); setAboutActive(true); }}>About</li>
+                <li className="nav-icon"><a href="https://linkedin.com/in/chen-lucas" target="_blank" onClick={trackSocial('linkedin', 'header')}><FaLinkedin size={24} /></a></li>
+                <li className="nav-icon"><a href="https://instagram.com/lucaschenphoto" target="_blank" onClick={trackSocial('instagram', 'header')}><FaInstagram size={24} /></a></li>
             </ul>
         </div>
 

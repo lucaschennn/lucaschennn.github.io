@@ -6,6 +6,7 @@ import { quality } from "@cloudinary/url-gen/actions/delivery";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
 import Divider from './divider.jsx';
+import { track } from '../analytics.js';
 
 import '../App.css'
 import '../styles/published.css'
@@ -66,7 +67,10 @@ function Published({pageref, cloud, data: publishedData}) {
                 publishedData["projects"].map((item, idx) => {
                     // The whole card is the link. Without one, it's a plain card with no hover.
                     const Card = item.ref ? "a" : "div"
-                    const link = item.ref ? {href: item.ref, target: "_blank", rel: "noreferrer"} : {}
+                    const link = item.ref ? {
+                        href: item.ref, target: "_blank", rel: "noreferrer",
+                        onClick: () => track('project_click', {title: item.title}),
+                    } : {}
                     return (
                         <Card className="project" key={idx} {...link}>
                             <div className="project-image">
