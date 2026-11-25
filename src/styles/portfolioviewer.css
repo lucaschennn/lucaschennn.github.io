@@ -8,6 +8,11 @@
     backdrop-filter: blur(2px);
     background-color: rgba(0, 0, 0, .6);
     transition: opacity .3s ease-out;
+    /* Rapid clicks on the arrows count as double-clicks, which would select the
+       photo and paint it with the blue selection overlay. Also drop the mobile tap flash. */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #portfolioViewer.inactive {
