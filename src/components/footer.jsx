@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaInstagram, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
+import { track, trackSocial } from '../analytics.js';
+
 import '../App.css'
 import '../styles/footer.css'
 
@@ -13,9 +15,9 @@ function Footer() {
                     <p className="footer-tagline">Ann Arbor, MI</p>
                 </div>
                 <ul className="footer-links">
-                    <li><a href="mailto:lucasch@umich.edu" aria-label="Email"><FaEnvelope size={20} /></a></li>
-                    <li><a href="https://instagram.com/lucaschenphoto" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram size={22} /></a></li>
-                    <li><a href="https://linkedin.com/in/chen-lucas" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedin size={22} /></a></li>
+                    <li><a href="mailto:lucasch@umich.edu" aria-label="Email" onClick={() => track('email_click', {method: 'mailto', location: 'footer'})}><FaEnvelope size={20} /></a></li>
+                    <li><a href="https://instagram.com/lucaschenphoto" target="_blank" rel="noreferrer" aria-label="Instagram" onClick={trackSocial('instagram', 'footer')}><FaInstagram size={22} /></a></li>
+                    <li><a href="https://linkedin.com/in/chen-lucas" target="_blank" rel="noreferrer" aria-label="LinkedIn" onClick={trackSocial('linkedin', 'footer')}><FaLinkedin size={22} /></a></li>
                 </ul>
             </div>
             <p className="footer-legal">

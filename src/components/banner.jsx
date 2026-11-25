@@ -3,7 +3,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 import '../styles/banner.css'
 
-function Banner({emoji, title, text, buttonText, buttonIcon, buttonHref, startCollapsed = false, storageKey}) {
+function Banner({emoji, title, text, buttonText, buttonIcon, buttonHref, onButtonClick, startCollapsed = false, storageKey}) {
 
     const [collapsed, setCollapsed] = useState(startCollapsed);
     // Red dot on the chip until the banner has been opened once (remembered across visits)
@@ -31,7 +31,7 @@ function Banner({emoji, title, text, buttonText, buttonIcon, buttonHref, startCo
                 <div className="banner-body">
                     {title && <p className="banner-title">{title}</p>}
                     <p className="banner-text">{text}</p>
-                    <a className="banner-cta" href={buttonHref} target="_blank" rel="noreferrer" tabIndex={collapsed ? -1 : 0}>
+                    <a className="banner-cta" href={buttonHref} target="_blank" rel="noreferrer" tabIndex={collapsed ? -1 : 0} onClick={onButtonClick}>
                         {buttonIcon}
                         {buttonText}
                     </a>

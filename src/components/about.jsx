@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import { IoMdClose } from "react-icons/io";
 import { FaLinkedin, FaInstagram, FaExternalLinkAlt, FaCopy } from "react-icons/fa";
 import {AdvancedImage, placeholder} from '@cloudinary/react';
+import { track, trackSocial } from '../analytics.js';
 import '../App.css'
 import '../styles/about.css'
 
@@ -16,6 +17,7 @@ function About({active, setAboutActive, cloud}) {
         try {
             await navigator.clipboard.writeText(textToCopy);
             setAlertActive(true);
+            track('email_click', {method: 'copy', location: 'about'});
 
             //reset timeout by remove existing timeout
             if(alertTimeoutRef.current) {
@@ -58,10 +60,10 @@ function About({active, setAboutActive, cloud}) {
             </div>
             <div className="socials">
                 <div className="icon-container">
-                    <a href="https://linkedin.com/in/chen-lucas" target="_blank"><FaLinkedin size={24} /></a>
+                    <a href="https://linkedin.com/in/chen-lucas" target="_blank" onClick={trackSocial('linkedin', 'about')}><FaLinkedin size={24} /></a>
                 </div>
                 <div className="icon-container">
-                    <a href="https://instagram.com/lucaschenphoto" target="_blank"><FaInstagram size={24} /></a>
+                    <a href="https://instagram.com/lucaschenphoto" target="_blank" onClick={trackSocial('instagram', 'about')}><FaInstagram size={24} /></a>
                 </div>
             </div>
         </div>

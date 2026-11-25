@@ -7,6 +7,7 @@ import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 
 import PortfolioViewer from './portfolioviewer.jsx';
 import Divider from './divider.jsx';
+import { track } from '../analytics.js';
 
 import '../App.css'
 import '../styles/gallery.css'
@@ -38,18 +39,15 @@ function Gallery({pageref, cloud, data: galleriesData}) {
         setViewerGallery(gallery);
         setViewerActive(true);
         setViewerUrlIdx(idx);
+        track('photo_open', {section: gallery, photo_id: galleriesData[gallery][idx].url});
     }
 
     const viewerNavigationHandler = (goLeft) => {
         const numImages = galleriesData[viewerGallery].length;
+        const next = (viewerUrlIdx + (goLeft ? -1 : 1) + numImages) % numImages;
 
-        setViewerUrlIdx((prev) => {
-            if (goLeft) {
-                return (prev - 1 + numImages) % numImages;
-            } else {
-                return (prev + 1 + numImages) % numImages;
-            }
-        })
+        setViewerUrlIdx(next);
+        track('photo_navigate', {section: viewerGallery, direction: goLeft ? 'prev' : 'next', photo_id: galleriesData[viewerGallery][next].url});
     }
     // END
 
